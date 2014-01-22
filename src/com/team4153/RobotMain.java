@@ -8,7 +8,7 @@
 package com.team4153;
 
 import com.team4153.systems.Chassis;
-import com.team4153.systems.DashboardPID;
+import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.JoystickHandler;
 import edu.wpi.first.wpilibj.IterativeRobot;
 
@@ -22,7 +22,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 public class RobotMain extends IterativeRobot {
     JoystickHandler joystick;
     Chassis chassis;
-    DashboardPID dashboardPID;
+    DashboardCommunication dashboardComm;
+   
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -30,7 +31,7 @@ public class RobotMain extends IterativeRobot {
     public void robotInit() {
         joystick = new JoystickHandler();
         chassis = new Chassis();
-        dashboardPID = new DashboardPID(chassis);
+        dashboardComm = new DashboardCommunication(chassis);
     }
 
     /**
@@ -44,7 +45,7 @@ public class RobotMain extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
-        dashboardPID.execute();
+        dashboardComm.execute();
         chassis.execute();
         joystick.execute();
     }

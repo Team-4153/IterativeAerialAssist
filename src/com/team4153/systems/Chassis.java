@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Chassis subsystem for mecanum drive
  */
 public class Chassis implements Systems {
-
+    private int fieldControl = 1;
     private RobotDrive drive;
     /**
      * Jaguar CAN bus motor controllers.
@@ -31,19 +31,14 @@ public class Chassis implements Systems {
      */
     public Chassis() {
         try {
-            System.out.println("Chassis Construtor started");
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, CANJaguar.ControlMode.kSpeed);
             configSpeedControl(rightFront,false,.3,.005,0);
-            System.out.println("JAG Right Front works, " + RobotMap.JAG_RIGHT_FRONT_MOTOR);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, CANJaguar.ControlMode.kSpeed);
             configSpeedControl(rightRear,false,.3,.005,0);
-            System.out.println("JAG Right Back works, " + RobotMap.JAG_RIGHT_REAR_MOTOR);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, CANJaguar.ControlMode.kSpeed);
             configSpeedControl(leftFront,true,.3,.005,0);
-            System.out.println("JAG Left Front works, " + RobotMap.JAG_LEFT_FRONT_MOTOR);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, CANJaguar.ControlMode.kSpeed);
             configSpeedControl(leftRear,false,.3,.005,0);
-            System.out.println("JAG Left Back works, " + RobotMap.JAG_LEFT_REAR_MOTOR);
 
         } catch (CANTimeoutException ex) {
             System.out.println("Chassis constructor CANTimeoutException: ");
@@ -113,7 +108,7 @@ public class Chassis implements Systems {
         }
         drive.setMaxOutput(1000*throttle);
         System.out.println("gyro: " + heading);
-        this.drive.mecanumDrive_Cartesian(x, y, twist, heading);
+        this.drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
     }
     
     public void setPID(double P, double I, double D){
@@ -124,6 +119,14 @@ public class Chassis implements Systems {
             configSpeedControl(leftRear,false,P,I,D);
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
+        }
+    }
+    
+    public void setFieldControl(boolean fieldControl){
+        if(fieldControl){
+            this.fieldControl = 1;
+        }else{
+            this.fieldControl = 0;
         }
     }
 
