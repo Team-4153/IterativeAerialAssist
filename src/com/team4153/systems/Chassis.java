@@ -3,6 +3,7 @@ package com.team4153.systems;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.CANJaguar.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
@@ -31,13 +32,14 @@ public class Chassis implements Systems {
      */
     public Chassis() {
         try {
-            rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, CANJaguar.ControlMode.kSpeed);
+            ControlMode mode = CANJaguar.ControlMode.kSpeed;
+            rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
             configSpeedControl(rightFront,false,.3,.005,0);
-            rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, CANJaguar.ControlMode.kSpeed);
+            rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
             configSpeedControl(rightRear,false,.3,.005,0);
-            leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, CANJaguar.ControlMode.kSpeed);
+            leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
             configSpeedControl(leftFront,true,.3,.005,0);
-            leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, CANJaguar.ControlMode.kSpeed);
+            leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
             configSpeedControl(leftRear,false,.3,.005,0);
 
         } catch (CANTimeoutException ex) {
@@ -59,6 +61,10 @@ public class Chassis implements Systems {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 40;
+        
+        if (jag.getControlMode() == CANJaguar.ControlMode.kPercentVbus) {
+            return; //don't add stuffif in kPercentVbus
+        }
 //        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 //        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
 //        jag.enableControl();
@@ -91,25 +97,48 @@ public class Chassis implements Systems {
      */
     public void mecanumDrive(Joystick stick, double heading) {
         double twist, x, y, throttle;
+        
         twist = stick.getTwist() * 0.5;
         x = stick.getX();
         y = stick.getY();
-        throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1) / -2;
+        throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
         System.out.println("Throttle: " + throttle);
         SmartDashboard.putString("Throttle", "" + throttle);
-        if(Math.abs(x) < 0.02){
+        
+        // tolerances to keep the robot from jittering
+        double jitterTolerance = 0.15;
+        if(Math.abs(x) < jitterTolerance ){
             x = 0;
+        } else {
+             x = (Math.abs(x) - jitterTolerance) * getSign(x);
         }
-        if(Math.abs(y) < 0.02){
+        if(Math.abs(y) < jitterTolerance ){
             y = 0;
+        } else {
+            y = (Math.abs(y) - jitterTolerance) * getSign(y);
         }
-        if(Math.abs(twist) < 0.02){
+        if(Math.abs(twist) < jitterTolerance ){
             twist = 0;
         }
+        
+        // limit drive
         drive.setMaxOutput(1000*throttle);
         System.out.println("gyro: " + heading);
+        
+        
+        
         this.drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
     }
+   
+    private int getSign(double val){
+        if (val<0.0) {
+            return -1;
+        } else if (val > 0.0) {
+            return 1;
+        }
+        return 0;
+    }
+    
     
     public void setPID(double P, double I, double D){
         try {
@@ -133,6 +162,7 @@ public class Chassis implements Systems {
     /**
      * Stop the robot chassis from moving
      */
+    
     public void driveHalt() {
         System.out.println("** driveHalt");
         this.drive.mecanumDrive_Polar(0, 0, 0);
