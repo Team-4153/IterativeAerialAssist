@@ -35,12 +35,16 @@ public class Chassis implements Systems {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
             configSpeedControl(rightFront,false,.3,.005,0);
+//            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
             configSpeedControl(rightRear,false,.3,.005,0);
+//            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
             configSpeedControl(leftFront,true,.3,.005,0);
+//            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
             configSpeedControl(leftRear,false,.3,.005,0);
+//            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
             System.out.println("Chassis constructor CANTimeoutException: ");
@@ -51,20 +55,45 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-        drive.setMaxOutput(200);//TODO: Fix the magic numbers
+//        drive.setMaxOutput(200);//TODO: Fix the magic numbers
         drive.setSafetyEnabled(false);
     }
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private void configSpeedControl(CANJaguar jag, boolean pidPositive, double P, double I, double D) throws CANTimeoutException {
+//    private void configSpeedControl(CANJaguar jag, boolean pidPositive, double P, double I, double D) throws CANTimeoutException {
+//        final int CPR = 360;
+//        final double ENCODER_FINAL_POS = 0;
+//        final double VOLTAGE_RAMP = 40;
+//        
+//        if (jag.getControlMode() == CANJaguar.ControlMode.kPercentVbus) {
+//            return; //don't add stuffif in kPercentVbus
+//        }
+////        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+////        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
+////        jag.enableControl();
+////        jag.configMaxOutputVoltage(10);//ToDo: 
+//        // PIDs may be required.  Values here:
+//        //  http://www.chiefdelphi.com/forums/showthread.php?t=91384
+//        // and here:
+//        // http://www.chiefdelphi.com/forums/showthread.php?t=89721
+//        // neither seem correct.
+//        if(pidPositive){
+//            jag.setPID(P, I, D);
+//        }        else{
+//            jag.setPID(-P, -I, -D);
+//        }
+//        
+//        jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//        jag.configEncoderCodesPerRev(CPR);
+////        jag.setVoltageRampRate(VOLTAGE_RAMP);
+//        jag.enableControl();
+//
+//    }
+private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, double I, double D) throws CANTimeoutException {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 40;
-        
-        if (jag.getControlMode() == CANJaguar.ControlMode.kPercentVbus) {
-            return; //don't add stuffif in kPercentVbus
-        }
 //        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 //        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
 //        jag.enableControl();
@@ -74,20 +103,19 @@ public class Chassis implements Systems {
         // and here:
         // http://www.chiefdelphi.com/forums/showthread.php?t=89721
         // neither seem correct.
-        if(pidPositive){
+//        jag.setPID(0.4, .005, 0);
+        if (PIDpositive) {
             jag.setPID(P, I, D);
-        }
-        else{
+        }else{
             jag.setPID(-P, -I, -D);
         }
-        
         jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
         jag.configEncoderCodesPerRev(CPR);
 //        jag.setVoltageRampRate(VOLTAGE_RAMP);
         jag.enableControl();
 
+//        System.out.println("Control Mode = " + jag.getControlMode());
     }
-
 
     /**
      * The command to drive mecanum via joystick and gyro angle
@@ -102,7 +130,7 @@ public class Chassis implements Systems {
         x = stick.getX();
         y = stick.getY();
         throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
-        System.out.println("Throttle: " + throttle);
+     //   System.out.println("Throttle: " + throttle);
         SmartDashboard.putString("Throttle", "" + throttle);
         
         // tolerances to keep the robot from jittering
@@ -126,8 +154,18 @@ public class Chassis implements Systems {
         System.out.println("gyro: " + heading);
         
         
+        System.out.println("X " + x );
+        System.out.println("Y " + y);
         
-        this.drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
+        drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
+        try {
+            System.out.println("encoder: " + rightFront.getSpeed());
+            System.out.println("jag out set: " + rightFront.getX());
+//            System.out.println("jag output: " + rightFront.getOutputVoltage());
+//            System.out.println("jag faults: " + rightFront.getFaults());
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
     }
    
     private int getSign(double val){

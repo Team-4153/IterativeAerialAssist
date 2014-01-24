@@ -30,8 +30,8 @@ public class RobotMain extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        joystick = new JoystickHandler();
         chassis = new Chassis();
+        joystick = new JoystickHandler();
         dashboardComm = new DashboardCommunication(chassis);
     }
 
