@@ -17,7 +17,11 @@ public abstract class Sensors {
     private static Button gyroReset;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
-
+    
+    static {
+        getGyro();
+    }
+    
     public Sensors() {
         
     }

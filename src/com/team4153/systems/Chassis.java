@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Chassis subsystem for mecanum drive
  */
 public class Chassis implements Systems {
+    private static final double INITIAL_P = 0.3;
+    private static final double INITIAL_I = 0.005;
+    private static final double INITIAL_D = 0;
     private int fieldControl = 1;
     private RobotDrive drive;
     /**
@@ -23,7 +26,9 @@ public class Chassis implements Systems {
     private CANJaguar rightRear;
     private CANJaguar leftFront;
     private CANJaguar leftRear;
-
+    private double currentP;
+    private double currentI;
+    private double currentD;
     /**  The control mode needs to be set in the constructor for the speed mode to work:
      *  http://www.chiefdelphi.com/forums/showthread.php?t=89721
      * 
@@ -31,19 +36,22 @@ public class Chassis implements Systems {
      * 
      */
     public Chassis() {
+        currentP = INITIAL_P;
+        currentI = INITIAL_I;
+        currentD = INITIAL_D;
         try {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-            configSpeedControl(rightFront,false,.3,.005,0);
+            configSpeedControl(rightFront,false,currentP,currentI,currentD);
 //            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-            configSpeedControl(rightRear,false,.3,.005,0);
+            configSpeedControl(rightRear,false,currentP,currentI,currentD);
 //            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
-            configSpeedControl(leftFront,true,.3,.005,0);
+            configSpeedControl(leftFront,true,currentP,currentI,currentD);
 //            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-            configSpeedControl(leftRear,false,.3,.005,0);
+            configSpeedControl(leftRear,false,currentP,currentI,currentD);
 //            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
@@ -152,7 +160,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         // limit drive
         drive.setMaxOutput(1000*throttle);
         System.out.println("gyro: " + heading);
-       //ystem.out.println("Ultrasonic: "+ Sensors.
+       
         
         
         System.out.println("X " + x );
@@ -179,12 +187,15 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
     }
     
     
-    public void setPID(double P, double I, double D){
+    public void setPID(double nextP, double nextI, double nextD){
+        currentP = nextP;
+        currentI = nextP;
+        currentD = nextP;
         try {
-            configSpeedControl(rightFront,false,P,I,D);
-            configSpeedControl(rightRear,false,P,I,D);
-            configSpeedControl(leftFront,true,P,I,D);
-            configSpeedControl(leftRear,false,P,I,D);
+            configSpeedControl(rightFront,false,nextP,nextI,nextD);
+            configSpeedControl(rightRear,false,nextP,nextI,nextD);
+            configSpeedControl(leftFront,true,nextP,nextI,nextD);
+            configSpeedControl(leftRear,false,nextP,nextI,nextD);
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
         }
@@ -198,9 +209,34 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
     }
 
+    public double getCurrentP() {
+        return currentP;
+    }
+
+    public void setCurrentP(double currentP) {
+        this.currentP = currentP;
+    }
+
+    public double getCurrentI() {
+        return currentI;
+    }
+
+    public void setCurrentI(double currentI) {
+        this.currentI = currentI;
+    }
+
+    public double getCurrentD() {
+        return currentD;
+    }
+
+    public void setCurrentD(double currentD) {
+        this.currentD = currentD;
+    }
+    
     /**
      * Stop the robot chassis from moving
      */
+    
     
     public void driveHalt() {
         System.out.println("** driveHalt");

@@ -9,33 +9,29 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
- * @author 4153student
+ * @author 4153stucurrentDent
  */
 public class DashboardCommunication implements Systems {
 
-    private double P, I, D, previousP, previousI, previousD;
     private final Chassis chassis;
     private boolean fieldControl;
     private boolean previousFieldControl;
 
     public DashboardCommunication(Chassis chassis) {
         this.chassis = chassis;
-        SmartDashboard.putNumber("P:", 0);
-        SmartDashboard.putNumber("I:", 0);
-        SmartDashboard.putNumber("D:", 0);
+        SmartDashboard.putNumber("P:", chassis.getCurrentP());
+        SmartDashboard.putNumber("I:", chassis.getCurrentI());
+        SmartDashboard.putNumber("D:", chassis.getCurrentD());
         SmartDashboard.putBoolean("Field Control?", fieldControl);
     }
 
     public void execute() {
-        P = SmartDashboard.getNumber("P:", 0);
-        I = SmartDashboard.getNumber("I:", 0);
-        D = SmartDashboard.getNumber("D:", 0);
+        double incomingP = SmartDashboard.getNumber("P:", chassis.getCurrentP());
+        double incomingI = SmartDashboard.getNumber("I:", chassis.getCurrentI());
+        double incomingD = SmartDashboard.getNumber("D:", chassis.getCurrentD());
         fieldControl = SmartDashboard.getBoolean("Field Control?", true);
-        if (previousP != P || previousI != I || previousD != D) {
-            chassis.setPID(P, I, D);
-            previousP = P;
-            previousI = I;
-            previousD = D;
+        if (incomingP != chassis.getCurrentP() || incomingI != chassis.getCurrentI() || incomingD != chassis.getCurrentD()) {
+            chassis.setPID(incomingP, incomingI, incomingD);
         }
         if (previousFieldControl != fieldControl) {
             chassis.setFieldControl(fieldControl);
