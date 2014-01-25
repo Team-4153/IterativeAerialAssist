@@ -152,6 +152,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         // limit drive
         drive.setMaxOutput(1000*throttle);
         System.out.println("gyro: " + heading);
+       //ystem.out.println("Ultrasonic: "+ Sensors.
         
         
         System.out.println("X " + x );
