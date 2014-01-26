@@ -101,7 +101,7 @@ public class Chassis implements Systems {
 private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, double I, double D) throws CANTimeoutException {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
-        final double VOLTAGE_RAMP = 40;
+        final double VOLTAGE_RAMP = 6;
 //        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 //        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
 //        jag.enableControl();
@@ -119,7 +119,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
         jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
         jag.configEncoderCodesPerRev(CPR);
-//        jag.setVoltageRampRate(VOLTAGE_RAMP);
+        jag.setVoltageRampRate(VOLTAGE_RAMP);
         jag.enableControl();
 
 //        System.out.println("Control Mode = " + jag.getControlMode());
@@ -158,23 +158,28 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
         
         // limit drive
-        drive.setMaxOutput(1000*throttle);
-        System.out.println("gyro: " + heading);
+        drive.setMaxOutput(600*throttle);
+//        System.out.println("gyro: " + heading);
        
         
         
-        System.out.println("X " + x );
-        System.out.println("Y " + y);
+//        System.out.println("X " + x );
+//        System.out.println("Y " + y);
         
         drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
-        try {
-            System.out.println("encoder: " + rightFront.getSpeed());
-            System.out.println("jag out set: " + rightFront.getX());
-//            System.out.println("jag output: " + rightFront.getOutputVoltage());
+//        try {
+//            System.out.println("encoder: " + rightFront.getSpeed());
+//            System.out.println("jag out set rr: " + rightRear.getX() + " rf: " + rightFront.getX() + 
+//                    " lr: "+ leftRear.getX() + " lf: "+ leftFront.getX());
+//            System.out.println("jag output: rr: " + rightRear.getOutputVoltage()+ " rf: " + rightFront.getOutputVoltage()+ 
+//                    " lr: "+ leftRear.getOutputVoltage()+ " lf: "+ leftFront.getOutputVoltage());
+//            System.out.println("rr faults: " + rightRear.getFaults() + "rf faults: " + rightFront.getFaults() + "lr faults: "+ leftRear.getFaults() + "lf faults: "+ leftFront.getFaults());
+//            System.out.println("I: " + currentI);
+//            System.out.println("D: " + currentD);
 //            System.out.println("jag faults: " + rightFront.getFaults());
-        } catch (CANTimeoutException ex) {
-            ex.printStackTrace();
-        }
+//        } catch (CANTimeoutException ex) {
+//            ex.printStackTrace();
+//        }
     }
    
     private int getSign(double val){
@@ -245,5 +250,12 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
 
     public void execute() {
         mecanumDrive(Sensors.getJoystick(), Sensors.getGyro().getAngle());
+        if (Sensors.getJoystick().getRawButton(1)){
+            try {
+                System.out.println("RR Mode: " + rightRear.getControlMode()+ " RF Mode: " + rightFront.getControlMode() + " LR Mode: " + leftRear.getControlMode() + "LF Mode: " + leftFront.getControlMode());
+            } catch (CANTimeoutException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
