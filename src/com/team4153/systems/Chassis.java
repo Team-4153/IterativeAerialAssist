@@ -158,7 +158,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
         
         // limit drive
-        drive.setMaxOutput(600*throttle);
+        drive.setMaxOutput(300);
 //        System.out.println("gyro: " + heading);
        
         
