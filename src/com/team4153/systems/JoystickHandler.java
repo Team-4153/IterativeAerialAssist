@@ -18,11 +18,14 @@ import java.util.Vector;
 public class JoystickHandler implements Systems {
     
     Vector buttons=new Vector();
-    
-    public JoystickHandler(){
+    Flippers flippers=new Flippers();
+            
+    public JoystickHandler(Shooter shooter){
         //Add all ButtonHandlers here
         
-        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_GYRO_RESET,new GyroReset(),false));
+        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_GYRO_RESET,new GyroReset(),true));
+        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_FLIPPERS,flippers,true));
+        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_TRIGGER,shooter,true));
     }
     
     public void execute(){

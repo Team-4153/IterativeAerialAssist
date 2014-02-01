@@ -19,15 +19,34 @@ public class RobotMap {
     public static final int JOYSTICK_PORT = 1;
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_GYRO_RESET = 2;
+    public static final int JSBUTTON_FLIPPERS=3;
     public static final int JSAXIS_THROTTLE = 4;
     
-    public static final int JAG_LEFT_FRONT_MOTOR = 4;
+    /*public static final int JAG_LEFT_FRONT_MOTOR = 4;
     public static final int JAG_LEFT_REAR_MOTOR = 6;
     public static final int JAG_RIGHT_FRONT_MOTOR = 8;
-    public static final int JAG_RIGHT_REAR_MOTOR = 2;
+    public static final int JAG_RIGHT_REAR_MOTOR = 2;*/
+    
+    public static final int JAG_LEFT_FRONT_MOTOR = 4;
+    public static final int JAG_LEFT_REAR_MOTOR = 12;
+    public static final int JAG_RIGHT_FRONT_MOTOR = 10;
+    public static final int JAG_RIGHT_REAR_MOTOR = 11;
+    public static final int VICTOR_CHANNEL=1;
     
     public static final int GYRO_CHANNEL = 1;
     public static final int ULTRASONIC_CHANNEL = 2;
+    public static final int ROT_POT_CHANNEL=3;
 
+    public static final int COMPRESSOR_CHANNEL=1;
+    public static final int PRESSURE_SWITCH=14;
+    
+    public static final int LEFT_FLIPPER_OPEN = 1;
+    public static final int LEFT_FLIPPER_CLOSE =2;
+    public static final int RIGHT_FLIPPER_OPEN = 5;
+    public static final int RIGHT_FLIPPER_CLOSE =6;
+    public static final int WINCH_LATCH =3;
+    public static final int WINCH_UNLATCH = 4;
+    
+    public static final int MRS_LEFT=10;
     
 }
