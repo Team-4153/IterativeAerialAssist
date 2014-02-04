@@ -16,22 +16,21 @@ public class RobotMap {
     // number and the module. For example you with a rangefinder:
     // public static final int rangefinderPort = 1;
     // public static final int rangefinderModule = 1;
-    public static final int JOYSTICK_PORT = 1;
+    public static final int DRIVER_JOYSTICK_PORT = 2;
+    public static final int MANIPULATOR_JOYSTICK_PORT=1;
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_GYRO_RESET = 2;
     public static final int JSBUTTON_FLIPPERS=3;
     public static final int JSAXIS_THROTTLE = 4;
-    
-    /*public static final int JAG_LEFT_FRONT_MOTOR = 4;
-    public static final int JAG_LEFT_REAR_MOTOR = 6;
-    public static final int JAG_RIGHT_FRONT_MOTOR = 8;
-    public static final int JAG_RIGHT_REAR_MOTOR = 2;*/
+    public static final int JSAXIS_ARM=1;
     
     public static final int JAG_LEFT_FRONT_MOTOR = 4;
     public static final int JAG_LEFT_REAR_MOTOR = 12;
     public static final int JAG_RIGHT_FRONT_MOTOR = 10;
     public static final int JAG_RIGHT_REAR_MOTOR = 11;
     public static final int VICTOR_CHANNEL=1;
+    public static final int JAG_ARM_LEFT=13;
+    public static final int JAG_ARM_RIGHT=14;
     
     public static final int GYRO_CHANNEL = 1;
     public static final int ULTRASONIC_CHANNEL = 2;
@@ -48,5 +47,9 @@ public class RobotMap {
     public static final int WINCH_UNLATCH = 4;
     
     public static final int MRS_LEFT=10;
+    
+    public static final int LIMIT_SWITCH_1=11;
+    public static final int LIMIT_SWITCH_2=12;
+    public static final int LIMIT_SWITCH_3=13;
     
 }

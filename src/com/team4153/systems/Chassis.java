@@ -182,6 +182,12 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
 //        }
     }
    
+    public void driveForward(){
+        drive.setMaxOutput(300);
+        drive.mecanumDrive_Polar(4, 0, 0);
+    }
+    
+    
     private int getSign(double val){
         if (val<0.0) {
             return -1;
@@ -249,13 +255,6 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
     }
 
     public void execute() {
-        mecanumDrive(Sensors.getJoystick(), Sensors.getGyro().getAngle());
-        if (Sensors.getJoystick().getRawButton(1)){
-            try {
-                System.out.println("RR Mode: " + rightRear.getControlMode()+ " RF Mode: " + rightFront.getControlMode() + " LR Mode: " + leftRear.getControlMode() + "LF Mode: " + leftFront.getControlMode());
-            } catch (CANTimeoutException ex) {
-                ex.printStackTrace();
-            }
-        }
+        mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
     }
 }

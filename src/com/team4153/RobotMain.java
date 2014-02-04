@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 package com.team4153;
 
+import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.JoystickHandler;
@@ -25,7 +26,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class RobotMain extends IterativeRobot {
-    public static double FIRE_DISTANCE = 30;
+    public static double FIRE_DISTANCE = 30;//firing sweet spot TODO: fix magic numbers
+    public static double SHOOTING_ANGLE=45;
 
     JoystickHandler joystick;
     Chassis chassis;
@@ -33,6 +35,7 @@ public class RobotMain extends IterativeRobot {
     Vision vision;
     Compressor compressor;
     Shooter shooter;
+    Arm arm;
 
     long autoStartTime = -1;
     boolean autoHot = false;
@@ -46,6 +49,7 @@ public class RobotMain extends IterativeRobot {
      */
     public void robotInit() {
         chassis = new Chassis();
+        arm=new Arm();
         shooter = new Shooter();
         joystick = new JoystickHandler(shooter);
         dashboardComm = new DashboardCommunication(chassis);
@@ -57,23 +61,25 @@ public class RobotMain extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
-    public void autonomousPeriodic() {//Needs Testing
-//        startCompressor();
+    public void autonomousPeriodic() {
         if (autoStartTime == -1) {
             autoStartTime = System.currentTimeMillis();
             System.out.println("Drive Start");
         }
 
+        arm.setDesiredAngle(SHOOTING_ANGLE);
+        arm.execute();
         
-        if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {//TODO:Replace with distance sensor
-            //TODO:include chassis
+        if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
+           chassis.driveForward();
         }
         else if(!autoDriveDone){
+            chassis.driveHalt();
             System.out.println("Drive Stop");
              autoDriveDone = true;
         }
 
-        if(autoDriveDone){
+        if(autoDriveDone&&Math.abs(SHOOTING_ANGLE-arm.getDesiredAngle())<Arm.TOLERANCE){
             vision.execute();
             if(vision.isTarget()&&vision.isHot()&&!autoShoot){
                 shooter.execute();
@@ -106,6 +112,7 @@ public class RobotMain extends IterativeRobot {
 //        startCompressor();
         dashboardComm.execute();
         chassis.execute();
+        arm.execute();
         joystick.execute();
         SmartDashboard.putNumber("Distance", Sensors.getUltrasonicDistance());
         SmartDashboard.putNumber("Rot Pot", Sensors.getRotPotAngle());
@@ -114,6 +121,10 @@ public class RobotMain extends IterativeRobot {
         SmartDashboard.putNumber("Vision Distance",vision.getDistance());
         SmartDashboard.putBoolean("hot", vision.isHot());
         SmartDashboard.putBoolean("target", vision.isTarget());
+        SmartDashboard.putBoolean("LimitSwitch 1", Sensors.getLimitSwitch1().get());
+        SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
+        SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
+        SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
     }
 
     /**

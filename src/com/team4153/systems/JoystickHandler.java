@@ -23,9 +23,9 @@ public class JoystickHandler implements Systems {
     public JoystickHandler(Shooter shooter){
         //Add all ButtonHandlers here
         
-        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_GYRO_RESET,new GyroReset(),true));
-        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_FLIPPERS,flippers,true));
-        buttons.addElement(new ButtonHandler(RobotMap.JSBUTTON_TRIGGER,shooter,true));
+        buttons.addElement(new ButtonHandler(Sensors.getDriverJoystick(),RobotMap.JSBUTTON_GYRO_RESET,new GyroReset(),true));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_FLIPPERS,flippers,true));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_TRIGGER,shooter,true));
     }
     
     public void execute(){
