@@ -34,16 +34,16 @@ public class Chassis implements Systems {
         try {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-            configSpeedControl(rightFront,false,.3,.005,0);
+            configSpeedControl(rightFront,true,.3,.005,0);
 //            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-            configSpeedControl(rightRear,false,.3,.005,0);
+            configSpeedControl(rightRear,true,.3,.005,0);
 //            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
             configSpeedControl(leftFront,true,.3,.005,0);
 //            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-            configSpeedControl(leftRear,false,.3,.005,0);
+            configSpeedControl(leftRear,true,.3,.005,0);
 //            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
@@ -180,10 +180,10 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
     
     public void setPID(double P, double I, double D){
         try {
-            configSpeedControl(rightFront,false,P,I,D);
-            configSpeedControl(rightRear,false,P,I,D);
+            configSpeedControl(rightFront,true,P,I,D);
+            configSpeedControl(rightRear,true,P,I,D);
             configSpeedControl(leftFront,true,P,I,D);
-            configSpeedControl(leftRear,false,P,I,D);
+            configSpeedControl(leftRear,true,P,I,D);
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
         }
