@@ -1,4 +1,4 @@
-package com.team4153;
+ package com.team4153;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -17,7 +17,7 @@ public class RobotMap {
     // public static final int rangefinderPort = 1;
     // public static final int rangefinderModule = 1;
     public static final int DRIVER_JOYSTICK_PORT = 2;
-    public static final int MANIPULATOR_JOYSTICK_PORT=1;
+    public static final int MANIPULATOR_JOYSTICK_PORT = 1;
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_GYRO_RESET = 2;
     public static final int JSBUTTON_FLIPPERS=3;

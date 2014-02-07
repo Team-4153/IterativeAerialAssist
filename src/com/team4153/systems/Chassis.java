@@ -42,16 +42,16 @@ public class Chassis implements Systems {
         try {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-            configSpeedControl(rightFront,false,currentP,currentI,currentD);
+            configSpeedControl(rightFront,true,currentP,currentI,currentD);
 //            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-            configSpeedControl(rightRear,false,currentP,currentI,currentD);
+            configSpeedControl(rightRear,true,currentP,currentI,currentD);
 //            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
             configSpeedControl(leftFront,true,currentP,currentI,currentD);
 //            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-            configSpeedControl(leftRear,false,currentP,currentI,currentD);
+            configSpeedControl(leftRear,true,currentP,currentI,currentD);
 //            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
@@ -63,7 +63,7 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-//        drive.setMaxOutput(200);//TODO: Fix the magic numbers
+        drive.setMaxOutput(400);//TODO: Fix the magic numbers
         drive.setSafetyEnabled(false);
     }
 
@@ -98,7 +98,7 @@ public class Chassis implements Systems {
 //        jag.enableControl();
 //
 //    }
-private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, double I, double D) throws CANTimeoutException {
+    private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, double I, double D) throws CANTimeoutException {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 6;
@@ -142,7 +142,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         SmartDashboard.putString("Throttle", "" + throttle);
         
         // tolerances to keep the robot from jittering
-        double jitterTolerance = 0.15;
+        double jitterTolerance = 0.05;
         if(Math.abs(x) < jitterTolerance ){
             x = 0;
         } else {
@@ -158,7 +158,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
         
         // limit drive
-        drive.setMaxOutput(300);
+//        drive.setMaxOutput(300);
 //        System.out.println("gyro: " + heading);
        
         
