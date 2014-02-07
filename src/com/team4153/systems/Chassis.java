@@ -23,6 +23,10 @@ public class Chassis implements Systems {
     private CANJaguar rightRear;
     private CANJaguar leftFront;
     private CANJaguar leftRear;
+    double twist = 0;
+    double x = 0;
+    double y = 0; 
+    double throttle = 0;
 
     /**  The control mode needs to be set in the constructor for the speed mode to work:
      *  http://www.chiefdelphi.com/forums/showthread.php?t=89721
@@ -55,7 +59,7 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-//        drive.setMaxOutput(200);//TODO: Fix the magic numbers
+        drive.setMaxOutput(400);//TODO: Fix the magic numbers
         drive.setSafetyEnabled(false);
     }
 
@@ -124,8 +128,10 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
      * @param heading The gyro angle/heading
      */
     public void mecanumDrive(Joystick stick, double heading) {
-        double twist, x, y, throttle;
         
+//        twist = (twist*0.9 + stick.getTwist()*0.25);
+//        x = x*0.9 + stick.getX()*0.1;
+//        y = y*0.9 + stick.getY()*0.1;
         twist = stick.getTwist() * 0.5;
         x = stick.getX();
         y = stick.getY();
@@ -134,7 +140,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         SmartDashboard.putString("Throttle", "" + throttle);
         
         // tolerances to keep the robot from jittering
-        double jitterTolerance = 0.15;
+        double jitterTolerance = 0.05;
         if(Math.abs(x) < jitterTolerance ){
             x = 0;
         } else {
@@ -150,7 +156,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
         
         // limit drive
-        drive.setMaxOutput(1000*throttle);
+//        drive.setMaxOutput(1000*throttle);
         System.out.println("gyro: " + heading);
         
         
