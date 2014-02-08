@@ -12,6 +12,7 @@ import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.JoystickHandler;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -49,6 +50,7 @@ public class RobotMain extends IterativeRobot {
         dashboardComm.execute();
         chassis.execute();
         joystick.execute();
+        SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
     }
     
     /**
