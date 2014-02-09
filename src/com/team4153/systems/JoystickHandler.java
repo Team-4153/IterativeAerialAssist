@@ -17,10 +17,15 @@ import java.util.Vector;
  */
 public class JoystickHandler implements Systems {
     
+    /** Vector with all of the button handlers that control systems. */
     Vector buttons=new Vector();
-    Flippers flippers=new Flippers();
-            
-    public JoystickHandler(Shooter shooter){
+
+    /**
+     *
+     * @param shooter
+     * @param flippers
+     */
+    public JoystickHandler(Shooter shooter, Flippers flippers){
         //Add all ButtonHandlers here
         
         buttons.addElement(new ButtonHandler(Sensors.getDriverJoystick(),RobotMap.JSBUTTON_GYRO_RESET,new GyroReset(),true));
@@ -28,6 +33,9 @@ public class JoystickHandler implements Systems {
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_TRIGGER,shooter,true));
     }
     
+    /**
+     *
+     */
     public void execute(){
         for(int i=0;i<buttons.size();i++){
             ((ButtonHandler)(buttons.elementAt(i))).execute();

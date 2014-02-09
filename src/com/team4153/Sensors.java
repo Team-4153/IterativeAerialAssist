@@ -14,36 +14,82 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public abstract class Sensors {
 
+    /**
+     * joystick used by the driver
+     */
     private static Joystick driverJoystick;
+    /**
+     * joystick used for the ball manipulation
+     */
     private static Joystick manipulatorJoystick;
-    private static Button triggerButton;
-    private static Button gyroReset;
-    private static Button flipperButton;
+
+    //private static Button triggerButton;
+    //private static Button gyroReset;
+    //private static Button flipperButton;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
     private static AnalogChannel rotPot;
     private static DigitalInput leftFlipper;
-    private static DigitalInput limitSwitch1;//TODO:Rename
-    private static DigitalInput limitSwitch2;
-    private static DigitalInput limitSwitch3;
+
+    /**
+     * The limit switch the winch hits to stop the winch motor
+     */
+    private static DigitalInput winchLimitSwitch;
+
+    /**
+     * Currently unknown limit switch 2
+     */
+    private static DigitalInput limitSwitch2;//TODO:Rename
+    /**
+     * Currently unknown limit switch 3
+     */
+    private static DigitalInput limitSwitch3;//TODO:Rename
+
+    private static DigitalInput photoEye;
+
+    /**
+     * Switch to indicate robot needs initial setup (arm within competition
+     * bounds, compressor maybe on, etc.).
+     */
+    private static DigitalInput initSwitch;
+
     private static final double RANGE_FINDER_MUlTIPLIER = 0.0098;
-    public static final double ROT_POT_MAX_VOLTS=5;
+
+    /**
+     * The rotational potentiometer on the arm - goes from 0 to max volts
+     */
+    public static final double ROT_POT_MAX_VOLTS = 5;
 
     static {
         getGyro();
     }
 
+    /**
+     *
+     */
     public Sensors() {
 
     }
 
+    /**
+     * Returns the driver's joystick if it exists. If it does not, initializes
+     * the driver's joystick then returns it.
+     *
+     * @return The driver's joystick
+     */
     public static Joystick getDriverJoystick() {
         if (driverJoystick == null) {
             driverJoystick = new Joystick(RobotMap.DRIVER_JOYSTICK_PORT);
         }
         return driverJoystick;
     }
-    
+
+    /**
+     * Returns the manipulators's joystick if it exists. If it does not,
+     * initializes the manipulators's joystick then returns it.
+     *
+     * @return The manipulators's joystick
+     */
     public static Joystick getManipulatorJoystick() {
         if (manipulatorJoystick == null) {
             manipulatorJoystick = new Joystick(RobotMap.MANIPULATOR_JOYSTICK_PORT);
@@ -71,6 +117,13 @@ public abstract class Sensors {
 //        }
 //        return flipperButton;
 //    }
+    
+    /**
+     * Returns the gyro if it exists. If it does not, initializes the gyro then
+     * returns it.
+     *
+     * @return The gyro
+     */
     public static Gyro getGyro() {
         if (gyro == null) {
             gyro = new Gyro(RobotMap.GYRO_CHANNEL);
@@ -78,6 +131,12 @@ public abstract class Sensors {
         return gyro;
     }
 
+    /**
+     * Returns the ultrasonic sensor if it exists. If it does not, initializes
+     * the ultrasonic sensor then returns.
+     *
+     * @return The ultrasonic sensor
+     */
     public static AnalogChannel getUltrasonic() {
         if (ultrasonic == null) {
             ultrasonic = new AnalogChannel(RobotMap.ULTRASONIC_CHANNEL);
@@ -85,10 +144,20 @@ public abstract class Sensors {
         return ultrasonic;
     }
 
+    /**
+     *
+     * @return The distance according to the ultrasonic sensor (in inches)
+     */
     public static double getUltrasonicDistance() {
         return getUltrasonic().getVoltage() / RANGE_FINDER_MUlTIPLIER;
     }
 
+    /**
+     * Returns the arm's rotational potentiometer if it exists. If it does not,
+     * initializes the arm's rotational potentiometer then returns.
+     *
+     * @return The arm's rotational potentiometer
+     */
     public static AnalogChannel getRotPot() {
         if (rotPot == null) {
             rotPot = new AnalogChannel(RobotMap.ROT_POT_CHANNEL);
@@ -96,10 +165,21 @@ public abstract class Sensors {
         return rotPot;
     }
 
+    /**
+     * @return The rotation of the arm according to the arm's rotational
+     * potentiometer (in a value between 0 and ROT_POT_MAX_VOLTS).
+     */
     public static double getRotPotAngle() {
-        return getRotPot().getVoltage()/ROT_POT_MAX_VOLTS*360;
+        // return getRotPot().getVoltage()/ROT_POT_MAX_VOLTS*360;
+        return getRotPot().getVoltage();
     }
 
+    /**
+     * Returns the arm's left flipper if it exists. If it does not, initializes
+     * the arm's left flipper then returns.
+     *
+     * @return The arm's left flipper
+     */
     public static DigitalInput getleftFlipper() {
         if (leftFlipper == null) {
             leftFlipper = new DigitalInput(RobotMap.MRS_LEFT);
@@ -107,30 +187,78 @@ public abstract class Sensors {
         return leftFlipper;
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean areFlippersOpen() {
         return !getleftFlipper().get();
     }
 
-    //Returns true if the switch is OPEN!!
-    public static DigitalInput getLimitSwitch1() {
-        if (limitSwitch1 == null) {
-            limitSwitch1 = new DigitalInput(RobotMap.LIMIT_SWITCH_1);
+    /**
+     * Returns the winch limit switch if it exists. If it does not, initializes
+     * the winch limit switch then returns it. NOTE: The input is true if the
+     * switch is open.
+     *
+     * @return The winch limit switch
+     */
+    public static DigitalInput getWinchLimitSwitch() {
+        if (winchLimitSwitch == null) {
+            winchLimitSwitch = new DigitalInput(RobotMap.WINCH_LIMIT_SWITCH);
         }
-        return limitSwitch1;
+        return winchLimitSwitch;
     }
 
-    public static DigitalInput getLimitSwitch2() {
+    //TODO: Rename
+
+    /**
+     *
+     * @return
+     */
+        public static DigitalInput getLimitSwitch2() {
         if (limitSwitch2 == null) {
             limitSwitch2 = new DigitalInput(RobotMap.LIMIT_SWITCH_2);
         }
         return limitSwitch2;
     }
 
-    public static DigitalInput getLimitSwitch3() {
+    //TODO: Rename
+
+    /**
+     *
+     * @return
+     */
+        public static DigitalInput getLimitSwitch3() {
         if (limitSwitch3 == null) {
             limitSwitch3 = new DigitalInput(RobotMap.LIMIT_SWITCH_3);
         }
         return limitSwitch3;
+    }
+
+    /**
+     * Returns the photo eye if it exists. If it does not, initializes the photo
+     * eye then returns it.
+     *
+     * @return The photo eye
+     */
+    public static DigitalInput getPhotoEye() {
+        if (photoEye == null) {
+            photoEye = new DigitalInput(RobotMap.PHOTO_EYE);
+        }
+        return photoEye;
+    }
+
+    /**
+     * Returns the initializer switch if it exists. If it does not, initializes
+     * the initializer switch then returns it.
+     *
+     * @return The initializer switch
+     */
+    public static DigitalInput getInitSwitch() {
+        if (initSwitch == null) {
+            initSwitch = new DigitalInput(RobotMap.INIT_SWITCH);
+        }
+        return initSwitch;
     }
 
 }

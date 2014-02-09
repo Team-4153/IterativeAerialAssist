@@ -47,8 +47,11 @@ public class Vision implements Systems {
     
     boolean targetAppeared=false;
     boolean hot=false;
-    double distance =0;
+//    double distance =0;
 
+    /**
+     * 
+     */
     public class Scores {
 
         double rectangularity;
@@ -56,6 +59,9 @@ public class Vision implements Systems {
         double aspectRatioHorizontal;
     }
 
+    /**
+     *
+     */
     public class TargetReport {
 
         int verticalIndex;
@@ -68,6 +74,9 @@ public class Vision implements Systems {
         double verticalScore;
     };
 
+    /**
+     *
+     */
     public Vision() {
         camera = AxisCamera.getInstance("10.41.53.11");  // get an instance of the camera
         cc = new CriteriaCollection();      // create the criteria for the particle filter
@@ -75,6 +84,9 @@ public class Vision implements Systems {
 
     }
 
+    /**
+     *
+     */
     public void execute() {
         TargetReport target = new TargetReport();
         int verticalTargets[] = new int[MAX_PARTICLES];
@@ -164,8 +176,8 @@ public class Vision implements Systems {
                     //To get measurement information such as sizes or locations use the
                     //horizontal or vertical index to get the particle report as shown below
                     ParticleAnalysisReport distanceReport = filteredImage.getParticleAnalysisReport(target.verticalIndex);
-                    double distance = computeDistance(filteredImage, distanceReport, target.verticalIndex);
-                    this.distance=distance;
+//                    double distance = computeDistance(filteredImage, distanceReport, target.verticalIndex);
+//                    this.distance=distance;
                     if (target.Hot) {
                         System.out.println("Hot target located");
 //                        System.out.println("Distance: " + distance);
@@ -213,18 +225,18 @@ public class Vision implements Systems {
      * false to treat it as a center target
      * @return The estimated distance to the target in Inches.
      */
-    double computeDistance(BinaryImage image, ParticleAnalysisReport report, int particleNumber) throws NIVisionException {
-        double rectLong, height;
-        int targetHeight;
-
-        rectLong = NIVision.MeasureParticle(image.image, particleNumber, false, NIVision.MeasurementType.IMAQ_MT_EQUIVALENT_RECT_LONG_SIDE);
-            //using the smaller of the estimated rectangle long side and the bounding rectangle height results in better performance
-        //on skewed rectangles
-        height = Math.min(report.boundingRectHeight, rectLong);
-        targetHeight = 32;
-
-        return Y_IMAGE_RES * targetHeight / (height * 12 * 2 * Math.tan(VIEW_ANGLE * Math.PI / (180 * 2)));
-    }
+//    double computeDistance(BinaryImage image, ParticleAnalysisReport report, int particleNumber) throws NIVisionException {
+//        double rectLong, height;
+//        int targetHeight;
+//
+//        rectLong = NIVision.MeasureParticle(image.image, particleNumber, false, NIVision.MeasurementType.IMAQ_MT_EQUIVALENT_RECT_LONG_SIDE);
+//            //using the smaller of the estimated rectangle long side and the bounding rectangle height results in better performance
+//        //on skewed rectangles
+//        height = Math.min(report.boundingRectHeight, rectLong);
+//        targetHeight = 32;
+//
+//        return Y_IMAGE_RES * targetHeight / (height * 12 * 2 * Math.tan(VIEW_ANGLE * Math.PI / (180 * 2)));
+//    }
 
     /**
      * Computes a score (0-100) comparing the aspect ratio to the ideal aspect
@@ -235,11 +247,12 @@ public class Vision implements Systems {
      *
      * @param image The image containing the particle to score, needed to
      * perform additional measurements
-     * @param report The Particle Analysis Report for the particle, used for the
-     * width, height, and particle number
+     * @param report
      * @param outer	Indicates whether the particle aspect ratio should be
      * compared to the ratio for the inner target or the outer
+     * @param vertical
      * @return The aspect ratio score (0-100)
+     * @throws edu.wpi.first.wpilibj.image.NIVisionException
      */
     public double scoreAspectRatio(BinaryImage image, ParticleAnalysisReport report, int particleNumber, boolean vertical) throws NIVisionException {
         double rectLong, rectShort, aspectRatio, idealAspectRatio;
@@ -323,15 +336,23 @@ public class Vision implements Systems {
         return isHot;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isTarget(){
         return targetAppeared;
     }
     
+    /**
+     *
+     * @return
+     */
     public boolean isHot(){
         return hot;
     }
     
-    public double getDistance(){
-        return distance;
-    }
+//    public double getDistance(){
+//        return distance;
+//    }
 }

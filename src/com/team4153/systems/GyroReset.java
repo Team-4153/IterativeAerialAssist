@@ -14,6 +14,9 @@ import com.team4153.Sensors;
  */
 public class GyroReset implements Systems {
     
+    /**
+     *
+     */
     public void execute(){
         Sensors.getGyro().reset();
     }

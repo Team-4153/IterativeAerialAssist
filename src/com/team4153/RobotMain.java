@@ -9,6 +9,7 @@ package com.team4153;
 import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
+import com.team4153.systems.Flippers;
 import com.team4153.systems.JoystickHandler;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
@@ -26,8 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class RobotMain extends IterativeRobot {
-    public static double FIRE_DISTANCE = 30;//firing sweet spot TODO: fix magic numbers
-    public static double SHOOTING_ANGLE=45;
+    /** The ideal distance from the goal to fire from. */
+    public static double FIRE_DISTANCE = 30; //TODO: fix magic numbers
+    
+    /** The ideal angle to place the arm at to fire at the fire distance*/
+    public static double SHOOTING_ANGLE=2.5;
 
     JoystickHandler joystick;
     Chassis chassis;
@@ -35,6 +39,7 @@ public class RobotMain extends IterativeRobot {
     Vision vision;
     Compressor compressor;
     Shooter shooter;
+    Flippers flippers;
     Arm arm;
 
     long autoStartTime = -1;
@@ -51,7 +56,8 @@ public class RobotMain extends IterativeRobot {
         chassis = new Chassis();
         arm=new Arm();
         shooter = new Shooter();
-        joystick = new JoystickHandler(shooter);
+        flippers=new Flippers();
+        joystick = new JoystickHandler(shooter,flippers);
         dashboardComm = new DashboardCommunication(chassis);
         vision = new Vision();
         startCompressor();
@@ -67,8 +73,7 @@ public class RobotMain extends IterativeRobot {
             System.out.println("Drive Start");
         }
 
-        arm.setDesiredAngle(SHOOTING_ANGLE);
-        arm.execute();
+        
         
         if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
            chassis.driveForward();
@@ -81,6 +86,8 @@ public class RobotMain extends IterativeRobot {
 
         if(autoDriveDone&&Math.abs(SHOOTING_ANGLE-arm.getDesiredAngle())<Arm.TOLERANCE){
             vision.execute();
+            SmartDashboard.putBoolean("Target: ", vision.isTarget());
+            SmartDashboard.putBoolean("Hot: ", vision.isHot());
             if(vision.isTarget()&&vision.isHot()&&!autoShoot){
                 shooter.execute();
                 autoShoot=true;
@@ -93,10 +100,18 @@ public class RobotMain extends IterativeRobot {
         }
     }
 
+    /**
+     * Run once at the beginning of autonomous mode - resets and moves arm to
+     * shooting angle.
+     */
     public void autonomousInit(){
         resetAuto();
+        arm.moveArmToLocation(SHOOTING_ANGLE);
     }
     
+    /**
+     * Resets variables used in autonomous.
+     */
     public void resetAuto() {
         autoStartTime = -1;
         autoHot = false;
@@ -106,7 +121,7 @@ public class RobotMain extends IterativeRobot {
     }
 
     /**
-     * This function is called periodically during operator control
+     * This function is called periodically during operator control.
      */
     public void teleopPeriodic() {
 //        startCompressor();
@@ -117,23 +132,24 @@ public class RobotMain extends IterativeRobot {
         SmartDashboard.putNumber("Distance", Sensors.getUltrasonicDistance());
         SmartDashboard.putNumber("Rot Pot", Sensors.getRotPotAngle());
         SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
-        vision.execute();
-        SmartDashboard.putNumber("Vision Distance",vision.getDistance());
-        SmartDashboard.putBoolean("hot", vision.isHot());
-        SmartDashboard.putBoolean("target", vision.isTarget());
-        SmartDashboard.putBoolean("LimitSwitch 1", Sensors.getLimitSwitch1().get());
+        SmartDashboard.putBoolean("LimitSwitch 1", Sensors.getWinchLimitSwitch().get());
         SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
         SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
+        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEye().get());
     }
 
     /**
-     * This function is called periodically during test mode
+     * This function is called periodically during test mode.
      */
     public void testPeriodic() {
 
     }
 
+    /**
+     * Initializes the compressor and starts the method that will run the 
+     * compressor.
+     */
     public void startCompressor() {
         if (compressor == null) {
             compressor = new Compressor(RobotMap.PRESSURE_SWITCH, RobotMap.COMPRESSOR_CHANNEL);

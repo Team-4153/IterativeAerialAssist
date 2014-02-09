@@ -17,6 +17,10 @@ public class DashboardCommunication implements Systems {
     private boolean fieldControl;
     private boolean previousFieldControl;
 
+    /**
+     *
+     * @param chassis
+     */
     public DashboardCommunication(Chassis chassis) {
         this.chassis = chassis;
         SmartDashboard.putNumber("P:", chassis.getCurrentP());
@@ -25,6 +29,9 @@ public class DashboardCommunication implements Systems {
         SmartDashboard.putBoolean("Field Control?", fieldControl);
     }
 
+    /**
+     *
+     */
     public void execute() {
         double incomingP = SmartDashboard.getNumber("P:", chassis.getCurrentP());
         double incomingI = SmartDashboard.getNumber("I:", chassis.getCurrentI());

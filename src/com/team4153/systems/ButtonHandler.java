@@ -22,17 +22,32 @@ public class ButtonHandler implements Systems {
     private Systems runSystem;
     private Joystick joystick;
     
+    /**
+     *
+     * @param joystick
+     * @param joystickButton
+     */
     public ButtonHandler(Joystick joystick, int joystickButton){
         this.buttonNumber = joystickButton;
         this.joystick=joystick;
     }
     
+    /**
+     *
+     * @param joystick
+     * @param joystickButton
+     * @param runSystem
+     * @param runJustOnce
+     */
     public ButtonHandler(Joystick joystick,int joystickButton, Systems runSystem, boolean runJustOnce){
         this(joystick,joystickButton);
         this.runSystem=runSystem;
         this.runJustOnce=runJustOnce;
     }
     
+    /**
+     *
+     */
     public void execute(){
         if(joystick.getRawButton(buttonNumber)){
             if(!pressedPreviously||!runJustOnce){

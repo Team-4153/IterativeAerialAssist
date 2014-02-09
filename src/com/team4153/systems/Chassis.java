@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Chassis subsystem for mecanum drive
  */
 public class Chassis implements Systems {
+
     private static final double INITIAL_P = 0.3;
     private static final double INITIAL_I = 0.005;
     private static final double INITIAL_D = 0;
@@ -29,11 +30,14 @@ public class Chassis implements Systems {
     private double currentP;
     private double currentI;
     private double currentD;
-    /**  The control mode needs to be set in the constructor for the speed mode to work:
-     *  http://www.chiefdelphi.com/forums/showthread.php?t=89721
-     * 
-     * Setting the "changeControlMode" after the constructor does not seem to work.
-     * 
+
+    /**
+     * The control mode needs to be set in the constructor for the speed mode to
+     * work: http://www.chiefdelphi.com/forums/showthread.php?t=89721
+     *
+     * Setting the "changeControlMode" after the constructor does not seem to
+     * work.
+     *
      */
     public Chassis() {
         currentP = INITIAL_P;
@@ -41,25 +45,16 @@ public class Chassis implements Systems {
         currentD = INITIAL_D;
         try {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
-            rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-            configSpeedControl(rightFront,true,currentP,currentI,currentD);
-//            configSpeedControl(rightFront,false);
-            rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-            configSpeedControl(rightRear,true,currentP,currentI,currentD);
-//            configSpeedControl(rightRear,false);
-            leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
-            configSpeedControl(leftFront,true,currentP,currentI,currentD);
-//            configSpeedControl(leftFront,true);
-            leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-            configSpeedControl(leftRear,true,currentP,currentI,currentD);
-//            configSpeedControl(leftRear,false);
-
+            rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode);
+            rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode);
+            leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode);
+            leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode);
         } catch (CANTimeoutException ex) {
-            System.out.println("Chassis constructor CANTimeoutException: ");
             ex.printStackTrace();
-            //System.exit(-1);
         }
-        
+
+        initJags();
+
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
@@ -98,7 +93,7 @@ public class Chassis implements Systems {
 //        jag.enableControl();
 //
 //    }
-    private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, double I, double D) throws CANTimeoutException {
+    private void configSpeedControl(CANJaguar jag, boolean PIDpositive, double P, double I, double D) throws CANTimeoutException {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 6;
@@ -114,7 +109,7 @@ public class Chassis implements Systems {
 //        jag.setPID(0.4, .005, 0);
         if (PIDpositive) {
             jag.setPID(P, I, D);
-        }else{
+        } else {
             jag.setPID(-P, -I, -D);
         }
         jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
@@ -133,40 +128,36 @@ public class Chassis implements Systems {
      */
     public void mecanumDrive(Joystick stick, double heading) {
         double twist, x, y, throttle;
-        
+
         twist = stick.getTwist() * 0.5;
         x = stick.getX();
         y = stick.getY();
         throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
-     //   System.out.println("Throttle: " + throttle);
+        //   System.out.println("Throttle: " + throttle);
         SmartDashboard.putString("Throttle", "" + throttle);
-        
+
         // tolerances to keep the robot from jittering
         double jitterTolerance = 0.05;
-        if(Math.abs(x) < jitterTolerance ){
+        if (Math.abs(x) < jitterTolerance) {
             x = 0;
         } else {
-             x = (Math.abs(x) - jitterTolerance) * getSign(x);
+            x = (Math.abs(x) - jitterTolerance) * getSign(x);
         }
-        if(Math.abs(y) < jitterTolerance ){
+        if (Math.abs(y) < jitterTolerance) {
             y = 0;
         } else {
             y = (Math.abs(y) - jitterTolerance) * getSign(y);
         }
-        if(Math.abs(twist) < jitterTolerance ){
+        if (Math.abs(twist) < jitterTolerance) {
             twist = 0;
         }
-        
+
         // limit drive
 //        drive.setMaxOutput(300);
 //        System.out.println("gyro: " + heading);
-       
-        
-        
 //        System.out.println("X " + x );
 //        System.out.println("Y " + y);
-        
-        drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
+        drive.mecanumDrive_Cartesian(x, y, twist, heading * fieldControl);
 //        try {
 //            System.out.println("encoder: " + rightFront.getSpeed());
 //            System.out.println("jag out set rr: " + rightRear.getX() + " rf: " + rightFront.getX() + 
@@ -181,80 +172,143 @@ public class Chassis implements Systems {
 //            ex.printStackTrace();
 //        }
     }
-   
-    public void driveForward(){
+
+    /**
+     * Initializes the jag speed controls
+     */
+    public void initJags() {
+        try {
+            configSpeedControl(rightFront, true, currentP, currentI, currentD);
+//            configSpeedControl(rightFront,false);
+            
+            configSpeedControl(rightRear, true, currentP, currentI, currentD);
+//            configSpeedControl(rightRear,false);
+           
+            configSpeedControl(leftFront, true, currentP, currentI, currentD);
+//            configSpeedControl(leftFront,true);
+            
+            configSpeedControl(leftRear, true, currentP, currentI, currentD);
+//            configSpeedControl(leftRear,false);
+
+        } catch (CANTimeoutException ex) {
+            System.out.println("Chassis constructor CANTimeoutException: ");
+            ex.printStackTrace();
+            //System.exit(-1);
+        }
+    }
+
+    /**
+     *
+     */
+    public void driveForward() {
         drive.setMaxOutput(300);
         drive.mecanumDrive_Polar(4, 0, 0);
     }
-    
-    
-    private int getSign(double val){
-        if (val<0.0) {
+
+    private int getSign(double val) {
+        if (val < 0.0) {
             return -1;
         } else if (val > 0.0) {
             return 1;
         }
         return 0;
     }
-    
-    
-    public void setPID(double nextP, double nextI, double nextD){
+
+    /**
+     *
+     * @param nextP
+     * @param nextI
+     * @param nextD
+     */
+    public void setPID(double nextP, double nextI, double nextD) {
         currentP = nextP;
         currentI = nextP;
         currentD = nextP;
         try {
-            configSpeedControl(rightFront,false,nextP,nextI,nextD);
-            configSpeedControl(rightRear,false,nextP,nextI,nextD);
-            configSpeedControl(leftFront,true,nextP,nextI,nextD);
-            configSpeedControl(leftRear,false,nextP,nextI,nextD);
+            configSpeedControl(rightFront, false, nextP, nextI, nextD);
+            configSpeedControl(rightRear, false, nextP, nextI, nextD);
+            configSpeedControl(leftFront, true, nextP, nextI, nextD);
+            configSpeedControl(leftRear, false, nextP, nextI, nextD);
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
         }
     }
-    
-    public void setFieldControl(boolean fieldControl){
-        if(fieldControl){
+
+    /**
+     *
+     * @param fieldControl
+     */
+    public void setFieldControl(boolean fieldControl) {
+        if (fieldControl) {
             this.fieldControl = 1;
-        }else{
+        } else {
             this.fieldControl = 0;
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public double getCurrentP() {
         return currentP;
     }
 
+    /**
+     *
+     * @param currentP
+     */
     public void setCurrentP(double currentP) {
         this.currentP = currentP;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getCurrentI() {
         return currentI;
     }
 
+    /**
+     *
+     * @param currentI
+     */
     public void setCurrentI(double currentI) {
         this.currentI = currentI;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getCurrentD() {
         return currentD;
     }
 
+    /**
+     *
+     * @param currentD
+     */
     public void setCurrentD(double currentD) {
         this.currentD = currentD;
     }
-    
+
     /**
      * Stop the robot chassis from moving
      */
-    
-    
     public void driveHalt() {
         System.out.println("** driveHalt");
         this.drive.mecanumDrive_Polar(0, 0, 0);
     }
 
+    /**
+     *
+     */
     public void execute() {
         mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
+        if(Sensors.getDriverJoystick().getRawButton(RobotMap.JSBUTTON_JAG_RESET)){
+            initJags();
+        }
     }
 }
