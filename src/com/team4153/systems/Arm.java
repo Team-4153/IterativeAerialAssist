@@ -22,12 +22,12 @@ public class Arm implements Systems {
     /**
      *
      */
-    public static final double UPPER_LIMIT = 5;
+    public static final double UPPER_LIMIT = 4;
 
     /**
      *
      */
-    public static final double LOWER_LIMIT = 0;
+    public static final double LOWER_LIMIT = 1;
 
     /**
      *
@@ -80,7 +80,7 @@ public class Arm implements Systems {
      */
     public void execute() {
         Joystick joystick = Sensors.getManipulatorJoystick();
-        double joystickAxis = joystick.getAxis(AxisType.kY);
+        double joystickAxis = joystick.getAxis(AxisType.kY)*3/5;
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getRotPotAngle());
         moveArm(joystickAxis);
     }
@@ -97,7 +97,7 @@ public class Arm implements Systems {
                 (power < 0 && Sensors.getRotPotAngle() > LOWER_LIMIT) ){
             try {
                 rightMotor.setX(power);
-                leftMotor.setX(power);
+                leftMotor.setX(-power);
             } catch (CANTimeoutException ex) {
                 ex.printStackTrace();
             }

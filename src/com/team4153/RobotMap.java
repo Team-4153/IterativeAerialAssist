@@ -27,13 +27,13 @@ public class RobotMap {
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSAXIS_ARM=1;
     
-    public static final int JAG_LEFT_FRONT_MOTOR = 4;
-    public static final int JAG_LEFT_REAR_MOTOR = 12;
-    public static final int JAG_RIGHT_FRONT_MOTOR = 10;
-    public static final int JAG_RIGHT_REAR_MOTOR = 11;
+    public static final int JAG_LEFT_FRONT_MOTOR = 10;
+    public static final int JAG_LEFT_REAR_MOTOR = 4;
+    public static final int JAG_RIGHT_FRONT_MOTOR = 12;
+    public static final int JAG_RIGHT_REAR_MOTOR = 14;
     public static final int VICTOR_CHANNEL=1;
     public static final int JAG_ARM_LEFT=13;
-    public static final int JAG_ARM_RIGHT=14;
+    public static final int JAG_ARM_RIGHT=11;
     
     public static final int GYRO_CHANNEL = 1;
     public static final int ULTRASONIC_CHANNEL = 2;
