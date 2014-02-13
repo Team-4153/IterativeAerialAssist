@@ -40,7 +40,9 @@ public class RobotMain extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        
+        if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
+           chassis.driveForward();
+        }
     }
 
     /**

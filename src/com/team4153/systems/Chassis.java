@@ -207,6 +207,11 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
      * Stop the robot chassis from moving
      */
     
+    public void driveForward(){
+        drive.setMaxOutput(100);
+        this.drive.mecanumDrive_Polar(4, 0, 0);
+    }
+    
     public void driveHalt() {
         System.out.println("** driveHalt");
         this.drive.mecanumDrive_Polar(0, 0, 0);

@@ -1,5 +1,6 @@
 package com.team4153;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -14,6 +15,7 @@ public abstract class Sensors {
     private static Button triggerButton;
     private static Button gyroReset;
     private static Gyro gyro;
+    private static AnalogChannel ultrasonic;
 
     public Sensors() {
         
@@ -46,5 +48,12 @@ public abstract class Sensors {
             gyro = new Gyro(RobotMap.GYRO_CHANNEL);
         }
         return gyro;
+    }
+    
+    public static AnalogChannel getUltrasonic () {
+        if (ultrasonic == null){
+            ultrasonic = new AnalogChannel(5);
+        }
+        return ultrasonic;
     }
 }
