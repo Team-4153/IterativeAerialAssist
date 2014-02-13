@@ -4,7 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package com.team4153;
 
 import com.team4153.systems.Chassis;
@@ -22,10 +21,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class RobotMain extends IterativeRobot {
+
     JoystickHandler joystick;
     Chassis chassis;
     DashboardCommunication dashboardComm;
-   
+    private final double FIRE_DISTANCE = 120;
+    int counter = 0;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -34,15 +36,30 @@ public class RobotMain extends IterativeRobot {
         chassis = new Chassis();
         joystick = new JoystickHandler();
         dashboardComm = new DashboardCommunication(chassis);
+        Sensors.getGyro();
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
-           chassis.driveForward();
+
+        SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
+        SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
+        double distance = Sensors.getUltrasonicDistance();
+        if (distance >= FIRE_DISTANCE) {
+            if (counter == 0) {
+                chassis.driveForward();
+            }
+            SmartDashboard.putNumber("Counter", counter++);
+            SmartDashboard.putNumber("Ultrasonic Running", distance);
+        } else {
+            counter = 0;
+            chassis.driveHalt();
+            SmartDashboard.putNumber("Ultrasonic Stop", distance);
+            SmartDashboard.putNumber("Counter", counter);
         }
+
     }
 
     /**
@@ -53,13 +70,15 @@ public class RobotMain extends IterativeRobot {
         chassis.execute();
         joystick.execute();
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
+        SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
+        SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
     }
-    
+
     /**
      * This function is called periodically during test mode
      */
     public void testPeriodic() {
-    
+
     }
-    
+
 }

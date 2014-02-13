@@ -16,6 +16,7 @@ public abstract class Sensors {
     private static Button gyroReset;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
+    private static final double RANGE_FINDER_MUlTIPLIER = .0124;
 
     public Sensors() {
         
@@ -56,4 +57,10 @@ public abstract class Sensors {
         }
         return ultrasonic;
     }
+    
+    
+     public static double getUltrasonicDistance() {
+        return getUltrasonic().getVoltage() / RANGE_FINDER_MUlTIPLIER;
+    }
+    
 }
