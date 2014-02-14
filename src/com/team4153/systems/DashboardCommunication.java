@@ -5,6 +5,7 @@
  */
 package com.team4153.systems;
 
+import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -31,6 +32,7 @@ public class DashboardCommunication implements Systems {
         I = SmartDashboard.getNumber("I:", 0);
         D = SmartDashboard.getNumber("D:", 0);
         fieldControl = SmartDashboard.getBoolean("Field Control?", true);
+        SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
         if (previousP != P || previousI != I || previousD != D) {
             chassis.setPID(P, I, D);
             previousP = P;

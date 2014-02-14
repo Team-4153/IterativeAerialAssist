@@ -59,7 +59,7 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-        drive.setMaxOutput(400);//TODO: Fix the magic numbers
+        drive.setMaxOutput(300);//TODO: Fix the magic numbers
         drive.setSafetyEnabled(false);
     }
 
@@ -207,21 +207,20 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
      * Stop the robot chassis from moving
      */
     
-    public void driveForward(){
-        Sensors.getGyro().reset();
-        drive.setMaxOutput(50);
-        drive.mecanumDrive_Polar(12.5, 0, 0);
+    public void driveForward(double maxOutput){
+        drive.setMaxOutput(maxOutput);
+        drive.mecanumDrive_Cartesian(0,-1,0,Sensors.getGyro().getAngle());
     }
     
     //to test rotation in autonomous. LT 
-    public void driveInCircles(){
+    /*public void driveInCircles(){
         Sensors.getGyro().reset();
         drive.setMaxOutput(50);
-        drive.mecanumDrive_Polar(12.5,0,1);
-    }
+        drive.mecanumDrive_Cartesian(1,1,0,0);
+    }*/
     
     public void driveHalt() {
-        this.drive.mecanumDrive_Polar(0, 0, 0);
+        this.drive.mecanumDrive_Cartesian(0,0,0,0);
         System.out.println("** driveHalt");
     }
 

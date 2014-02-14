@@ -26,6 +26,7 @@ public class RobotMain extends IterativeRobot {
     Chassis chassis;
     DashboardCommunication dashboardComm;
     private final double FIRE_DISTANCE = 120;
+    private final double MAX_AUTONOMOUS_SPEED = 200;
     int counter = 0;
 
     /**
@@ -39,6 +40,13 @@ public class RobotMain extends IterativeRobot {
         Sensors.getGyro();
     }
 
+    public void autonomousInit() {
+        counter = 0;
+        Sensors.getGyro().reset();
+        
+        
+    }
+
     /**
      * This function is called periodically during autonomous
      */
@@ -47,9 +55,11 @@ public class RobotMain extends IterativeRobot {
         SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
         SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
         double distance = Sensors.getUltrasonicDistance();
-        if (distance >= FIRE_DISTANCE) {
-            if (counter == 0) {
-                chassis.driveForward();
+        if (distance >= FIRE_DISTANCE+ULTRASONIC_DISPLACEMENT+OVERSHOOT_CORRECTION) {
+            if (distance >= FIRE_DISTANCE*AUTONOMOUS_SLOWDOWN_PERCENT){
+                chassis.driveForward(MAX_AUTONOMOUS_SPEED);
+            }else{
+                chassis.driveForward(MAX_AUTONOMOUS_SPEED*AUTONOMOUS_SLOWDOWN_AMOUNT);
             }
             SmartDashboard.putNumber("Counter", counter++);
             SmartDashboard.putNumber("Ultrasonic Running", distance);
@@ -61,6 +71,10 @@ public class RobotMain extends IterativeRobot {
         }
 
     }
+    public static final int OVERSHOOT_CORRECTION = 6;
+    public static final int ULTRASONIC_DISPLACEMENT = 5;
+    public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
+    public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.25;
 
     /**
      * This function is called periodically during operator control

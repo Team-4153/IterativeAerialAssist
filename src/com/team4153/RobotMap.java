@@ -21,7 +21,7 @@ public class RobotMap {
     public static final int JAG_LEFT_REAR_MOTOR = 6;
     public static final int JAG_RIGHT_FRONT_MOTOR = 8;
     public static final int JAG_RIGHT_REAR_MOTOR = 2;
-    public static final int GYRO_CHANNEL = 1;
+    public static final int GYRO_CHANNEL = 2;
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_GYRO_RESET = 2;
     public static final int JSAXIS_THROTTLE = 4;
