@@ -22,22 +22,25 @@ public class Shooter extends Thread implements Systems {
     /**shooter solenoid close*/
     Solenoid close;
     Victor motor;
+    
+    Flippers flippers;//To open flippers when shoot
 
     /**
      *
      */
-    public Shooter() {
+    public Shooter(Flippers flippers) {
         open = new Solenoid(RobotMap.WINCH_LATCH);
         close = new Solenoid(RobotMap.WINCH_UNLATCH);
         motor = new Victor(RobotMap.VICTOR_CHANNEL);
         motor.setExpiration(2.0);
+        this.flippers=flippers;
     }
 
     /**
      *
      */
     public void execute() {
-        ShooterThread shooterThread = new ShooterThread();
+        ShooterThread shooterThread = new ShooterThread(flippers);
         shooterThread.start();
     }
 
@@ -46,6 +49,12 @@ public class Shooter extends Thread implements Systems {
      */
     protected class ShooterThread extends Thread {
 
+        Flippers flippers;
+        
+        public ShooterThread(Flippers flippers){
+            this.flippers=flippers;
+        }
+        
         /**
          *
          */
@@ -62,6 +71,10 @@ public class Shooter extends Thread implements Systems {
             //TODO: Add shooting code (motor, etc.) here, take out sleep statement
             open.set(false);
             close.set(true);
+            
+            if(Sensors.getleftFlipper().get()){
+                flippers.execute();
+            }
 
             while (Sensors.getWinchLimitSwitch().get()) {
                 motor.set(WINCH_POWER);

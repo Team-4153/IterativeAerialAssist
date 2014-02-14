@@ -10,6 +10,7 @@ import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.Flippers;
+import com.team4153.systems.ImageStorer;
 import com.team4153.systems.JoystickHandler;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
@@ -55,8 +56,8 @@ public class RobotMain extends IterativeRobot {
     public void robotInit() {
         chassis = new Chassis();
         arm=new Arm();
-        shooter = new Shooter();
         flippers=new Flippers();
+        shooter = new Shooter(flippers);
         joystick = new JoystickHandler(shooter,flippers);
         dashboardComm = new DashboardCommunication(chassis);
         vision = new Vision();
@@ -120,6 +121,10 @@ public class RobotMain extends IterativeRobot {
         autoDriveDone = false;
     }
 
+    public void teleopInit(){
+        (new ImageStorer()).start();
+    }
+    
     /**
      * This function is called periodically during operator control.
      */

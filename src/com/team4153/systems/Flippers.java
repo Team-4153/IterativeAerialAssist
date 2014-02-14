@@ -35,7 +35,29 @@ public class Flippers implements Systems {
         FlipperThread flipperThread = new FlipperThread();
         flipperThread.start();
     }
+    
+    public void jitter(){
+        (new JitterThread()).start();
+    }
 
+    protected class JitterThread extends Thread{
+        public void run(){
+            if(open){
+                leftOpen.set(false);
+                leftClose.set(true);
+                rightOpen.set(false);
+                rightClose.set(true);
+                open = false;
+            } else {
+            leftOpen.set(true);
+            leftClose.set(false);
+            rightOpen.set(true);
+            rightClose.set(false);
+            open = true;
+        }
+        }
+    }
+    
     /**
      *
      */
@@ -69,7 +91,7 @@ public class Flippers implements Systems {
             rightClose.set(false);
             open = true;
         }
-
+        
     }
     }
 
