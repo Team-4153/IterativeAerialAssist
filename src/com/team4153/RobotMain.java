@@ -10,7 +10,6 @@ import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.Flippers;
-import com.team4153.systems.ImageStorer;
 import com.team4153.systems.JoystickHandler;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
@@ -28,8 +27,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class RobotMain extends IterativeRobot {
-    /** The ideal distance from the goal to fire from. */
-    public static double FIRE_DISTANCE = 30; //TODO: fix magic numbers
     
     /** The ideal angle to place the arm at to fire at the fire distance*/
     public static double SHOOTING_ANGLE=2.5;
@@ -47,7 +44,18 @@ public class RobotMain extends IterativeRobot {
     boolean autoHot = false;
     boolean autoTarget = false;
     boolean autoShoot = false;
-    boolean autoDriveDone = false;
+    
+    private final double FIRE_DISTANCE = 120;
+    private final double MAX_AUTONOMOUS_SPEED = 200;
+
+    public static final int OVERSHOOT_CORRECTION = 6;
+    public static final int ULTRASONIC_DISPLACEMENT = 5;
+    public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
+    public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
+     public static final int EXECEPTION_FIRE_TIME = 9000;
+
+    int counter = 0;
+    boolean withinFiringDistance = false;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -69,7 +77,7 @@ public class RobotMain extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
-        if (autoStartTime == -1) {
+        /*if (autoStartTime == -1) {
             autoStartTime = System.currentTimeMillis();
             System.out.println("Drive Start");
         }
@@ -83,9 +91,42 @@ public class RobotMain extends IterativeRobot {
             chassis.driveHalt();
             System.out.println("Drive Stop");
              autoDriveDone = true;
+        }*/
+        
+        arm.moveArmToLocation(SHOOTING_ANGLE);
+        
+        SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
+        SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
+        double distance = Sensors.getUltrasonicDistance();
+        final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
+        if (!withinFiringDistance) {
+            if (distance >= fireDistance) {
+                if (distance >= fireDistance * AUTONOMOUS_SLOWDOWN_PERCENT) {
+                    chassis.driveForward(MAX_AUTONOMOUS_SPEED);
+                    System.out.println("Full Speed: " + distance);
+                } else {
+                    chassis.driveForward(MAX_AUTONOMOUS_SPEED * AUTONOMOUS_SLOWDOWN_AMOUNT);
+                    System.out.println("Slow Down Speed: " + distance);
+                }
+                //SmartDashboard.putNumber("Counter", counter++);
+                SmartDashboard.putNumber("Ultrasonic Running", distance);
+                counter = 0;
+            } else {
+                withinFiringDistance = true;
+                System.out.println("Stopped: " + distance);
+                chassis.driveHalt();
+                if (counter++ == 0) {
+                    SmartDashboard.putNumber("Ultrasonic Stop", distance);
+                }
+                //SmartDashboard.putNumber("Counter", counter);
+            }
         }
+        
+        /*if (withinFiringDistance) {
+            chassis.turn(90);
+        }*/
 
-        if(autoDriveDone&&Math.abs(SHOOTING_ANGLE-arm.getDesiredAngle())<Arm.TOLERANCE){
+        if(withinFiringDistance&&Math.abs(SHOOTING_ANGLE-arm.getDesiredAngle())<Arm.TOLERANCE){
             vision.execute();
             SmartDashboard.putBoolean("Target: ", vision.isTarget());
             SmartDashboard.putBoolean("Hot: ", vision.isHot());
@@ -95,11 +136,12 @@ public class RobotMain extends IterativeRobot {
             }
         }
         
-        if(System.currentTimeMillis()-autoStartTime>9000&&!autoShoot){
+        if(System.currentTimeMillis()-autoStartTime>EXECEPTION_FIRE_TIME&&!autoShoot){
             shooter.execute();
             autoShoot=true;
         }
     }
+   
 
     /**
      * Run once at the beginning of autonomous mode - resets and moves arm to
@@ -118,13 +160,10 @@ public class RobotMain extends IterativeRobot {
         autoHot = false;
         autoTarget = false;
         autoShoot = false;
-        autoDriveDone = false;
+        withinFiringDistance = false;
+        counter=0;
     }
 
-    public void teleopInit(){
-        (new ImageStorer()).start();
-    }
-    
     /**
      * This function is called periodically during operator control.
      */

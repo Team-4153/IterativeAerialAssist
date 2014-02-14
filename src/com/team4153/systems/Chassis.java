@@ -197,12 +197,13 @@ public class Chassis implements Systems {
         }
     }
 
-    /**
-     *
-     */
-    public void driveForward() {
-        drive.setMaxOutput(300);
-        drive.mecanumDrive_Polar(4, 0, 0);
+     public void turn(double direction){
+        drive.mecanumDrive_Cartesian(0, 0, direction-Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
+    }
+    
+    public void driveForward(double maxOutput){
+        drive.setMaxOutput(maxOutput);
+        drive.mecanumDrive_Cartesian(0,-1,0,Sensors.getGyro().getAngle());
     }
 
     private int getSign(double val) {
