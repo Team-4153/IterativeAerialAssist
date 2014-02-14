@@ -213,6 +213,13 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         drive.mecanumDrive_Polar(12.5, 0, 0);
     }
     
+    //to test rotation in autonomous. LT 
+    public void driveInCircles(){
+        Sensors.getGyro().reset();
+        drive.setMaxOutput(50);
+        drive.mecanumDrive_Polar(12.5,0,1);
+    }
+    
     public void driveHalt() {
         this.drive.mecanumDrive_Polar(0, 0, 0);
         System.out.println("** driveHalt");
