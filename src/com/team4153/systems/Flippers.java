@@ -35,64 +35,65 @@ public class Flippers implements Systems {
         FlipperThread flipperThread = new FlipperThread();
         flipperThread.start();
     }
-    
-    public void jitter(){
+
+    public void jitter() {
         (new JitterThread()).start();
     }
 
-    protected class JitterThread extends Thread{
-        public void run(){
-            if(open){
+    protected class JitterThread extends Thread {
+
+        public void run() {
+            if (open) {
                 leftOpen.set(false);
                 leftClose.set(true);
                 rightOpen.set(false);
                 rightClose.set(true);
                 open = false;
             } else {
-            leftOpen.set(true);
-            leftClose.set(false);
-            rightOpen.set(true);
-            rightClose.set(false);
-            open = true;
-        }
+                leftOpen.set(true);
+                leftClose.set(false);
+                rightOpen.set(true);
+                rightClose.set(false);
+                open = true;
+            }
         }
     }
-    
+
     /**
      *
      */
-    protected class FlipperThread extends Thread{
+    protected class FlipperThread extends Thread {
 
         /**
          *
          */
         public void run() {
-        if (open) {
-            while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
-                System.out.println("Waiting for photo eye");
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
+            if (open) {
+                while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
+                    System.out.println("Waiting for photo eye");
+                    try {
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
                 }
+                if (Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
+                    leftOpen.set(false);
+                    leftClose.set(true);
+                    rightOpen.set(false);
+                    rightClose.set(true);
+                    open = false;
+                }
+            } else {
+                System.out.println("Opening");
+                leftOpen.set(true);
+                leftClose.set(false);
+                rightOpen.set(true);
+                rightClose.set(false);
+                open = true;
             }
-            if (Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
-                leftOpen.set(false);
-                leftClose.set(true);
-                rightOpen.set(false);
-                rightClose.set(true);
-                open = false;
-            }
-        } else {
-            System.out.println("Opening");
-            leftOpen.set(true);
-            leftClose.set(false);
-            rightOpen.set(true);
-            rightClose.set(false);
-            open = true;
+
         }
-        
-    }
     }
 
 }
