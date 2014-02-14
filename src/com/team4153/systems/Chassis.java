@@ -173,6 +173,10 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
             ex.printStackTrace();
         }
     }
+    
+    public void turn(double direction){
+        drive.mecanumDrive_Cartesian(0, 0, direction-Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
+    }
    
     private int getSign(double val){
         if (val<0.0) {
@@ -203,10 +207,10 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         }
     }
 
-    /**
-     * Stop the robot chassis from moving
-     */
     
+    /**
+     * Makes the robot chassis
+     */
     public void driveForward(double maxOutput){
         drive.setMaxOutput(maxOutput);
         drive.mecanumDrive_Cartesian(0,-1,0,Sensors.getGyro().getAngle());
@@ -219,6 +223,9 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         drive.mecanumDrive_Cartesian(1,1,0,0);
     }*/
     
+    /**
+     * Stop the robot chassis from moving
+     */
     public void driveHalt() {
         this.drive.mecanumDrive_Cartesian(0,0,0,0);
         System.out.println("** driveHalt");
