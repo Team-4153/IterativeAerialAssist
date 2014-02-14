@@ -23,7 +23,6 @@ public class ImageStorer extends Thread {
     
     public ImageStorer(){
         camera=AxisCamera.getInstance("10.41.53.11");
-        start();
     }
     
     public void run(){

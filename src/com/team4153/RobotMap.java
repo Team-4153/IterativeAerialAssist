@@ -24,6 +24,8 @@ public class RobotMap {
     public static final int JSBUTTON_GYRO_RESET = 2;
     public static final int JSBUTTON_FLIPPERS=3;
     public static final int JSBUTTON_JAG_RESET=10;
+    public static final int JSBUTTON_AUTO_AIM=9;
+    public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=8;
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSAXIS_ARM=1;
     public static final int JSBUTTON_JITTER=9;

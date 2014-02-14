@@ -9,7 +9,9 @@ package com.team4153;
 import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
+import com.team4153.systems.DistanceAngleTable;
 import com.team4153.systems.Flippers;
+import com.team4153.systems.ImageStorer;
 import com.team4153.systems.JoystickHandler;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
@@ -27,9 +29,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class RobotMain extends IterativeRobot {
-    
-    /** The ideal angle to place the arm at to fire at the fire distance*/
-    public static double SHOOTING_ANGLE=2.5;
+
+    /**
+     * The ideal angle to place the arm at to fire at the fire distance
+     */
+    public static double SHOOTING_ANGLE = 2.5;
 
     JoystickHandler joystick;
     Chassis chassis;
@@ -39,12 +43,14 @@ public class RobotMain extends IterativeRobot {
     Shooter shooter;
     Flippers flippers;
     Arm arm;
+    DistanceAngleTable angleTable;
+    ImageStorer storer;
 
-    long autoStartTime = -1;
+    private static long autoStartTime = -1;
     boolean autoHot = false;
     boolean autoTarget = false;
-    boolean autoShoot = false;
-    
+    boolean autoShot = false;
+
     private final double FIRE_DISTANCE = 120;
     private final double MAX_AUTONOMOUS_SPEED = 200;
 
@@ -52,7 +58,8 @@ public class RobotMain extends IterativeRobot {
     public static final int ULTRASONIC_DISPLACEMENT = 5;
     public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
     public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
-     public static final int EXECEPTION_FIRE_TIME = 9000;
+    public static final int EXCEPTION_FIRE_TIME = 9000;
+    public static final int EXCEPTION_STOP_TIME = 5000;
 
     int counter = 0;
     boolean withinFiringDistance = false;
@@ -63,12 +70,15 @@ public class RobotMain extends IterativeRobot {
      */
     public void robotInit() {
         chassis = new Chassis();
-        arm=new Arm();
-        flippers=new Flippers();
+        arm = new Arm();
+        flippers = new Flippers();
         shooter = new Shooter(flippers);
-        joystick = new JoystickHandler(shooter,flippers);
+        joystick = new JoystickHandler(shooter, flippers, arm);
         dashboardComm = new DashboardCommunication(chassis);
+        angleTable = new DistanceAngleTable(arm);
         vision = new Vision();
+        storer = new ImageStorer();
+        storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
     }
@@ -78,29 +88,37 @@ public class RobotMain extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         /*if (autoStartTime == -1) {
-            autoStartTime = System.currentTimeMillis();
-            System.out.println("Drive Start");
-        }
+         autoStartTime = System.currentTimeMillis();
+         System.out.println("Drive Start");
+         }
 
         
         
-        if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
-           chassis.driveForward();
-        }
-        else if(!autoDriveDone){
-            chassis.driveHalt();
-            System.out.println("Drive Stop");
-             autoDriveDone = true;
-        }*/
-        
-        arm.moveArmToLocation(SHOOTING_ANGLE);
-        
+         if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
+         chassis.driveForward();
+         }
+         else if(!autoDriveDone){
+         chassis.driveHalt();
+         System.out.println("Drive Stop");
+         autoDriveDone = true;
+         }*/
+
+        //note this line both performs the lookup and moves the arm.
+        angleTable.execute();
+
         SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
         SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
         double distance = Sensors.getUltrasonicDistance();
         final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
+        
+        // if the robot is already withing the firing distance we do not want to
+        // run any of the movement code - this 'if' makes sure of that
         if (!withinFiringDistance) {
-            if (distance >= fireDistance) {
+            
+            // if the robot has run longer than the exception stop time it sets up
+            // as if it were within range - there is probably something wrong with
+            // the ultrasonic
+            if (distance >= fireDistance && getMatchTime() < EXCEPTION_STOP_TIME) {
                 if (distance >= fireDistance * AUTONOMOUS_SLOWDOWN_PERCENT) {
                     chassis.driveForward(MAX_AUTONOMOUS_SPEED);
                     System.out.println("Full Speed: " + distance);
@@ -121,37 +139,38 @@ public class RobotMain extends IterativeRobot {
                 //SmartDashboard.putNumber("Counter", counter);
             }
         }
-        
-        /*if (withinFiringDistance) {
-            chassis.turn(90);
-        }*/
 
-        if(withinFiringDistance&&Math.abs(SHOOTING_ANGLE-arm.getDesiredAngle())<Arm.TOLERANCE){
+        /*if (withinFiringDistance) {
+         chassis.turn(90);
+         }*/
+        
+        // this will run when the arm is in position and we are in range
+        if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < Arm.TOLERANCE) {
             vision.execute();
             SmartDashboard.putBoolean("Target: ", vision.isTarget());
             SmartDashboard.putBoolean("Hot: ", vision.isHot());
-            if(vision.isTarget()&&vision.isHot()&&!autoShoot){
+            if (vision.isTarget() && vision.isHot() && !autoShot) {
                 shooter.execute();
-                autoShoot=true;
+                autoShot = true;
             }
         }
-        
-        if(System.currentTimeMillis()-autoStartTime>EXECEPTION_FIRE_TIME&&!autoShoot){
+
+        if (getMatchTime() > EXCEPTION_FIRE_TIME && !autoShot) {
             shooter.execute();
-            autoShoot=true;
+            autoShot = true;
         }
     }
-   
 
     /**
      * Run once at the beginning of autonomous mode - resets and moves arm to
      * shooting angle.
      */
-    public void autonomousInit(){
+    public void autonomousInit() {
         resetAuto();
-        arm.moveArmToLocation(SHOOTING_ANGLE);
+        autoStartTime = System.currentTimeMillis();
+        angleTable.execute();
     }
-    
+
     /**
      * Resets variables used in autonomous.
      */
@@ -159,9 +178,13 @@ public class RobotMain extends IterativeRobot {
         autoStartTime = -1;
         autoHot = false;
         autoTarget = false;
-        autoShoot = false;
+        autoShot = false;
         withinFiringDistance = false;
-        counter=0;
+        counter = 0;
+    }
+    
+    public static long getMatchTime (){
+        return System.currentTimeMillis() - autoStartTime;
     }
 
     /**
@@ -191,7 +214,7 @@ public class RobotMain extends IterativeRobot {
     }
 
     /**
-     * Initializes the compressor and starts the method that will run the 
+     * Initializes the compressor and starts the method that will run the
      * compressor.
      */
     public void startCompressor() {

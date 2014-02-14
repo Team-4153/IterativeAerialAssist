@@ -35,15 +35,15 @@ public class DistanceAngleTable extends Thread implements Systems {
     }
 
     private double calculateAngle(double distance) {
-        int bigger = 0;
-        while (getDistanceAt(bigger) < distance) {
-            bigger++;
+        int distanceIndex = 0;
+        while (getDistanceAt(distanceIndex) < distance) {
+            distanceIndex++;
         }
         // you can extrapolate on either end of the angles and distance
         // whether you should is another question.
-        if (bigger > 0 && bigger < distances.length) {
-            double ratio = (getAngleAt(bigger) - getAngleAt(bigger - 1)) / (getDistanceAt(bigger) - getDistanceAt(bigger - 1));
-            double angle = getAngleAt(bigger - 1) + ratio * (distance - getDistanceAt(bigger - 1));
+        if (distanceIndex > 0 && distanceIndex < distances.length) {
+            double ratio = (getAngleAt(distanceIndex) - getAngleAt(distanceIndex - 1)) / (getDistanceAt(distanceIndex) - getDistanceAt(distanceIndex - 1));
+            double angle = getAngleAt(distanceIndex - 1) + ratio * (distance - getDistanceAt(distanceIndex - 1));
             return angle;
         }
         return -1;

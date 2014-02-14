@@ -184,6 +184,7 @@ public abstract class Sensors {
         if (leftFlipper == null) {
             leftFlipper = new DigitalInput(RobotMap.MRS_LEFT);
         }
+        
         return leftFlipper;
     }
 

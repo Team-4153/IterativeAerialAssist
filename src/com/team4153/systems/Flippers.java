@@ -69,20 +69,30 @@ public class Flippers implements Systems {
          */
         public void run() {
             if (open) {
-                while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
-                    System.out.println("Waiting for photo eye");
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+                if (!Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FORCE_FLIPPERS_TOGGLE)) {
+                    while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
+                        System.out.println("Waiting for photo eye");
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
                     }
-                }
-                if (Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
-                    leftOpen.set(false);
-                    leftClose.set(true);
-                    rightOpen.set(false);
-                    rightClose.set(true);
-                    open = false;
+
+                    if (Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
+                        leftOpen.set(false);
+                        leftClose.set(true);
+                        rightOpen.set(false);
+                        rightClose.set(true);
+                        open = false;
+                    }
+                } else {
+                        leftOpen.set(false);
+                        leftClose.set(true);
+                        rightOpen.set(false);
+                        rightClose.set(true);
+                        open = false;
+                    
                 }
             } else {
                 System.out.println("Opening");
