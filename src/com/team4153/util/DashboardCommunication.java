@@ -6,6 +6,7 @@
 package com.team4153.util;
 
 import com.team4153.systems.Chassis;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -45,6 +46,7 @@ public class DashboardCommunication {
             chassis.setFieldControl(fieldControl);
             previousFieldControl = fieldControl;
         }
+        SmartDashboard.putNumber("Gyro", 180);
     }
 
 }

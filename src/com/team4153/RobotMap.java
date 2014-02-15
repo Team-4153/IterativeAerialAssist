@@ -41,7 +41,7 @@ public class RobotMap {
     public static final int JAG_ARM_RIGHT=11;
     
     public static final int GYRO_CHANNEL = 1;
-    public static final int ULTRASONIC_CHANNEL = 2;
+    public static final int ULTRASONIC_CHANNEL = 5;
     public static final int STRING_POT_CHANNEL=3;
 
     public static final int COMPRESSOR_CHANNEL=1;

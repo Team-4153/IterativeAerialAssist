@@ -21,6 +21,8 @@ public class ImageStorer extends Thread {
 
     AxisCamera camera;
     int imageNum = 0;
+    
+    public static final int MAX_IMAGES = 1000;
 
     public ImageStorer(AxisCamera camera) {
         this.camera = camera;
@@ -49,7 +51,7 @@ public class ImageStorer extends Thread {
                     thresholdImage.write("/Images/image"+imageNum+".bmp");
                     //image.write("/stopaction/image" + imageNum + ".bmp");
                     imageNum++;
-                    if(imageNum>1000){
+                    if(imageNum>MAX_IMAGES){
                         image.free();
                         break;
                     }

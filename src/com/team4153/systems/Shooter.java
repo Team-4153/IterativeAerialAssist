@@ -58,23 +58,7 @@ public class Shooter extends Thread implements Systems {
         defaultWinchPullbackTime = time;
     }
 
-    /**
-     * pulls back the winch all the way until the limit is hit
-     */
-    public void pullBackWinch() {
-        pullBackWinch(0);
-
-    }
-
-    /**
-     * pulls back the winch until the specified time or the limit is hit.
-     *
-     * @param time in milliseconds
-     */
-    public void pullBackWinch(int time) {
-        winch.setPullBackTime(time);
-        winch.execute(-1);
-    }
+    
 
     /**
      * Fires the shooter.
@@ -116,7 +100,7 @@ public class Shooter extends Thread implements Systems {
                 flippers.execute(-1);
             }
             if (pullBackByDefault) {
-                pullBackWinch(defaultWinchPullbackTime);
+                winch.pullBackWinch(defaultWinchPullbackTime);
             }
         }
 

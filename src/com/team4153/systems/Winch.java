@@ -20,6 +20,8 @@ public class Winch implements Systems{
      */
     public static final double WINCH_POWER = .3;
     
+    public static final int HALF_TIME = 1000;
+    
     Victor motor;
     
     /**
@@ -34,6 +36,24 @@ public class Winch implements Systems{
     }
     
     /**
+     * pulls back the winch all the way until the limit is hit
+     */
+    public void pullBackWinch() {
+        pullBackWinch(0);
+
+    }
+
+    /**
+     * pulls back the winch until the specified time or the limit is hit.
+     *
+     * @param time in milliseconds
+     */
+    public void pullBackWinch(int time) {
+        setPullBackTime(time);
+        execute(-1);
+    }
+    
+    /**
      *  Sets the amount of time (in milliseconds) the winch will be pulled back if executed.
      * 0 or less means go until limit switch is hit.
      */
@@ -42,6 +62,16 @@ public class Winch implements Systems{
     }
 
     public void execute(int buttonNumber) {
+        if(buttonNumber>0){
+            if(buttonNumber==RobotMap.JSBUTTON_WINCH_HALF){
+                setPullBackTime(HALF_TIME);
+            }else{
+                if (buttonNumber==RobotMap.JSBUTTON_WINCH_FULL){
+                    setPullBackTime(0);
+                }
+            }
+        }
+        
         WinchPuller puller = new WinchPuller(pullBackTime);
         puller.start();
     }
