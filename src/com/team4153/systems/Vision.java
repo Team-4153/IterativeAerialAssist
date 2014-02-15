@@ -91,7 +91,7 @@ public class Vision implements Systems {
     /**
      *
      */
-    public void execute() {
+    public void execute(int buttonNumber) {
         TargetReport target = new TargetReport();
         int verticalTargets[] = new int[MAX_PARTICLES];
         int horizontalTargets[] = new int[MAX_PARTICLES];

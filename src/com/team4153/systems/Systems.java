@@ -13,8 +13,11 @@ package com.team4153.systems;
 public interface Systems {
     
     /**
-     *
+     * Execute the system functions as if activated by the given button number
+     * (negative means no button).
+     * 
+     * @param buttonNumber The button that activated this system.
      */
-    public void execute();
+    public void execute(int buttonNumber);
     
 }

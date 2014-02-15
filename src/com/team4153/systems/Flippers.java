@@ -22,17 +22,17 @@ public class Flippers implements Systems {
      *
      */
     public Flippers() {
-        leftOpen = new Solenoid(RobotMap.LEFT_FLIPPER_OPEN);
-        rightOpen = new Solenoid(RobotMap.RIGHT_FLIPPER_OPEN);
-        leftClose = new Solenoid(RobotMap.LEFT_FLIPPER_CLOSE);
-        rightClose = new Solenoid(RobotMap.RIGHT_FLIPPER_CLOSE);
+        leftOpen = new Solenoid(RobotMap.LEFT_GRAB_OPEN);
+        rightOpen = new Solenoid(RobotMap.RIGHT_GRAB_OPEN);
+        leftClose = new Solenoid(RobotMap.LEFT_GRAB_CLOSE);
+        rightClose = new Solenoid(RobotMap.RIGHT_GRAB_CLOSE);
     }
 
     /**
      *
      */
-    public void execute() {
-        FlipperThread flipperThread = new FlipperThread();
+    public void execute(int buttonNumber) {
+        FlipperThread flipperThread = new FlipperThread(buttonNumber);
         flipperThread.start();
     }
 
@@ -63,13 +63,17 @@ public class Flippers implements Systems {
      *
      */
     protected class FlipperThread extends Thread {
-
+        
+        int buttonNumber;
+        protected FlipperThread (int buttonNumber){
+            this.buttonNumber = buttonNumber;
+        }
         /**
          *
          */
         public void run() {
             if (open) {
-                if (!Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FORCE_FLIPPERS_TOGGLE)) {
+                if (buttonNumber==RobotMap.JSBUTTON_FLIPPERS) {
                     while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
                         System.out.println("Waiting for photo eye");
                         try {
@@ -93,8 +97,10 @@ public class Flippers implements Systems {
                         rightClose.set(true);
                         open = false;
                     
+                    
                 }
             } else {
+                
                 System.out.println("Opening");
                 leftOpen.set(true);
                 leftClose.set(false);

@@ -19,7 +19,7 @@ public class Jittering implements Systems {
         this.flippers=flippers;
     }
     
-    public void execute() {
+    public void execute(int buttonNumber) {
         (new JitterThread(flippers)).start();
     }
     

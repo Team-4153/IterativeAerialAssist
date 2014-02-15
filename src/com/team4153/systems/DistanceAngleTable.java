@@ -28,7 +28,7 @@ public class DistanceAngleTable extends Thread implements Systems {
 //        distances.addElement(distance);
 //        angles.addElement(angle);
 //    }
-    public void execute() {
+    public void execute(int buttonNumber) {
         double angle = calculateAngle(Sensors.getUltrasonicDistance());
         // need to check for error here...
         arm.moveArmToLocation(angle);

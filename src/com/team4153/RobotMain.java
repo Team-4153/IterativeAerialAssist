@@ -8,17 +8,16 @@ package com.team4153;
 
 import com.team4153.systems.Arm;
 import com.team4153.systems.Chassis;
-import com.team4153.systems.DashboardCommunication;
 import com.team4153.systems.DistanceAngleTable;
 import com.team4153.systems.Flippers;
-import com.team4153.systems.ImageStorer;
-import com.team4153.systems.JoystickHandler;
+import com.team4153.util.ImageStorer;
+import com.team4153.util.JoystickHandler;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
+import com.team4153.systems.Winch;
+import com.team4153.util.DashboardCommunication;
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -43,6 +42,7 @@ public class RobotMain extends IterativeRobot {
     Shooter shooter;
     Flippers flippers;
     Arm arm;
+    Winch winch;
     DistanceAngleTable angleTable;
     ImageStorer storer;
 
@@ -72,8 +72,9 @@ public class RobotMain extends IterativeRobot {
         chassis = new Chassis();
         arm = new Arm();
         flippers = new Flippers();
-        shooter = new Shooter(flippers);
-        joystick = new JoystickHandler(shooter, flippers, arm);
+        winch = new Winch();
+        shooter = new Shooter(flippers, winch);
+        joystick = new JoystickHandler(shooter, flippers, arm,winch);
         dashboardComm = new DashboardCommunication(chassis);
         angleTable = new DistanceAngleTable(arm);
         vision = new Vision();
@@ -104,7 +105,7 @@ public class RobotMain extends IterativeRobot {
          }*/
 
         //note this line both performs the lookup and moves the arm.
-        angleTable.execute();
+        angleTable.execute(-1);
 
         SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
         SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
@@ -146,17 +147,17 @@ public class RobotMain extends IterativeRobot {
         
         // this will run when the arm is in position and we are in range
         if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < Arm.TOLERANCE) {
-            vision.execute();
+            vision.execute(-1);
             SmartDashboard.putBoolean("Target: ", vision.isTarget());
             SmartDashboard.putBoolean("Hot: ", vision.isHot());
             if (vision.isTarget() && vision.isHot() && !autoShot) {
-                shooter.execute();
+                shooter.execute(-1);
                 autoShot = true;
             }
         }
 
         if (getMatchTime() > EXCEPTION_FIRE_TIME && !autoShot) {
-            shooter.execute();
+            shooter.execute(-1);
             autoShot = true;
         }
     }
@@ -168,7 +169,7 @@ public class RobotMain extends IterativeRobot {
     public void autonomousInit() {
         resetAuto();
         autoStartTime = System.currentTimeMillis();
-        angleTable.execute();
+        angleTable.execute(-1);
     }
 
     /**
@@ -193,8 +194,8 @@ public class RobotMain extends IterativeRobot {
     public void teleopPeriodic() {
 //        startCompressor();
         dashboardComm.execute();
-        chassis.execute();
-        arm.execute();
+        chassis.execute(-1);
+        arm.execute(-1);
         joystick.execute();
         SmartDashboard.putNumber("Distance", Sensors.getUltrasonicDistance());
         SmartDashboard.putNumber("Rot Pot", Sensors.getRotPotAngle());

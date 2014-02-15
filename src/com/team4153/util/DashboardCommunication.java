@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.team4153.systems;
+package com.team4153.util;
 
+import com.team4153.systems.Chassis;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  * @author 4153stucurrentDent
  */
-public class DashboardCommunication implements Systems {
+public class DashboardCommunication {
 
     private final Chassis chassis;
     private boolean fieldControl;

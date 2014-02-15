@@ -17,7 +17,7 @@ public class GyroReset implements Systems {
     /**
      *
      */
-    public void execute(){
+    public void execute(int buttonNumber){
         Sensors.getGyro().reset();
     }
     

@@ -4,9 +4,10 @@
  * and open the template in the editor.
  */
 
-package com.team4153.systems;
+package com.team4153.util;
 
 import com.team4153.Sensors;
+import com.team4153.systems.Systems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  *
  * @author 4153student
  */
-public class ButtonHandler implements Systems {
+public class ButtonHandler {
     
     private boolean pressedPreviously=false;
     private boolean runJustOnce; //Sets if the System should be executed just once if the Button is pressed or always
@@ -51,7 +52,7 @@ public class ButtonHandler implements Systems {
     public void execute(){
         if(joystick.getRawButton(buttonNumber)){
             if(!pressedPreviously||!runJustOnce){
-                runSystem.execute();
+                runSystem.execute(buttonNumber);
             }
             pressedPreviously=true;
         }

@@ -160,7 +160,7 @@ public abstract class Sensors {
      */
     public static AnalogChannel getRotPot() {
         if (rotPot == null) {
-            rotPot = new AnalogChannel(RobotMap.ROT_POT_CHANNEL);
+            rotPot = new AnalogChannel(RobotMap.STRING_POT_CHANNEL);
         }
         return rotPot;
     }

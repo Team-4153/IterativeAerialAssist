@@ -16,10 +16,7 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Shooter extends Thread implements Systems {
 
-    /**
-     * .15 is too low, .3 is pretty fast
-     */
-    public static final double WINCH_POWER = .3;
+    
     /**
      * shooter solenoid open
      */
@@ -28,59 +25,61 @@ public class Shooter extends Thread implements Systems {
      * shooter solenoid close
      */
     Solenoid close;
-    Victor motor;
+    
 
     /**
-     * The length of time (in milliseconds) the winch will be pulled back; 0 or less means go
-     * until limit.
+     * The length of time (in milliseconds) the winch will be pulled back; 0 or
+     * less means go until limit.
      */
     private int defaultWinchPullbackTime = 0;
 
-    Flippers flippers;//To open flippers when shoot
+    private boolean pullBackByDefault = false;
+
+    private Flippers flippers;//To open flippers when shoot
+    private Winch winch;
 
     /**
      *
      */
-    public Shooter(Flippers flippers) {
-        open = new Solenoid(RobotMap.WINCH_LATCH);
-        close = new Solenoid(RobotMap.WINCH_UNLATCH);
-        motor = new Victor(RobotMap.VICTOR_CHANNEL);
-        motor.setExpiration(2.0);
+    public Shooter(Flippers flippers, Winch winch) {
+        open = new Solenoid(RobotMap.WINCH_LOCK);
+        close = new Solenoid(RobotMap.WINCH_RELEASE);
         this.flippers = flippers;
+        this.winch = winch;
     }
 
     /**
-     * Sets the amount of time the winch pulls back after firing (0 or less means
-     * until the limit is hit.
-     * 
+     * Sets the amount of time the winch pulls back after firing (0 or less
+     * means until the limit is hit.
+     *
      * @param time in milliseconds.
      */
     public void setDefaultWinchPullbackTime(int time) {
         defaultWinchPullbackTime = time;
     }
-    
+
     /**
      * pulls back the winch all the way until the limit is hit
      */
     public void pullBackWinch() {
-        WinchPuller puller = new WinchPuller(0);
-        puller.start();
+        pullBackWinch(0);
 
     }
 
     /**
      * pulls back the winch until the specified time or the limit is hit.
+     *
      * @param time in milliseconds
      */
     public void pullBackWinch(int time) {
-        WinchPuller puller = new WinchPuller(time);
-        puller.start();
+        winch.setPullBackTime(time);
+        winch.execute(-1);
     }
 
     /**
      * Fires the shooter.
      */
-    public void execute() {
+    public void execute(int buttonNumber) {
         ShooterThread shooterThread = new ShooterThread(flippers);
         shooterThread.start();
     }
@@ -90,8 +89,8 @@ public class Shooter extends Thread implements Systems {
      */
     protected class ShooterThread extends Thread {
 
-        Flippers flippers;
-
+       
+       Flippers flippers;
         public ShooterThread(Flippers flippers) {
             this.flippers = flippers;
         }
@@ -114,41 +113,14 @@ public class Shooter extends Thread implements Systems {
             close.set(true);
 
             if (Sensors.getleftFlipper().get()) {
-                flippers.execute();
+                flippers.execute(-1);
             }
-            WinchPuller puller = new WinchPuller(defaultWinchPullbackTime);
-            puller.start();
+            if (pullBackByDefault) {
+                pullBackWinch(defaultWinchPullbackTime);
+            }
         }
 
     }
 
-    /**
-     * Thread that pulls the winch back until the time elapses or the winch
-     * limit switch is hit. A 0 or negative number means to go until the switch
-     * is hit.
-     */
-    protected class WinchPuller extends Thread {
-
-        int maxTime;
-        long startTime;
-
-        protected WinchPuller(int time) {
-            startTime = System.currentTimeMillis();
-            maxTime = time;
-        }
-
-        public void run() {
-            while (!Sensors.getWinchLimitSwitch().get()
-                    // If maxTime is less than 0 this part will always return true
-                    && (System.currentTimeMillis() - startTime < maxTime || maxTime <= 0)) {
-                motor.set(WINCH_POWER);
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            motor.set(0);
-        }
-    }
+    
 }

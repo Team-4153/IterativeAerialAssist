@@ -24,8 +24,10 @@ public class RobotMap {
     public static final int JSBUTTON_GYRO_RESET = 2;
     public static final int JSBUTTON_FLIPPERS=3;
     public static final int JSBUTTON_JAG_RESET=10;
-    public static final int JSBUTTON_AUTO_AIM=9;
-    public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=8;
+    public static final int JSBUTTON_AUTO_AIM=4;
+    public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=5;
+    public static final int JSBUTTON_WINCH_HALF=6;
+    public static final int JSBUTTON_WINCH_FULL=7;
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSAXIS_ARM=1;
     public static final int JSBUTTON_JITTER=9;
@@ -40,17 +42,17 @@ public class RobotMap {
     
     public static final int GYRO_CHANNEL = 1;
     public static final int ULTRASONIC_CHANNEL = 2;
-    public static final int ROT_POT_CHANNEL=3;
+    public static final int STRING_POT_CHANNEL=3;
 
     public static final int COMPRESSOR_CHANNEL=1;
     public static final int PRESSURE_SWITCH=14;
     
-    public static final int LEFT_FLIPPER_OPEN = 1;
-    public static final int LEFT_FLIPPER_CLOSE =2;
-    public static final int RIGHT_FLIPPER_OPEN = 5;
-    public static final int RIGHT_FLIPPER_CLOSE =6;
-    public static final int WINCH_LATCH =3;
-    public static final int WINCH_UNLATCH = 4;
+    public static final int LEFT_GRAB_OPEN = 1;
+    public static final int LEFT_GRAB_CLOSE = 2;
+    public static final int RIGHT_GRAB_OPEN = 5;
+    public static final int RIGHT_GRAB_CLOSE =6;
+    public static final int WINCH_LOCK =3;
+    public static final int WINCH_RELEASE = 4;
     
     public static final int MRS_LEFT=10;
     

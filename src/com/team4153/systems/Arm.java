@@ -78,7 +78,7 @@ public class Arm implements Systems {
     /**
      *
      */
-    public void execute() {
+    public void execute(int buttonNumber) {
         Joystick joystick = Sensors.getManipulatorJoystick();
         double joystickAxis = joystick.getAxis(AxisType.kY)*3/5;
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getRotPotAngle());

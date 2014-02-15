@@ -306,7 +306,7 @@ public class Chassis implements Systems {
     /**
      *
      */
-    public void execute() {
+    public void execute(int buttonNumber) {
         mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
         if(Sensors.getDriverJoystick().getRawButton(RobotMap.JSBUTTON_JAG_RESET)){
             initJags();
