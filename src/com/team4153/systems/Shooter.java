@@ -138,7 +138,7 @@ public class Shooter extends Thread implements Systems {
         }
 
         public void run() {
-            while (Sensors.getWinchLimitSwitch().get()
+            while (!Sensors.getWinchLimitSwitch().get()
                     // If maxTime is less than 0 this part will always return true
                     && (System.currentTimeMillis() - startTime < maxTime || maxTime <= 0)) {
                 motor.set(WINCH_POWER);

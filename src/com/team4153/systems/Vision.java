@@ -83,6 +83,10 @@ public class Vision implements Systems {
         cc.addCriteria(NIVision.MeasurementType.IMAQ_MT_AREA, AREA_MINIMUM, 65535, false);
 
     }
+    
+    public AxisCamera getCamera (){
+        return camera;
+    }
 
     /**
      *

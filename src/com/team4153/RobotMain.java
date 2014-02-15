@@ -77,7 +77,7 @@ public class RobotMain extends IterativeRobot {
         dashboardComm = new DashboardCommunication(chassis);
         angleTable = new DistanceAngleTable(arm);
         vision = new Vision();
-        storer = new ImageStorer();
+        storer = new ImageStorer(vision.getCamera());
         storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
