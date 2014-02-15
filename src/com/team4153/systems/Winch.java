@@ -1,5 +1,6 @@
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.Victor;
@@ -18,9 +19,7 @@ public class Winch implements Systems{
     /**
      * .15 is too low, .3 is pretty fast
      */
-    public static final double WINCH_POWER = .3;
     
-    public static final int HALF_TIME = 1000;
     
     Victor motor;
     
@@ -64,7 +63,7 @@ public class Winch implements Systems{
     public void execute(int buttonNumber) {
         if(buttonNumber>0){
             if(buttonNumber==RobotMap.JSBUTTON_WINCH_HALF){
-                setPullBackTime(HALF_TIME);
+                setPullBackTime(RobotConstants.WINCH_HALF_TIME);
             }else{
                 if (buttonNumber==RobotMap.JSBUTTON_WINCH_FULL){
                     setPullBackTime(0);
@@ -92,10 +91,10 @@ public class Winch implements Systems{
         }
 
         public void run() {
-            while (!Sensors.getWinchLimitSwitch().get()
+            while (Sensors.getWinchLimitSwitch().get()
                     // If maxTime is less than 0 this part will always return true ->
                     && (System.currentTimeMillis() - startTime < maxTime || maxTime <= 0)) {
-                motor.set(WINCH_POWER);
+                motor.set(RobotConstants.WINCH_POWER);
                 try {
                     Thread.sleep(50);
                 } catch (InterruptedException ex) {

@@ -36,48 +36,59 @@ public class Flippers implements Systems {
         flipperThread.start();
     }
 
-    public void jitter() {
-        (new JitterThread()).start();
+    public void toggle() {
+        if (open) {
+            leftOpen.set(false);
+            leftClose.set(true);
+            rightOpen.set(false);
+            rightClose.set(true);
+            open = false;
+        } else {
+            leftOpen.set(true);
+            leftClose.set(false);
+            rightOpen.set(true);
+            rightClose.set(false);
+            open = true;
+        }
     }
 
-    protected class JitterThread extends Thread {
+    public void open() {
+        leftOpen.set(true);
+        leftClose.set(false);
+        rightOpen.set(true);
+        rightClose.set(false);
+        open = true;
+    }
 
-        public void run() {
-            if (open) {
-                leftOpen.set(false);
-                leftClose.set(true);
-                rightOpen.set(false);
-                rightClose.set(true);
-                open = false;
-            } else {
-                leftOpen.set(true);
-                leftClose.set(false);
-                rightOpen.set(true);
-                rightClose.set(false);
-                open = true;
-            }
-        }
+    public void close() {
+        leftOpen.set(false);
+        leftClose.set(true);
+        rightOpen.set(false);
+        rightClose.set(true);
+        open = false;
     }
 
     /**
      *
      */
     protected class FlipperThread extends Thread {
-        
+
         int buttonNumber;
-        protected FlipperThread (int buttonNumber){
+
+        protected FlipperThread(int buttonNumber) {
             this.buttonNumber = buttonNumber;
         }
+
         /**
          *
          */
         public void run() {
             if (open) {
-                if (buttonNumber==RobotMap.JSBUTTON_FLIPPERS) {
+                if (buttonNumber == RobotMap.JSBUTTON_FLIPPERS) {
                     while (!Sensors.getPhotoEye().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS)) {
                         System.out.println("Waiting for photo eye");
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(20);
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
@@ -91,16 +102,15 @@ public class Flippers implements Systems {
                         open = false;
                     }
                 } else {
-                        leftOpen.set(false);
-                        leftClose.set(true);
-                        rightOpen.set(false);
-                        rightClose.set(true);
-                        open = false;
-                    
-                    
+                    leftOpen.set(false);
+                    leftClose.set(true);
+                    rightOpen.set(false);
+                    rightClose.set(true);
+                    open = false;
+
                 }
             } else {
-                
+
                 System.out.println("Opening");
                 leftOpen.set(true);
                 leftClose.set(false);

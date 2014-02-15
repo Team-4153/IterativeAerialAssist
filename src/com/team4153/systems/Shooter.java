@@ -31,9 +31,9 @@ public class Shooter extends Thread implements Systems {
      * The length of time (in milliseconds) the winch will be pulled back; 0 or
      * less means go until limit.
      */
-    private int defaultWinchPullbackTime = 0;
+    private int defaultWinchPullbackTime = 1000;
 
-    private boolean pullBackByDefault = false;
+    private boolean pullBackByDefault = true;
 
     private Flippers flippers;//To open flippers when shoot
     private Winch winch;
@@ -85,6 +85,7 @@ public class Shooter extends Thread implements Systems {
         public void run() {
             open.set(true);
             close.set(false);
+            flippers.open();
 
             try {
                 Thread.sleep(1000);
@@ -96,9 +97,7 @@ public class Shooter extends Thread implements Systems {
             open.set(false);
             close.set(true);
 
-            if (Sensors.getleftFlipper().get()) {
-                flippers.execute(-1);
-            }
+            
             if (pullBackByDefault) {
                 winch.pullBackWinch(defaultWinchPullbackTime);
             }

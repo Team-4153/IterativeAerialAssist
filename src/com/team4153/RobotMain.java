@@ -79,7 +79,7 @@ public class RobotMain extends IterativeRobot {
         angleTable = new DistanceAngleTable(arm);
         vision = new Vision();
         storer = new ImageStorer(vision.getCamera());
-        storer.start();
+        //storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
     }
@@ -146,7 +146,7 @@ public class RobotMain extends IterativeRobot {
          }*/
         
         // this will run when the arm is in position and we are in range
-        if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < Arm.TOLERANCE) {
+        if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < RobotConstants.ARM_TOLERANCE) {
             vision.execute(-1);
             SmartDashboard.putBoolean("Target: ", vision.isTarget());
             SmartDashboard.putBoolean("Hot: ", vision.isHot());
@@ -197,14 +197,7 @@ public class RobotMain extends IterativeRobot {
         chassis.execute(-1);
         arm.execute(-1);
         joystick.execute();
-        SmartDashboard.putNumber("Distance", Sensors.getUltrasonicDistance());
-        SmartDashboard.putNumber("Rot Pot", Sensors.getRotPotAngle());
-        SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
-        SmartDashboard.putBoolean("LimitSwitch 1", Sensors.getWinchLimitSwitch().get());
-        SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
-        SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
-        SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
-        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEye().get());
+        
     }
 
     /**

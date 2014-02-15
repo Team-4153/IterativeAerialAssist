@@ -1,5 +1,6 @@
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.CANJaguar;
@@ -58,7 +59,7 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-        drive.setMaxOutput(400);//TODO: Fix the magic numbers
+        drive.setMaxOutput(RobotConstants.DRIVE_POWER);
         drive.setSafetyEnabled(false);
     }
 

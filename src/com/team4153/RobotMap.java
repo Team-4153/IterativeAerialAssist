@@ -62,6 +62,6 @@ public class RobotMap {
     public static final int LIMIT_SWITCH_3 = 13;
     public static final int INIT_SWITCH = 1;
     
-    public static final int PHOTO_EYE=8;
+    public static final int PHOTO_EYE=9;
     
 }

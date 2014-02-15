@@ -5,8 +5,8 @@
  */
 package com.team4153.util;
 
+import com.team4153.Sensors;
 import com.team4153.systems.Chassis;
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -46,7 +46,16 @@ public class DashboardCommunication {
             chassis.setFieldControl(fieldControl);
             previousFieldControl = fieldControl;
         }
-        SmartDashboard.putNumber("Gyro", 180);
+        
+        SmartDashboard.putBoolean("Winch Limit", Sensors.getWinchLimitSwitch().get());
+        SmartDashboard.putNumber("Distance", Sensors.getUltrasonicDistance());
+        SmartDashboard.putNumber("String Pot", Sensors.getStringPotAngle());
+        SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
+        SmartDashboard.putBoolean("LimitSwitch 1", Sensors.getWinchLimitSwitch().get());
+        SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
+        SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
+        SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
+        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEye().get());
     }
 
 }

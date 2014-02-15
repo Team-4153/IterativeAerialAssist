@@ -6,13 +6,15 @@
 
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
+
 /**
  *
  * @author Developer
  */
 public class Jittering implements Systems {
 
-    public static final int DELAY=50;
+    
     Flippers flippers;
     
     public Jittering(Flippers flippers){
@@ -31,12 +33,14 @@ public class Jittering implements Systems {
         }
         
         public void run(){
-            flippers.jitter();
+            flippers.open();
             try {
-                Thread.sleep(DELAY);
+                Thread.sleep(RobotConstants.JITTER_DELAY);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
+            flippers.close();
+            
         }
     }
     

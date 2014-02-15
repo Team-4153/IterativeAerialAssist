@@ -5,6 +5,7 @@
  */
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.CANJaguar;
@@ -19,35 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Arm implements Systems {
 
-    /**
-     *
-     */
-    public static final double UPPER_LIMIT = 4;
+    
 
-    /**
-     *
-     */
-    public static final double LOWER_LIMIT = 1;
+    
 
-    /**
-     *
-     */
-    public static final double TOLERANCE = 1;//The tolerance in the + and - direction
-
-    /**
-     *
-     */
-    public static final double SLOW_DOWN_ANGLE = 10;//The angle difference when the motor starts slowing down
-
-    /**
-     *
-     */
-    public static final double MOTOR_MAX_POWER = 1;
-
-    /**
-     *
-     */
-    public static final double MOTION_RANGE = UPPER_LIMIT-LOWER_LIMIT;
+    
     private CANJaguar leftMotor;
     private CANJaguar rightMotor;
     private double desiredAngle;
@@ -81,7 +58,7 @@ public class Arm implements Systems {
     public void execute(int buttonNumber) {
         Joystick joystick = Sensors.getManipulatorJoystick();
         double joystickAxis = joystick.getAxis(AxisType.kY)*3/5;
-        SmartDashboard.putNumber("Arm Angle: ", Sensors.getRotPotAngle());
+        SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
         moveArm(joystickAxis);
     }
     
@@ -93,8 +70,8 @@ public class Arm implements Systems {
      * @return Whether the arm was within the limits (moved successfully)
      */
     public boolean moveArm(double power){
-        if((power > 0 && Sensors.getRotPotAngle() < UPPER_LIMIT ) || 
-                (power < 0 && Sensors.getRotPotAngle() > LOWER_LIMIT) ){
+        if((power > 0 && Sensors.getStringPotAngle() < RobotConstants.BACK_ARM_LIMIT ) || 
+                (power < 0 && Sensors.getStringPotAngle() > RobotConstants.FORWARD_ARM_LIMIT) ){
             try {
                 rightMotor.setX(power);
                 leftMotor.setX(-power);
@@ -111,6 +88,10 @@ public class Arm implements Systems {
             }
             return false;
         }
+        
+    }
+    
+    public void moveWithinLimits (){
         
     }
     
@@ -140,13 +121,13 @@ public class Arm implements Systems {
          *
          */
         public void run(){
-            while (Math.abs(Sensors.getRotPotAngle()-desiredAngle) >= TOLERANCE){
+            while (Math.abs(Sensors.getStringPotAngle()-desiredAngle) >= RobotConstants.ARM_TOLERANCE){
                 System.out.println("Moving Arm to angle " +
-                        (Sensors.getRotPotAngle()-desiredAngle));
+                        (Sensors.getStringPotAngle()-desiredAngle));
                 boolean success = moveArm(( (  desiredAngle-
-                        Sensors.getRotPotAngle()  )/(MOTION_RANGE*0.5) ));
+                        Sensors.getStringPotAngle()  )/(RobotConstants.ARM_MOTION_RANGE*0.5) ));
                 System.out.println("Power: " +( (  desiredAngle-
-                     Sensors.getRotPotAngle()  )/(MOTION_RANGE*0.5) ));
+                     Sensors.getStringPotAngle()  )/(RobotConstants.ARM_MOTION_RANGE*0.5) ));
                 
             }
             moveArm(0);

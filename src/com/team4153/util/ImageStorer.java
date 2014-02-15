@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
  */
 public class ImageStorer extends Thread {
 
-    public static final int delay = 10000;
+    public static final int delay = 1000;
 
     AxisCamera camera;
     int imageNum = 0;
@@ -45,9 +45,9 @@ public class ImageStorer extends Thread {
                 try {
                     Thread.sleep(delay);
                     image = camera.getImage();     // comment if using stored images
-//                ColorImage image;                           // next 2 lines read image from flash on cRIO
+//          s      ColorImage image;                           // next 2 lines read image from flash on cRIO
 //                image = new RGBImage("/testImage.jpg");		// get the sample image from the cRIO flash
-                    MonoImage thresholdImage = image.getBluePlane();   // keep only green objects
+                    MonoImage thresholdImage = image.getIntensityPlane();   // keep only green objects
                     thresholdImage.write("/Images/image"+imageNum+".bmp");
                     //image.write("/stopaction/image" + imageNum + ".bmp");
                     imageNum++;

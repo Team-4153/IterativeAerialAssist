@@ -6,10 +6,8 @@
 
 package com.team4153.util;
 
-import com.team4153.Sensors;
 import com.team4153.systems.Systems;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
  *

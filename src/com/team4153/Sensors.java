@@ -25,7 +25,7 @@ public abstract class Sensors {
     //private static Button flipperButton;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
-    private static AnalogChannel rotPot;
+    private static AnalogChannel stringPot;
     private static DigitalInput leftFlipper;
 
     /**
@@ -155,20 +155,20 @@ public abstract class Sensors {
      *
      * @return The arm's rotational potentiometer
      */
-    public static AnalogChannel getRotPot() {
-        if (rotPot == null) {
-            rotPot = new AnalogChannel(RobotMap.STRING_POT_CHANNEL);
+    public static AnalogChannel getStringPot() {
+        if (stringPot == null) {
+            stringPot = new AnalogChannel(RobotMap.STRING_POT_CHANNEL);
         }
-        return rotPot;
+        return stringPot;
     }
 
     /**
      * @return The rotation of the arm according to the arm's rotational
      * potentiometer (in a value between 0 and ROT_POT_MAX_VOLTS).
      */
-    public static double getRotPotAngle() {
-        // return getRotPot().getVoltage()/ROT_POT_MAX_VOLTS*360;
-        return getRotPot().getVoltage();
+    public static double getStringPotAngle() {
+        // return getStringPot().getVoltage()/ROT_POT_MAX_VOLTS*360;
+        return getStringPot().getVoltage();
     }
 
     /**
