@@ -26,6 +26,7 @@ public abstract class Sensors {
     //private static Button flipperButton;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
+    private static AnalogChannel ultrasonic2;
     private static AnalogChannel stringPot;
     private static DigitalInput leftFlipper;
     private static FilteredUltrasonic filteredUltrasonic;
@@ -55,7 +56,6 @@ public abstract class Sensors {
      */
     private static DigitalInput initSwitch;
 
-    private static final double RANGE_FINDER_MUlTIPLIER = 0.0124;
 
     /**
      * The rotational potentiometer on the arm - goes from 0 to max volts
@@ -146,12 +146,23 @@ public abstract class Sensors {
         return ultrasonic;
     }
 
+    
+     public static AnalogChannel getUltrasonic2() {
+        if (ultrasonic2 == null) {
+            ultrasonic2 = new AnalogChannel(RobotMap.ULTRASONIC2_CHANNEL);
+        }
+        return ultrasonic2;
+    }
     /**
      *
      * @return The distance according to the ultrasonic sensor (in inches)
      */
     public static double getUltrasonicDistance() {
-        return getUltrasonic().getVoltage() / RANGE_FINDER_MUlTIPLIER;
+        return getUltrasonic().getVoltage() / RobotConstants.RANGE_FINDER_MUlTIPLIER;
+    }
+    
+    public static double getUltrasonicDistance2() {
+        return getUltrasonic().getVoltage() / RobotConstants.RANGE_FINDER_MUlTIPLIER2;
     }
     
     public static double getFilteredUltrasonicDistance(){
@@ -272,17 +283,6 @@ public abstract class Sensors {
         return photoEye;
     }
 
-    /**
-     * Returns the initializer switch if it exists. If it does not, initializes
-     * the initializer switch then returns it.
-     *
-     * @return The initializer switch
-     */
-    public static DigitalInput getInitSwitch() {
-        if (initSwitch == null) {
-            initSwitch = new DigitalInput(RobotMap.INIT_SWITCH);
-        }
-        return initSwitch;
-    }
+   
 
 }

@@ -30,6 +30,8 @@ public class FilteredUltrasonic {
                 }
                 distanceHistory[distanceHistory.length] = newDistance;
                 return newDistance;
+            }else{
+                System.out.println("Discarded value: " + newDistance);
             }
         }
         return getAverage();

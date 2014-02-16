@@ -48,7 +48,7 @@ public class Winch implements Systems{
      * @param time in milliseconds
      */
     public void pullBackWinch(int time) {
-        setPullBackTime(time);
+//        setPullBackTime(time);
         execute(-1);
     }
     
@@ -61,18 +61,19 @@ public class Winch implements Systems{
     }
 
     public void execute(int buttonNumber) {
-        if(buttonNumber>0){
-            if(buttonNumber==RobotMap.JSBUTTON_WINCH_HALF){
-                setPullBackTime(RobotConstants.WINCH_HALF_TIME);
-            }else{
-                if (buttonNumber==RobotMap.JSBUTTON_WINCH_FULL){
-                    setPullBackTime(0);
-                }
-            }
-        }
-        
+//        if(buttonNumber>0){
+//            if(buttonNumber==RobotMap.JSBUTTON_WINCH_HALF){
+//                setPullBackTime(RobotConstants.WINCH_HALF_TIME);
+//            }else{
+////                if (buttonNumber==RobotMap.JSBUTTON_WINCH_FULL){
+////                    setPullBackTime(0);
+////                }
+//            }
+//        }
+//        if(buttonNumber != RobotMap.JSBUTTON_WINCH_HALF){
         WinchPuller puller = new WinchPuller(pullBackTime);
         puller.start();
+//        }
     }
     
     /**
@@ -91,7 +92,7 @@ public class Winch implements Systems{
         }
 
         public void run() {
-            while (Sensors.getWinchLimitSwitch().get()
+            while (!Sensors.getWinchLimitSwitch().get()
                     // If maxTime is less than 0 this part will always return true ->
                     && (System.currentTimeMillis() - startTime < maxTime || maxTime <= 0)) {
                 motor.set(RobotConstants.WINCH_POWER);

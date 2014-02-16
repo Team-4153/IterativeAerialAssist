@@ -42,6 +42,7 @@ public class RobotMap {
     
     public static final int GYRO_CHANNEL = 1;
     public static final int ULTRASONIC_CHANNEL = 5;
+    public static final int ULTRASONIC2_CHANNEL = 7;
     public static final int STRING_POT_CHANNEL=3;
 
     public static final int COMPRESSOR_CHANNEL=1;
@@ -60,9 +61,9 @@ public class RobotMap {
     public static final int WINCH_LIMIT_SWITCH = 11;
     public static final int LIMIT_SWITCH_2 = 12;
     public static final int LIMIT_SWITCH_3 = 13;
-    public static final int AUTO_SWITCH2 = 4;
-    public static final int AUTO_SWITCH1 = 3;
-    public static final int INIT_SWITCH = 1;
+    public static final int AUTO_SWITCH2 = 3;
+    public static final int AUTO_SWITCH1 = 2;
+   
     
     public static final int PHOTO_EYE=9;
     

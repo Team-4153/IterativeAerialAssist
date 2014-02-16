@@ -35,12 +35,17 @@ public class RobotConstants {
      */
     public static final double ARM_MOTION_RANGE = FORWARD_ARM_LIMIT+0*MIDDLE_ARM_LIMIT-BACK_ARM_LIMIT ;
     
-    public static final int JITTER_DELAY=30;
+    public static final int JITTER_DELAY = 30;
     
     /**
-     * The maximum power the drive will use.
+     * The maximum power the drive will use.f
      */
     public static final int DRIVE_POWER = 250;
     
     public static final double DISTANCE_THRESHHOLD = 50.0;
+    
+    public static final double RANGE_FINDER_MUlTIPLIER = 0.0124;
+    
+    public static final double RANGE_FINDER_MUlTIPLIER2 = 0.098;
+
 }

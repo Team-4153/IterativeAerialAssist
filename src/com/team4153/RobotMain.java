@@ -18,6 +18,7 @@ import com.team4153.systems.Winch;
 import com.team4153.util.DashboardCommunication;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -86,6 +87,7 @@ public class RobotMain extends IterativeRobot {
         startCompressor();
         Sensors.getGyro().getAngle();
         dashboardComm.execute();
+        flippers.close();
     }
 
     /**
@@ -98,28 +100,10 @@ public class RobotMain extends IterativeRobot {
         } catch (CANTimeoutException ex) {
             ex.printStackTrace();
         }
-        
-        /*if (autoStartTime == -1) {
-         autoStartTime = System.currentTimeMillis();
-         System.out.println("Drive Start");
-         }
-
-        
-        
-         if (Sensors.getUltrasonicDistance() > FIRE_DISTANCE) {
-         chassis.driveForward();
-         }
-         else if(!autoDriveDone){
-         chassis.driveHalt();
-         System.out.println("Drive Stop");
-         autoDriveDone = true;
-         }*/
 
         //note this line both performs the lookup and moves the arm.
         angleTable.execute(-1);
 
-        SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
-        SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
         double distance = Sensors.getFilteredUltrasonicDistance();
         final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
         

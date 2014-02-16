@@ -40,7 +40,11 @@ public class Jittering implements Systems {
                 ex.printStackTrace();
             }
             flippers.close();
-            
+            try {
+                Thread.sleep(RobotConstants.JITTER_DELAY);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     }
     

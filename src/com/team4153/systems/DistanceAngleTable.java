@@ -29,7 +29,7 @@ public class DistanceAngleTable extends Thread implements Systems {
 //        angles.addElement(angle);
 //    }
     public void execute(int buttonNumber) {
-        double angle = calculateAngle(Sensors.getUltrasonicDistance());
+        double angle = calculateAngle(Sensors.getFilteredUltrasonicDistance());
         // need to check for error here...
 //        System.out.println("Target Angle: " + angle);
         if(angle != -1.0){

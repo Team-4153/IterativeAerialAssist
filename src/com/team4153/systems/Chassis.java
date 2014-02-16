@@ -98,16 +98,6 @@ public class Chassis implements Systems {
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 6;
-//        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-//        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
-//        jag.enableControl();
-//        jag.configMaxOutputVoltage(10);//ToDo: 
-        // PIDs may be required.  Values here:
-        //  http://www.chiefdelphi.com/forums/showthread.php?t=91384
-        // and here:
-        // http://www.chiefdelphi.com/forums/showthread.php?t=89721
-        // neither seem correct.
-//        jag.setPID(0.4, .005, 0);
         if (PIDpositive) {
             jag.setPID(P, I, D);
         } else {
