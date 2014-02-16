@@ -120,7 +120,7 @@ public class RobotMain extends IterativeRobot {
 
         SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
         SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
-        double distance = Sensors.getUltrasonicDistance();
+        double distance = Sensors.getFilteredUltrasonicDistance();
         final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
         
         // if the robot is already withing the firing distance we do not want to

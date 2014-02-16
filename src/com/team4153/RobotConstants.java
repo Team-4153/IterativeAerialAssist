@@ -42,5 +42,5 @@ public class RobotConstants {
      */
     public static final int DRIVE_POWER = 250;
     
-    public static final double DISTANCE_THRESHHOLD = 26.0;
+    public static final double DISTANCE_THRESHHOLD = 50.0;
 }
