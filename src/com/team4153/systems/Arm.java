@@ -60,6 +60,10 @@ public class Arm implements Systems {
      *
      */
     public void execute(int buttonNumber) {
+        if(buttonNumber==2){
+            moveArmTowardLocation(RobotConstants.PICKUP_POSITION);
+            return;
+        }
         Joystick joystick = Sensors.getManipulatorJoystick();
         double joystickAxis = joystick.getAxis(AxisType.kY) * 3 / 5;
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());

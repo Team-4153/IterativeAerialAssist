@@ -51,4 +51,5 @@ public class RobotConstants {
     
     public static final double RANGE_FINDER_MUlTIPLIER2 = 0.098;
 
+    public static final double PICKUP_POSITION=1.4;
 }

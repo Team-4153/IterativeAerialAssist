@@ -32,6 +32,7 @@ public class RobotMap {
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSAXIS_ARM=1;
     public static final int JSBUTTON_JITTER=9;
+    public static final int JSBUTTON_GO_TO_PICKUP = 2;
     
     public static final int JAG_LEFT_FRONT_MOTOR = 10;
     public static final int JAG_LEFT_REAR_MOTOR = 4;
