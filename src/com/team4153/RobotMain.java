@@ -141,15 +141,30 @@ public class RobotMain extends IterativeRobot {
          chassis.turn(90);
          }*/
         
+        if(!autoTarget){
+            vision.execute(-1);
+            if(vision.isTarget()){
+                autoTarget=true;
+                autoHot=vision.isHot();
+                System.out.println("Target found, Hot: "+autoHot);
+            }
+        }
+        
         // this will run when the arm is in position and we are in range
         if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < RobotConstants.ARM_TOLERANCE) {
-            vision.execute(-1);
+            /*vision.execute(-1);
             SmartDashboard.putBoolean("Target: ", vision.isTarget());
             SmartDashboard.putBoolean("Hot: ", vision.isHot());
             if (vision.isTarget() && vision.isHot() && !autoShot) {
                 shooter.execute(-1);
                 autoShot = true;
+            }*/
+            
+            if(!autoShot&&autoTarget&&(autoHot&&getMatchTime()<5000||!autoHot)){
+                shooter.execute(-1);
+                autoShot = true;
             }
+                
         }
 
         if (getMatchTime() > EXCEPTION_FIRE_TIME && !autoShot) {
