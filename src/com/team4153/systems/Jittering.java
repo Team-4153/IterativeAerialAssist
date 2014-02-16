@@ -16,34 +16,43 @@ public class Jittering implements Systems {
 
     
     Flippers flippers;
+    Thread jitterThread;
     
     public Jittering(Flippers flippers){
         this.flippers=flippers;
     }
     
     public void execute(int buttonNumber) {
-        (new JitterThread(flippers)).start();
+        if(jitterThread == null){
+            jitterThread = new JitterThread(flippers);
+            jitterThread.start();
+        }
     }
     
     protected class JitterThread extends Thread{
         Flippers flippers;
         
         public JitterThread(Flippers flippers){
-            this.flippers=flippers;
+            this.flippers = flippers;
         }
         
         public void run(){
-            flippers.open();
+            
             try {
-                Thread.sleep(RobotConstants.JITTER_DELAY);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-            flippers.close();
-            try {
-                Thread.sleep(RobotConstants.JITTER_DELAY);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+                flippers.open();
+                try {
+                    Thread.sleep(RobotConstants.JITTER_OPEN_DELAY);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                flippers.close();
+                try {
+                    Thread.sleep(RobotConstants.JITTER_CLOSE_DELAY);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            } finally {
+                jitterThread = null;
             }
         }
     }
