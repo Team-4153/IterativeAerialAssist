@@ -30,7 +30,7 @@ public class RobotConstants {
      */
     public static final double ARM_MOTOR_MAX_POWER = 1;
     
-    public static final double ARM_POSITION_HOLD_POWER = 0.03;
+    public static final double ARM_POSITION_HOLD_POWER = 0.1;
 
     /**
      *
