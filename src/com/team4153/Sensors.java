@@ -57,12 +57,6 @@ public abstract class Sensors {
      */
     private static DigitalInput initSwitch;
 
-
-    /**
-     * The rotational potentiometer on the arm - goes from 0 to max volts
-     */
-    public static final double ROT_POT_MAX_VOLTS = 5;
-
     static {
         getGyro();
     }
@@ -164,6 +158,10 @@ public abstract class Sensors {
     
     public static double getUltrasonicDistance2() {
         return getUltrasonic().getVoltage() / RobotConstants.RANGE_FINDER_MUlTIPLIER2;
+    }
+    
+    public static void resetUltrasonicFilter(){
+        filteredUltrasonic = null;
     }
     
     public static double getFilteredUltrasonicDistance(){

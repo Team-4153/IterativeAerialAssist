@@ -32,21 +32,6 @@ public class Autonomous {
     boolean autoTarget = false;
     boolean autoShot = false;
 
-    private final double FIRE_DISTANCE = 120;
-    private final double MAX_AUTONOMOUS_SPEED = 200;
-
-    public static final int OVERSHOOT_CORRECTION = 6;
-    public static final int ULTRASONIC_DISPLACEMENT = 5;
-    public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
-    public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
-    public static final int EXCEPTION_FIRE_TIME = 9000;
-    public static final int EXCEPTION_STOP_TIME = 5000;
-    /**
-     * The ideal angle to place the arm at to fire at the fire distance
-     */
-    public static double SHOOTING_ANGLE = 2.5;
-    public static double DROPPING_ANGLE=1;
-
     int counter = 0;
     boolean withinFiringDistance = false;
     boolean withinSlowdownDistance = false;
@@ -59,7 +44,6 @@ public class Autonomous {
         vision = new Vision();
         angleTable = new DistanceAngleTable(arm);
     }
-
     public void shootHighGoal() {
         try {
             System.out.println("Arbitrary Drive value: " + chassis.rightFront.getX());
@@ -71,7 +55,7 @@ public class Autonomous {
         angleTable.execute(-1);
 
         double distance = Sensors.getFilteredUltrasonicDistance();
-        final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
+        
 
         // if the robot is already withing the firing distance we do not want to
         // run any of the movement code - this 'if' makes sure of that
@@ -80,12 +64,12 @@ public class Autonomous {
             // if the robot has run longer than the exception stop time it sets up
             // as if it were within range - there is probably something wrong with
             // the ultrasonic
-            if (distance >= fireDistance && getMatchTime() < EXCEPTION_STOP_TIME) {
-                if (distance >= fireDistance * AUTONOMOUS_SLOWDOWN_PERCENT && !withinSlowdownDistance) {
-                    chassis.driveForward(MAX_AUTONOMOUS_SPEED);
+            if (distance >= RobotConstants.STOP_DISTANCE && getMatchTime() < RobotConstants.EXCEPTION_STOP_TIME) {
+                if (distance >= RobotConstants.STOP_DISTANCE * RobotConstants.AUTONOMOUS_SLOWDOWN_PERCENT && !withinSlowdownDistance) {
+                    chassis.driveForward(RobotConstants.MAX_AUTONOMOUS_SPEED);
                     System.out.println("Full Speed: " + distance);
                 } else {
-                    chassis.driveForward(MAX_AUTONOMOUS_SPEED * AUTONOMOUS_SLOWDOWN_AMOUNT);
+                    chassis.driveForward(RobotConstants.MAX_AUTONOMOUS_SPEED * RobotConstants.AUTONOMOUS_SLOWDOWN_AMOUNT);
                     System.out.println("Slow Down Speed: " + distance);
                     withinSlowdownDistance = true;
                 }
@@ -114,7 +98,7 @@ public class Autonomous {
         }
 
         // this will run when the arm is in position and we are in range
-        if (withinFiringDistance && Math.abs(SHOOTING_ANGLE - arm.getDesiredAngle()) < RobotConstants.ARM_TOLERANCE) {
+        if (withinFiringDistance && Math.abs(RobotConstants.SHOOTING_ANGLE - arm.getDesiredAngle()) < RobotConstants.ARM_TOLERANCE) {
             /*vision.execute(-1);
              SmartDashboard.putBoolean("Target: ", vision.isTarget());
              SmartDashboard.putBoolean("Hot: ", vision.isHot());
@@ -130,7 +114,7 @@ public class Autonomous {
 
         }
 
-        if (getMatchTime() > EXCEPTION_FIRE_TIME && !autoShot) {
+        if (getMatchTime() > RobotConstants.EXCEPTION_FIRE_TIME && !autoShot) {
             shooter.execute(-1);
             autoShot = true;
         }
@@ -138,9 +122,9 @@ public class Autonomous {
 
     public void dropInLowGoal() {
         double distance=Sensors.getFilteredUltrasonicDistance();
-        arm.moveArmTowardLocation(DROPPING_ANGLE);
-        if(distance>ULTRASONIC_DISPLACEMENT){
-            chassis.driveForward(MAX_AUTONOMOUS_SPEED);
+        arm.moveArmTowardLocation(RobotConstants.DROPPING_ANGLE);
+        if(distance>RobotConstants.ULTRASONIC_DISPLACEMENT){
+            chassis.driveForward(RobotConstants.MAX_AUTONOMOUS_SPEED);
         }
         else{
             if(!autoShot){

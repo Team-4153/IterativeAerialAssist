@@ -119,6 +119,10 @@ public class RobotMain extends IterativeRobot {
     public void testPeriodic() {
 
     }
+    
+    public void disabledInit() {
+        Sensors.resetUltrasonicFilter();
+    }
 
     /**
      * Initializes the compressor and starts the method that will run the

@@ -15,10 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Chassis subsystem for mecanum drive
  */
 public class Chassis implements Systems {
-
-    private static final double INITIAL_P = 0.3;
-    private static final double INITIAL_I = 0.005;
-    private static final double INITIAL_D = 0;
     private int fieldControl = 1;
     private RobotDrive drive;
     /**
@@ -41,9 +37,9 @@ public class Chassis implements Systems {
      *
      */
     public Chassis() {
-        currentP = INITIAL_P;
-        currentI = INITIAL_I;
-        currentD = INITIAL_D;
+        currentP = RobotConstants.INITIAL_P;
+        currentI = RobotConstants.INITIAL_I;
+        currentD = RobotConstants.INITIAL_D;
         try {
             ControlMode mode = CANJaguar.ControlMode.kSpeed;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode);

@@ -5,6 +5,7 @@
  */
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.image.BinaryImage;
@@ -19,28 +20,6 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
  * @author Team4153
  */
 public class Vision implements Systems {
-
-    //Camera constants used for distance calculation
-    final int Y_IMAGE_RES = 480;		//X Image resolution in pixels, should be 120, 240 or 480
-    final double VIEW_ANGLE = 49;		//Axis M1013
-    //final double VIEW_ANGLE = 41.7;		//Axis 206 camera
-    //final double VIEW_ANGLE = 37.4;  //Axis M1011 camera
-    final double PI = 3.141592653;
-
-    //Score limits used for target identification
-    final int RECTANGULARITY_LIMIT = 40;
-    final int ASPECT_RATIO_LIMIT = 55;
-
-    //Score limits used for hot target determination
-    final int TAPE_WIDTH_LIMIT = 50;
-    final int VERTICAL_SCORE_LIMIT = 50;
-    final int LR_SCORE_LIMIT = 50;
-
-    //Minimum area of particles to be considered
-    final int AREA_MINIMUM = 150;
-
-    //Maximum number of particles to process
-    final int MAX_PARTICLES = 8;
 
     AxisCamera camera;          // the axis camera object (connected to the switch)
     CriteriaCollection cc;      // the criteria for doing the particle filter operation
@@ -80,7 +59,7 @@ public class Vision implements Systems {
     public Vision() {
         camera = AxisCamera.getInstance("10.41.53.11");  // get an instance of the camera
         cc = new CriteriaCollection();      // create the criteria for the particle filter
-        cc.addCriteria(NIVision.MeasurementType.IMAQ_MT_AREA, AREA_MINIMUM, 65535, false);
+        cc.addCriteria(NIVision.MeasurementType.IMAQ_MT_AREA, RobotConstants.AREA_MINIMUM, 65535, false);
 
     }
     
@@ -93,8 +72,8 @@ public class Vision implements Systems {
      */
     public void execute(int buttonNumber) {
         TargetReport target = new TargetReport();
-        int verticalTargets[] = new int[MAX_PARTICLES];
-        int horizontalTargets[] = new int[MAX_PARTICLES];
+        int verticalTargets[] = new int[RobotConstants.MAX_PARTICLES];
+        int horizontalTargets[] = new int[RobotConstants.MAX_PARTICLES];
         int verticalTargetCount, horizontalTargetCount;
 
         try {
@@ -111,7 +90,7 @@ public class Vision implements Systems {
             horizontalTargetCount = verticalTargetCount = 0;
 
             if (filteredImage.getNumberParticles() > 0) {
-                for (int i = 0; i < MAX_PARTICLES && i < filteredImage.getNumberParticles(); i++) {
+                for (int i = 0; i < RobotConstants.MAX_PARTICLES && i < filteredImage.getNumberParticles(); i++) {
                     ParticleAnalysisReport report = filteredImage.getParticleAnalysisReport(i);
                     scores[i] = new Scores();
 
@@ -289,11 +268,11 @@ public class Vision implements Systems {
     boolean scoreCompare(Scores scores, boolean vertical) {
         boolean isTarget = true;
 
-        isTarget &= scores.rectangularity > RECTANGULARITY_LIMIT;
+        isTarget &= scores.rectangularity > RobotConstants.RECTANGULARITY_LIMIT;
         if (vertical) {
-            isTarget &= scores.aspectRatioVertical > ASPECT_RATIO_LIMIT;
+            isTarget &= scores.aspectRatioVertical > RobotConstants.ASPECT_RATIO_LIMIT;
         } else {
-            isTarget &= scores.aspectRatioHorizontal > ASPECT_RATIO_LIMIT;
+            isTarget &= scores.aspectRatioHorizontal > RobotConstants.ASPECT_RATIO_LIMIT;
         }
 
         return isTarget;
@@ -333,9 +312,9 @@ public class Vision implements Systems {
     boolean hotOrNot(TargetReport target) {
         boolean isHot = true;
 
-        isHot &= target.tapeWidthScore >= TAPE_WIDTH_LIMIT;
-        isHot &= target.verticalScore >= VERTICAL_SCORE_LIMIT;
-        isHot &= (target.leftScore > LR_SCORE_LIMIT) | (target.rightScore > LR_SCORE_LIMIT);
+        isHot &= target.tapeWidthScore >= RobotConstants.TAPE_WIDTH_LIMIT;
+        isHot &= target.verticalScore >= RobotConstants.VERTICAL_SCORE_LIMIT;
+        isHot &= (target.leftScore > RobotConstants.LR_SCORE_LIMIT) | (target.rightScore > RobotConstants.LR_SCORE_LIMIT);
 
         return isHot;
     }

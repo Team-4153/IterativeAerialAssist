@@ -5,6 +5,7 @@
  */
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import com.team4153.Sensors;
 
 /**
@@ -15,9 +16,6 @@ public class DistanceAngleTable extends Thread implements Systems {
 
     Arm arm;
 
-    public static final double distances[] = {84, 96, 108, 120, 500};
-    public static final double angles[] = {1.96, 1.95, 1.945, 1.94, 1.7};
-
     public DistanceAngleTable(Arm arm) {
         this.arm = arm;
 
@@ -25,8 +23,8 @@ public class DistanceAngleTable extends Thread implements Systems {
     }
 
 //    private void putValue(Double distance, Double angle) {
-//        distances.addElement(distance);
-//        angles.addElement(angle);
+//        DISTANCES.addElement(distance);
+//        ANGLES.addElement(angle);
 //    }
     public void execute(int buttonNumber) {
         double angle = calculateAngle(Sensors.getFilteredUltrasonicDistance());
@@ -43,11 +41,11 @@ public class DistanceAngleTable extends Thread implements Systems {
             while (getDistanceAt(distanceIndex) < distance) {
                 distanceIndex++;
             }
-            // you can extrapolate on either end of the angles and distance
+            // you can extrapolate on either end of the ANGLES and distance
             // whether you should is another question.
 //            System.out.println("distance in method: " + distance);
 //            System.out.println("distance index: " + distanceIndex);
-            if (distanceIndex > 0 && distanceIndex < distances.length) {
+            if (distanceIndex > 0 && distanceIndex < RobotConstants.DISTANCES.length) {
 
                 double ratio = (getAngleAt(distanceIndex) - getAngleAt(distanceIndex - 1)) / (getDistanceAt(distanceIndex) - getDistanceAt(distanceIndex - 1));
                 double angle = getAngleAt(distanceIndex - 1) + ratio * (distance - getDistanceAt(distanceIndex - 1));
@@ -62,11 +60,11 @@ public class DistanceAngleTable extends Thread implements Systems {
 
     private double getDistanceAt(int index) {
         // potential to throw "indexoutofboundsexception" which is not caught.
-        return distances[index];
+        return RobotConstants.DISTANCES[index];
     }
 
     private double getAngleAt(int index) {
-        return angles[index];
+        return RobotConstants.ANGLES[index];
     }
 
 //    private void doubleTest() {

@@ -5,6 +5,7 @@
  */
 package com.team4153.util;
 
+import com.team4153.RobotConstants;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.image.ColorImage;
@@ -16,13 +17,11 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
  * @author 4153student
  */
 public class ImageStorer extends Thread {
-
-    public static final int delay = 1000;
-
+    
     AxisCamera camera;
     int imageNum = 0;
     
-    public static final int MAX_IMAGES = 1000;
+    
 
     public ImageStorer(AxisCamera camera) {
         this.camera = camera;
@@ -43,7 +42,7 @@ public class ImageStorer extends Thread {
             try {
                 ColorImage image = null;
                 try {
-                    Thread.sleep(delay);
+                    Thread.sleep(RobotConstants.IMAGE_DELAY);
                     image = camera.getImage();     // comment if using stored images
 //          s      ColorImage image;                           // next 2 lines read image from flash on cRIO
 //                image = new RGBImage("/testImage.jpg");		// get the sample image from the cRIO flash
@@ -51,7 +50,7 @@ public class ImageStorer extends Thread {
                     thresholdImage.write("/Images/image"+imageNum+".bmp");
                     //image.write("/stopaction/image" + imageNum + ".bmp");
                     imageNum++;
-                    if(imageNum>MAX_IMAGES){
+                    if(imageNum>RobotConstants.MAX_IMAGES){
                         image.free();
                         break;
                     }
