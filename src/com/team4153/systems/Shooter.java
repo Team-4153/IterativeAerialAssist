@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Shooter extends Thread implements Systems {
 
+    public static final int DELAY=10;
     
     /**
      * shooter solenoid open
@@ -87,7 +88,12 @@ public class Shooter extends Thread implements Systems {
         public void run() {
             open.set(true);
             close.set(false);
-//            flippers.open();
+           try {
+               Thread.sleep(DELAY);
+           } catch (InterruptedException ex) {
+               ex.printStackTrace();
+           }
+            flippers.open();
 
             try {
                 Thread.sleep(1000);
