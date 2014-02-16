@@ -19,7 +19,7 @@ public class RobotConstants {
     /**
      * The arm tolerance in the + and - direction.
      */
-    public static final double ARM_TOLERANCE = 0.07;
+    public static final double ARM_TOLERANCE = 0.06;
     /**
      * The angle difference when the motor starts slowing down
      */

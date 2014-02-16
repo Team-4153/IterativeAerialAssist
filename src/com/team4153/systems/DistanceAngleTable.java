@@ -15,8 +15,8 @@ public class DistanceAngleTable extends Thread implements Systems {
 
     Arm arm;
 
-    public static final double distances[] = {100, 120, 130, 140,500};
-    public static final double angles[] = {2.2, 2.0, 1.925, 1.85,1.6};
+    public static final double distances[] = {84, 96, 108, 120, 500};
+    public static final double angles[] = {1.96, 1.95, 1.945, 1.94, 1.7};
 
     public DistanceAngleTable(Arm arm) {
         this.arm = arm;
