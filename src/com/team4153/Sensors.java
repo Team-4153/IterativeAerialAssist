@@ -1,5 +1,6 @@
 package com.team4153;
 
+import com.team4153.systems.FilteredUltrasonic;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,14 +17,19 @@ public abstract class Sensors {
     private static Button gyroReset;
     private static Gyro gyro;
     private static AnalogChannel ultrasonic;
+    private static FilteredUltrasonic filteredUltrasonic;
     private static final double RANGE_FINDER_MUlTIPLIER = .0124;
 
     public Sensors() {
-        
+
     }
     
+    public static void resetUltrasonicFilter(){
+        filteredUltrasonic = null;
+    }
+
     public static Joystick getJoystick() {
-        if(joystick == null){
+        if (joystick == null) {
             joystick = new Joystick(RobotMap.JOYSTICK_PORT);
         }
         return joystick;
@@ -43,24 +49,30 @@ public abstract class Sensors {
 //        System.out.println(gyroReset);
 //        return gyroReset;
 //    }
-    
     public static Gyro getGyro() {
-        if(gyro == null){
+        if (gyro == null) {
             gyro = new Gyro(RobotMap.GYRO_CHANNEL);
         }
         return gyro;
     }
-    
-    public static AnalogChannel getUltrasonic () {
-        if (ultrasonic == null){
+
+    public static AnalogChannel getUltrasonic() {
+        if (ultrasonic == null) {
             ultrasonic = new AnalogChannel(5);
         }
         return ultrasonic;
     }
-    
-    
-     public static double getUltrasonicDistance() {
+
+    public static double getUltrasonicDistance() {
         return getUltrasonic().getVoltage() / RANGE_FINDER_MUlTIPLIER;
     }
-    
+
+    public static double getFilteredUltrasonicDistance() {
+        if (filteredUltrasonic == null) {
+            filteredUltrasonic = new FilteredUltrasonic();
+        }
+        return filteredUltrasonic.getFilteredDistance();
+
+    }
+
 }

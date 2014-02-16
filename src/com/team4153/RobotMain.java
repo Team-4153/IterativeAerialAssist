@@ -8,9 +8,9 @@ package com.team4153;
 
 import com.team4153.systems.Chassis;
 import com.team4153.systems.DashboardCommunication;
+import com.team4153.systems.FilteredUltrasonic;
 import com.team4153.systems.JoystickHandler;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -24,6 +24,7 @@ public class RobotMain extends IterativeRobot {
 
     JoystickHandler joystick;
     Chassis chassis;
+    
     DashboardCommunication dashboardComm;
     private final double FIRE_DISTANCE = 120;
     private final double MAX_AUTONOMOUS_SPEED = 200;
@@ -43,6 +44,8 @@ public class RobotMain extends IterativeRobot {
     public void robotInit() {
         chassis = new Chassis();
         joystick = new JoystickHandler();
+        
+        
         dashboardComm = new DashboardCommunication(chassis);
         Sensors.getGyro();
     }
@@ -89,6 +92,10 @@ public class RobotMain extends IterativeRobot {
             chassis.turn(90);
         }
 
+    }
+    
+    public void disabledInit(){
+        Sensors.resetUltrasonicFilter();
     }
 
     /**

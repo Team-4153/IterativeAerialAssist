@@ -31,6 +31,7 @@ public class DashboardCommunication implements Systems {
         P = SmartDashboard.getNumber("P:", 0);
         I = SmartDashboard.getNumber("I:", 0);
         D = SmartDashboard.getNumber("D:", 0);
+        SmartDashboard.putNumber("Corrected Ultrasonic", Sensors.getFilteredUltrasonicDistance());
         fieldControl = SmartDashboard.getBoolean("Field Control?", true);
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
         if (previousP != P || previousI != I || previousD != D) {
