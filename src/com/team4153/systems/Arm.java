@@ -83,8 +83,8 @@ public class Arm implements Systems {
             return true;
         } else {
             try {
-                rightMotor.setX(0);
-                leftMotor.setX(0);
+                rightMotor.setX(RobotConstants.ARM_POSITION_HOLD_POWER);
+                leftMotor.setX(RobotConstants.ARM_POSITION_HOLD_POWER);
             } catch (CANTimeoutException ex) {
                 ex.printStackTrace();
             }

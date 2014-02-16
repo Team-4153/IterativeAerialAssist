@@ -11,12 +11,15 @@ package com.team4153.systems;
  * @author 4153student
  */
 public class JagMode implements Systems {
-
+    Chassis chassis;
+    public JagMode (Chassis chassis){
+       this.chassis = chassis;
+    }
     /**
      *
      */
     public void execute(int buttonNumber){
-        
+        chassis.initJags();
      }
             
 }

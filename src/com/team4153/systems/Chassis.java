@@ -192,9 +192,8 @@ public class Chassis implements Systems {
         drive.mecanumDrive_Cartesian(0, 0, direction-Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
     }
     
-    public void driveForward(double maxOutput){
-        drive.setMaxOutput(maxOutput);
-        drive.mecanumDrive_Cartesian(0,-1,0,Sensors.getGyro().getAngle());
+    public void driveForward(double input){
+        drive.mecanumDrive_Cartesian(0,-input,0,Sensors.getGyro().getAngle());
     }
 
     private int getSign(double val) {

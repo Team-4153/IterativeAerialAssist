@@ -29,6 +29,8 @@ public class RobotConstants {
      *
      */
     public static final double ARM_MOTOR_MAX_POWER = 1;
+    
+    public static final double ARM_POSITION_HOLD_POWER = 0.03;
 
     /**
      *
@@ -41,7 +43,7 @@ public class RobotConstants {
     /**
      * The maximum power the drive will use.f
      */
-    public static final int DRIVE_POWER = 250;
+    public static final int DRIVE_POWER = 350;
     
     public static final double DISTANCE_THRESHHOLD = 50.0;
     
