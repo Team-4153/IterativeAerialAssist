@@ -23,6 +23,8 @@ public class Arm implements Systems {
     private CANJaguar leftMotor;
     private CANJaguar rightMotor;
     private double desiredAngle;
+    private boolean stopped = true;
+    private double stoppedAt = 1.4;
 
     /**
      *
@@ -62,6 +64,9 @@ public class Arm implements Systems {
         double joystickAxis = joystick.getAxis(AxisType.kY) * 3 / 5;
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
         moveArm(joystickAxis);
+        if(stopped){
+            moveArmTowardLocation(stoppedAt);
+        }
     }
 
     /**
@@ -80,20 +85,15 @@ public class Arm implements Systems {
             } catch (CANTimeoutException ex) {
                 ex.printStackTrace();
             }
+            stopped = false;
             return true;
         } else {
-            try {
-                rightMotor.setX(RobotConstants.ARM_POSITION_HOLD_POWER);
-                leftMotor.setX(RobotConstants.ARM_POSITION_HOLD_POWER);
-            } catch (CANTimeoutException ex) {
-                ex.printStackTrace();
+            if(!stopped){
+                stopped = true;
+                stoppedAt = Sensors.getStringPotAngle();
             }
             return false;
         }
-
-    }
-
-    public void moveWithinLimits() {
 
     }
 
