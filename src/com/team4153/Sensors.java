@@ -48,7 +48,8 @@ public abstract class Sensors {
     private static DigitalInput autoSwitch1;
     private static DigitalInput autoSwitch2;
 
-    private static DigitalInput photoEye;
+    private static DigitalInput photoEyeGrab;
+    private static DigitalInput photoEyeCatch;
 
     /**
      * Switch to indicate robot needs initial setup (arm within competition
@@ -115,7 +116,7 @@ public abstract class Sensors {
 //    }
 //    public static Button getFlippersButton(){
 //        if(flipperButton == null){
-//            flipperButton = new JoystickButton(joystick,RobotMap.JSBUTTON_FLIPPERS);
+//            flipperButton = new JoystickButton(joystick,RobotMap.JSBUTTON_FLIPPERS_GRAB);
 //        }
 //        return flipperButton;
 //    }
@@ -276,13 +277,19 @@ public abstract class Sensors {
      *
      * @return The photo eye
      */
-    public static DigitalInput getPhotoEye() {
-        if (photoEye == null) {
-            photoEye = new DigitalInput(RobotMap.PHOTO_EYE);
+    public static DigitalInput getPhotoEyeGrab() {
+        if (photoEyeGrab == null) {
+            photoEyeGrab = new DigitalInput(RobotMap.PHOTO_EYE_GRAB);
         }
-        return photoEye;
+        return photoEyeGrab;
     }
 
-   
+    public static DigitalInput getPhotoEyeCatch() {
+        if (photoEyeCatch == null) {
+            photoEyeCatch = new DigitalInput(RobotMap.PHOTO_EYE_CATCH);
+        }
+        return photoEyeCatch;
+    }
+
 
 }

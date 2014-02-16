@@ -22,7 +22,8 @@ public class RobotMap {
     public static final int MANIPULATOR_JOYSTICK_PORT = 1;
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_GYRO_RESET = 2;
-    public static final int JSBUTTON_FLIPPERS=3;
+    public static final int JSBUTTON_FLIPPERS_GRAB=3;
+    public static final int JSBUTTON_FLIPPERS_CATCH = 8;
     public static final int JSBUTTON_JAG_RESET=10;
     public static final int JSBUTTON_AUTO_AIM=4;
     public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=5;
@@ -65,6 +66,7 @@ public class RobotMap {
     public static final int AUTO_SWITCH1 = 2;
    
     
-    public static final int PHOTO_EYE=9;
+    public static final int PHOTO_EYE_GRAB=9;
+    public static final int PHOTO_EYE_CATCH = 10; //TODO: Fix the numbers
     
 }

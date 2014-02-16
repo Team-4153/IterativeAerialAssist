@@ -57,7 +57,7 @@ public class DashboardCommunication {
 //        SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
 //        SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
-        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEye().get());
+        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEyeGrab().get());
         SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
         SmartDashboard.putBoolean("Auto Switch 2", Sensors.getAutoSwitch2().get());
         
