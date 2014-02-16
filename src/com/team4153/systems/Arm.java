@@ -20,11 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Arm implements Systems {
 
-    
-
-    
-
-    
     private CANJaguar leftMotor;
     private CANJaguar rightMotor;
     private double desiredAngle;
@@ -41,15 +36,22 @@ public class Arm implements Systems {
         }
 //        desiredAngle = 90; //We start the game with the arm to the top
     }
-    
+
     /**
      *
      * @param angle
      */
-    public void moveArmToLocation(double angle){
+    public void moveArmTowardLocation(double angle) {
         desiredAngle = angle;
-        AutoArmThread autoArmThread = new AutoArmThread();
-        autoArmThread.start();
+        if (Math.abs(Sensors.getStringPotAngle() - desiredAngle) >= RobotConstants.ARM_TOLERANCE) {
+            System.out.println("Moving Arm to angle "
+                    + (Sensors.getStringPotAngle()));
+            moveArm(((desiredAngle - Sensors.getStringPotAngle())));
+            System.out.println("Power: " + ((desiredAngle
+                    - Sensors.getStringPotAngle())));
+        } else {
+            moveArm(0);
+        }
     }
 
     /**
@@ -57,21 +59,21 @@ public class Arm implements Systems {
      */
     public void execute(int buttonNumber) {
         Joystick joystick = Sensors.getManipulatorJoystick();
-        double joystickAxis = joystick.getAxis(AxisType.kY)*3/5;
+        double joystickAxis = joystick.getAxis(AxisType.kY) * 3 / 5;
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
         moveArm(joystickAxis);
     }
-    
+
     /**
      * The command to drive mecanum via joystick and gyro angle
      *
      * @param power The power to move the arm with
-     * 
+     *
      * @return Whether the arm was within the limits (moved successfully)
      */
-    public boolean moveArm(double power){
-        if((power > 0 && Sensors.getStringPotAngle() < RobotConstants.BACK_ARM_LIMIT ) || 
-                (power < 0 && Sensors.getStringPotAngle() > RobotConstants.FORWARD_ARM_LIMIT) ){
+    public boolean moveArm(double power) {
+        if ((power > 0 && Sensors.getStringPotAngle() < RobotConstants.BACK_ARM_LIMIT)
+                || (power < 0 && Sensors.getStringPotAngle() > RobotConstants.FORWARD_ARM_LIMIT)) {
             try {
                 rightMotor.setX(power);
                 leftMotor.setX(-power);
@@ -88,50 +90,53 @@ public class Arm implements Systems {
             }
             return false;
         }
-        
+
     }
-    
-    public void moveWithinLimits (){
-        
+
+    public void moveWithinLimits() {
+
     }
-    
+
     /**
      *
      * @return
      */
-    public double getDesiredAngle(){
+    public double getDesiredAngle() {
         return desiredAngle;
     }
-    
+
     /**
      *
      * @param angle
      */
-    public void setDesiredAngle(double angle){
-        desiredAngle=angle;
+    public void setDesiredAngle(double angle) {
+        desiredAngle = angle;
     }
-    
-    
+
     /**
-     *
+     * This thread should no longer be used - Calling multiple instances of it
+     * may be causing bugs
      */
-    protected class AutoArmThread extends Thread{
+    protected class AutoArmThread extends Thread {
 
         /**
          *
          */
-        public void run(){
-            while (Math.abs(Sensors.getStringPotAngle()-desiredAngle) >= RobotConstants.ARM_TOLERANCE){
-                System.out.println("Moving Arm to angle " +
-                        (Sensors.getStringPotAngle()-desiredAngle));
-                boolean success = moveArm(( (  desiredAngle-
-                        Sensors.getStringPotAngle()  )/(RobotConstants.ARM_MOTION_RANGE*0.5) ));
-                System.out.println("Power: " +( (  desiredAngle-
-                     Sensors.getStringPotAngle()  )/(RobotConstants.ARM_MOTION_RANGE*0.5) ));
-                
+        public void run() {
+            while (Math.abs(Sensors.getStringPotAngle() - desiredAngle) >= RobotConstants.ARM_TOLERANCE) {
+                System.out.println("Moving Arm to angle "
+                        + (Sensors.getStringPotAngle() - desiredAngle));
+                moveArm(-((desiredAngle - Sensors.getStringPotAngle())));
+                System.out.println("Power: " + ((desiredAngle
+                        - Sensors.getStringPotAngle()) / (RobotConstants.ARM_MOTION_RANGE * 0.5)));
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
             }
             moveArm(0);
-            
+
         }
     }
 

@@ -24,7 +24,7 @@ public class Chassis implements Systems {
     /**
      * Jaguar CAN bus motor controllers.
      */
-    private CANJaguar rightFront;
+    public CANJaguar rightFront;
     private CANJaguar rightRear;
     private CANJaguar leftFront;
     private CANJaguar leftRear;

@@ -1,5 +1,6 @@
 package com.team4153;
 
+import com.team4153.systems.FilteredUltrasonic;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Gyro;
@@ -27,6 +28,7 @@ public abstract class Sensors {
     private static AnalogChannel ultrasonic;
     private static AnalogChannel stringPot;
     private static DigitalInput leftFlipper;
+    private static FilteredUltrasonic filteredUltrasonic;
 
     /**
      * The limit switch the winch hits to stop the winch motor
@@ -41,6 +43,9 @@ public abstract class Sensors {
      * Currently unknown limit switch 3
      */
     private static DigitalInput limitSwitch3;//TODO:Rename
+    
+    private static DigitalInput autoSwitch1;
+    private static DigitalInput autoSwitch2;
 
     private static DigitalInput photoEye;
 
@@ -50,7 +55,7 @@ public abstract class Sensors {
      */
     private static DigitalInput initSwitch;
 
-    private static final double RANGE_FINDER_MUlTIPLIER = 0.0098;
+    private static final double RANGE_FINDER_MUlTIPLIER = 0.0124;
 
     /**
      * The rotational potentiometer on the arm - goes from 0 to max volts
@@ -148,6 +153,13 @@ public abstract class Sensors {
     public static double getUltrasonicDistance() {
         return getUltrasonic().getVoltage() / RANGE_FINDER_MUlTIPLIER;
     }
+    
+    public static double getFilteredUltrasonicDistance(){
+        if (filteredUltrasonic == null) {
+            filteredUltrasonic = new FilteredUltrasonic();
+        }
+        return filteredUltrasonic.getFilteredDistance();
+    }
 
     /**
      * Returns the arm's rotational potentiometer if it exists. If it does not,
@@ -205,6 +217,20 @@ public abstract class Sensors {
             winchLimitSwitch = new DigitalInput(RobotMap.WINCH_LIMIT_SWITCH);
         }
         return winchLimitSwitch;
+    }
+    
+    public static DigitalInput getAutoSwitch1() {
+        if (autoSwitch1 == null) {
+            autoSwitch1 = new DigitalInput(RobotMap.AUTO_SWITCH1);
+        }
+        return autoSwitch1;
+    }
+    
+    public static DigitalInput getAutoSwitch2() {
+        if (autoSwitch2 == null) {
+            autoSwitch2 = new DigitalInput(RobotMap.AUTO_SWITCH2);
+        }
+        return autoSwitch2;
     }
 
     //TODO: Rename

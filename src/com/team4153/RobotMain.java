@@ -18,6 +18,7 @@ import com.team4153.systems.Winch;
 import com.team4153.util.DashboardCommunication;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -63,12 +64,14 @@ public class RobotMain extends IterativeRobot {
 
     int counter = 0;
     boolean withinFiringDistance = false;
+    boolean withinSlowdownDistance = false;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+        
         chassis = new Chassis();
         arm = new Arm();
         flippers = new Flippers();
@@ -82,12 +85,20 @@ public class RobotMain extends IterativeRobot {
         //storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
+        dashboardComm.execute();
     }
 
     /**
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        dashboardComm.execute();
+        try {
+            System.out.println("Arbitrary Drive value: " + chassis.rightFront.getX());
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+        
         /*if (autoStartTime == -1) {
          autoStartTime = System.currentTimeMillis();
          System.out.println("Drive Start");
@@ -115,20 +126,21 @@ public class RobotMain extends IterativeRobot {
         // if the robot is already withing the firing distance we do not want to
         // run any of the movement code - this 'if' makes sure of that
         if (!withinFiringDistance) {
-            
+            System.out.println("distance "+distance);
             // if the robot has run longer than the exception stop time it sets up
             // as if it were within range - there is probably something wrong with
             // the ultrasonic
             if (distance >= fireDistance && getMatchTime() < EXCEPTION_STOP_TIME) {
-                if (distance >= fireDistance * AUTONOMOUS_SLOWDOWN_PERCENT) {
+                if (distance >= fireDistance * AUTONOMOUS_SLOWDOWN_PERCENT && !withinSlowdownDistance) {
                     chassis.driveForward(MAX_AUTONOMOUS_SPEED);
                     System.out.println("Full Speed: " + distance);
                 } else {
                     chassis.driveForward(MAX_AUTONOMOUS_SPEED * AUTONOMOUS_SLOWDOWN_AMOUNT);
                     System.out.println("Slow Down Speed: " + distance);
+                    withinSlowdownDistance = true;
                 }
                 //SmartDashboard.putNumber("Counter", counter++);
-                SmartDashboard.putNumber("Ultrasonic Running", distance);
+//                SmartDashboard.putNumber("Ultrasonic Running", distance);
                 counter = 0;
             } else {
                 withinFiringDistance = true;
@@ -170,6 +182,7 @@ public class RobotMain extends IterativeRobot {
         resetAuto();
         autoStartTime = System.currentTimeMillis();
         angleTable.execute(-1);
+        dashboardComm.execute();
     }
 
     /**
@@ -182,6 +195,7 @@ public class RobotMain extends IterativeRobot {
         autoShot = false;
         withinFiringDistance = false;
         counter = 0;
+        dashboardComm.execute();
     }
     
     public static long getMatchTime (){

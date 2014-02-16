@@ -13,13 +13,13 @@ package com.team4153;
 public class RobotConstants {
     public static final double FORWARD_ARM_LIMIT = 1.35;
     public static final double MIDDLE_ARM_LIMIT = 2.28;
-    public static final double BACK_ARM_LIMIT = 3.14;
-    public static final double WINCH_POWER = 1;
+    public static final double BACK_ARM_LIMIT = 2.9;
+    public static final double WINCH_POWER = -0.5;
     public static final int WINCH_HALF_TIME = 1000;
     /**
      * The arm tolerance in the + and - direction.
      */
-    public static final double ARM_TOLERANCE = 1;
+    public static final double ARM_TOLERANCE = 0.07;
     /**
      * The angle difference when the motor starts slowing down
      */
@@ -41,4 +41,6 @@ public class RobotConstants {
      * The maximum power the drive will use.
      */
     public static final int DRIVE_POWER = 250;
+    
+    public static final double DISTANCE_THRESHHOLD = 26.0;
 }

@@ -5,6 +5,7 @@
  */
 package com.team4153.util;
 
+import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import com.team4153.systems.Chassis;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +57,9 @@ public class DashboardCommunication {
         SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
         SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEye().get());
+        SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
+        SmartDashboard.putBoolean("Auto Switch 2", Sensors.getAutoSwitch2().get());
+        
     }
 
 }

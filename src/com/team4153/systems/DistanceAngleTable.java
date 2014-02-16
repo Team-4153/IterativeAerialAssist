@@ -15,8 +15,8 @@ public class DistanceAngleTable extends Thread implements Systems {
 
     Arm arm;
 
-    public static final double distances[] = {100, 120, 130, 140};
-    public static final double angles[] = {68, 55, 48, 45};
+    public static final double distances[] = {100, 120, 130, 140,500};
+    public static final double angles[] = {2.2, 2.0, 1.925, 1.85,1.6};
 
     public DistanceAngleTable(Arm arm) {
         this.arm = arm;
@@ -31,20 +31,31 @@ public class DistanceAngleTable extends Thread implements Systems {
     public void execute(int buttonNumber) {
         double angle = calculateAngle(Sensors.getUltrasonicDistance());
         // need to check for error here...
-        arm.moveArmToLocation(angle);
+//        System.out.println("Target Angle: " + angle);
+        if(angle != -1.0){
+            arm.moveArmTowardLocation(angle);
+        }
     }
 
     private double calculateAngle(double distance) {
         int distanceIndex = 0;
-        while (getDistanceAt(distanceIndex) < distance) {
-            distanceIndex++;
-        }
-        // you can extrapolate on either end of the angles and distance
-        // whether you should is another question.
-        if (distanceIndex > 0 && distanceIndex < distances.length) {
-            double ratio = (getAngleAt(distanceIndex) - getAngleAt(distanceIndex - 1)) / (getDistanceAt(distanceIndex) - getDistanceAt(distanceIndex - 1));
-            double angle = getAngleAt(distanceIndex - 1) + ratio * (distance - getDistanceAt(distanceIndex - 1));
-            return angle;
+        try {
+            while (getDistanceAt(distanceIndex) < distance) {
+                distanceIndex++;
+            }
+            // you can extrapolate on either end of the angles and distance
+            // whether you should is another question.
+//            System.out.println("distance in method: " + distance);
+//            System.out.println("distance index: " + distanceIndex);
+            if (distanceIndex > 0 && distanceIndex < distances.length) {
+
+                double ratio = (getAngleAt(distanceIndex) - getAngleAt(distanceIndex - 1)) / (getDistanceAt(distanceIndex) - getDistanceAt(distanceIndex - 1));
+                double angle = getAngleAt(distanceIndex - 1) + ratio * (distance - getDistanceAt(distanceIndex - 1));
+                return angle;
+
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            ex.printStackTrace();
         }
         return -1;
     }
@@ -67,5 +78,4 @@ public class DistanceAngleTable extends Thread implements Systems {
 //            ///...
 //        }
 //    }
-
 }
