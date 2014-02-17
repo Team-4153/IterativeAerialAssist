@@ -36,7 +36,7 @@ public class Chassis implements Systems {
      */
     public Chassis() {
         try {
-            ControlMode mode = CANJaguar.ControlMode.kSpeed;
+            ControlMode mode = CANJaguar.ControlMode.kPercentVbus;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
             configSpeedControl(rightFront,true,.3,.005,0);
 //            configSpeedControl(rightFront,false);
@@ -108,14 +108,14 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         // http://www.chiefdelphi.com/forums/showthread.php?t=89721
         // neither seem correct.
 //        jag.setPID(0.4, .005, 0);
-        if (PIDpositive) {
-            jag.setPID(P, I, D);
-        }else{
-            jag.setPID(-P, -I, -D);
-        }
-        jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-        jag.configEncoderCodesPerRev(CPR);
-//        jag.setVoltageRampRate(VOLTAGE_RAMP);
+//        if (PIDpositive) {
+//            jag.setPID(P, I, D);
+//        }else{
+//            jag.setPID(-P, -I, -D);
+//        }
+//        jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+//        jag.configEncoderCodesPerRev(CPR);
+////        jag.setVoltageRampRate(VOLTAGE_RAMP);
         jag.enableControl();
 
 //        System.out.println("Control Mode = " + jag.getControlMode());
@@ -211,9 +211,9 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
     /**
      * Makes the robot chassis
      */
-    public void driveForward(double maxOutput){
-        drive.setMaxOutput(maxOutput);
-        drive.mecanumDrive_Cartesian(0,-1,0,Sensors.getGyro().getAngle());
+    public void driveForward(double input){
+//        drive.setMaxOutput(maxOutput);
+        drive.mecanumDrive_Cartesian(0,-input,0,Sensors.getGyro().getAngle());
     }
     
     //to test rotation in autonomous. LT 

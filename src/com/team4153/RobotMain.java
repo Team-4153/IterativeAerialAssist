@@ -27,7 +27,7 @@ public class RobotMain extends IterativeRobot {
     
     DashboardCommunication dashboardComm;
     private final double FIRE_DISTANCE = 120;
-    private final double MAX_AUTONOMOUS_SPEED = 200;
+    private final double MAX_AUTONOMOUS_SPEED = 0.5;
 
     public static final int OVERSHOOT_CORRECTION = 6;
     public static final int ULTRASONIC_DISPLACEMENT = 5;
