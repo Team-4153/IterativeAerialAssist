@@ -85,7 +85,7 @@ public class Flippers implements Systems {
         public void run() {
             if (open) {
                 if (buttonNumber == RobotMap.JSBUTTON_FLIPPERS_GRAB) {
-                    while (!Sensors.getPhotoEyeGrab().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_GRAB)) {
+                    while (!Sensors.getPhotoEyeRight().get() && !Sensors.getPhotoEyeLeft().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_GRAB)) {
                         System.out.println("Waiting for photo eye");
                         try {
                             Thread.sleep(20);
@@ -100,9 +100,8 @@ public class Flippers implements Systems {
                         rightClose.set(true);
                         open = false;
                     }
-                }
-                if (buttonNumber == RobotMap.JSBUTTON_FLIPPERS_CATCH) {
-                    while (!Sensors.getPhotoEyeCatch().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_CATCH)) {
+                }else if (buttonNumber == RobotMap.JSBUTTON_FLIPPERS_CATCH) {
+                    while (!Sensors.getPhotoEyeLeftFar().get() && !Sensors.getPhotoEyeRightFar().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_CATCH)) {
                         System.out.println("Waiting for photo eye");
                         try {
                             Thread.sleep(20);
@@ -118,14 +117,14 @@ public class Flippers implements Systems {
                         rightClose.set(true);
                         open = false;
                     }
-                } /*else {
+                } else {
                     leftOpen.set(false);
                     leftClose.set(true);
                     rightOpen.set(false);
                     rightClose.set(true);
                     open = false;
 
-                }*/
+                }
             } else {
 
                 System.out.println("Opening");

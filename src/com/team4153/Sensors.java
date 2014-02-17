@@ -48,14 +48,15 @@ public abstract class Sensors {
     private static DigitalInput autoSwitch1;
     private static DigitalInput autoSwitch2;
 
-    private static DigitalInput photoEyeGrab;
-    private static DigitalInput photoEyeCatch;
+    private static DigitalInput photoEyeLeftGrab;
+    private static DigitalInput photoEyeLeftCatch;
+    private static DigitalInput photoEyeRightGrab;
+    private static DigitalInput photoEyeRightCatch;
 
     /**
      * Switch to indicate robot needs initial setup (arm within competition
      * bounds, compressor maybe on, etc.).
      */
-    private static DigitalInput initSwitch;
 
     static {
         getGyro();
@@ -199,21 +200,21 @@ public abstract class Sensors {
      *
      * @return The arm's left flipper
      */
-    public static DigitalInput getleftFlipper() {
-        if (leftFlipper == null) {
-            leftFlipper = new DigitalInput(RobotMap.MRS_LEFT);
-        }
-        
-        return leftFlipper;
-    }
+//    public static DigitalInput getleftFlipper() {
+//        if (leftFlipper == null) {
+//            leftFlipper = new DigitalInput(RobotMap.MRS_LEFT);
+//        }
+//        
+//        return leftFlipper;
+//    }
 
     /**
      *
      * @return
      */
-    public static boolean areFlippersOpen() {
-        return !getleftFlipper().get();
-    }
+//    public static boolean areFlippersOpen() {
+//        return !getleftFlipper().get();
+//    }
 
     /**
      * Returns the winch limit switch if it exists. If it does not, initializes
@@ -275,18 +276,31 @@ public abstract class Sensors {
      *
      * @return The photo eye
      */
-    public static DigitalInput getPhotoEyeGrab() {
-        if (photoEyeGrab == null) {
-            photoEyeGrab = new DigitalInput(RobotMap.PHOTO_EYE_GRAB);
+    public static DigitalInput getPhotoEyeLeft() {
+        if (photoEyeLeftGrab == null) {
+            photoEyeLeftGrab = new DigitalInput(RobotMap.PHOTO_EYE_LEFT_CLOSE);
         }
-        return photoEyeGrab;
+        return photoEyeLeftGrab;
     }
 
-    public static DigitalInput getPhotoEyeCatch() {
-        if (photoEyeCatch == null) {
-            photoEyeCatch = new DigitalInput(RobotMap.PHOTO_EYE_CATCH);
+    public static DigitalInput getPhotoEyeRight() {
+        if (photoEyeRightGrab == null) {
+            photoEyeRightGrab = new DigitalInput(RobotMap.PHOTO_EYE_RIGHT_CLOSE);
         }
-        return photoEyeCatch;
+        return photoEyeRightGrab;
+    }
+    public static DigitalInput getPhotoEyeLeftFar() {
+        if (photoEyeLeftCatch == null) {
+            photoEyeLeftCatch = new DigitalInput(RobotMap.PHOTO_EYE_LEFT_FAR);
+        }
+        return photoEyeLeftCatch;
+    }
+
+    public static DigitalInput getPhotoEyeRightFar() {
+        if (photoEyeRightCatch == null) {
+            photoEyeRightCatch = new DigitalInput(RobotMap.PHOTO_EYE_RIGHT_FAR);
+        }
+        return photoEyeRightCatch;
     }
 
 

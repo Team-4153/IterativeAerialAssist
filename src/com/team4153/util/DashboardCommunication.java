@@ -52,12 +52,13 @@ public class DashboardCommunication {
         SmartDashboard.putNumber("Distance Ultrasonic 1", Sensors.getUltrasonicDistance());
         SmartDashboard.putNumber("Distance Ultrasonic 2", Sensors.getUltrasonicDistance2());
         SmartDashboard.putNumber("String Pot", Sensors.getStringPotAngle());
-        SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
+//        SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
         SmartDashboard.putBoolean("Winch Limit", Sensors.getWinchLimitSwitch().get());
 //        SmartDashboard.putBoolean("LimitSwitch 2", Sensors.getLimitSwitch2().get());
 //        SmartDashboard.putBoolean("LimitSwitch 3", Sensors.getLimitSwitch3().get());
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
-        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEyeGrab().get());
+        SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEyeLeft().get());
+        SmartDashboard.putBoolean("Photo Eye 2", Sensors.getPhotoEyeRight().get());
         SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
         SmartDashboard.putBoolean("Auto Switch 2", Sensors.getAutoSwitch2().get());
         

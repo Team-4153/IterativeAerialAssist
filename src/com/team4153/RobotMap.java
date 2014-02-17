@@ -57,7 +57,7 @@ public class RobotMap {
     public static final int WINCH_LOCK =3;
     public static final int WINCH_RELEASE = 4;
     
-    public static final int MRS_LEFT=10;
+//    public static final int MRS_LEFT=10;
     
     
     public static final int WINCH_LIMIT_SWITCH = 11;
@@ -67,7 +67,9 @@ public class RobotMap {
     public static final int AUTO_SWITCH1 = 2;
    
     
-    public static final int PHOTO_EYE_GRAB=9;
-    public static final int PHOTO_EYE_CATCH = 10; //TODO: Fix the numbers
+    public static final int PHOTO_EYE_LEFT_CLOSE = 10;
+    public static final int PHOTO_EYE_LEFT_FAR = 9;
+    public static final int PHOTO_EYE_RIGHT_CLOSE = 8; //TODO: Fix the numbers
+    public static final int PHOTO_EYE_RIGHT_FAR = 6;
     
 }
