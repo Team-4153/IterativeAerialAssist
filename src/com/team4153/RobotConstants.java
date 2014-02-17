@@ -60,7 +60,7 @@ public class RobotConstants {
     public static final int EXCEPTION_FIRE_TIME = 9000;
     public final static double BASE_FIRE_DISTANCE = 120;
     public final static double MAX_AUTONOMOUS_SPEED = 1;
-    public static double DROPPING_ANGLE = 1;
+    public final static double DROPPING_ANGLE = 2;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
