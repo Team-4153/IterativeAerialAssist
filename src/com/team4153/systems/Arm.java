@@ -24,7 +24,7 @@ public class Arm implements Systems {
     private CANJaguar rightMotor;
     private double desiredAngle;
     private boolean stopped = true;
-    private double stoppedAt = 1.4;
+    private double stoppedAt;
 
     /**
      *
@@ -66,8 +66,13 @@ public class Arm implements Systems {
         }
         Joystick joystick = Sensors.getManipulatorJoystick();
         double joystickAxis = joystick.getAxis(AxisType.kY) * 3 / 5;
+        if(Math.abs(joystickAxis) < 0.1){
+            joystickAxis = 0;
+        }
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
         moveArm(joystickAxis);
+        System.out.println("Arm Stopped: " + stopped);
+        System.out.println("Arm Stopped At: " + stoppedAt);
         if(stopped){
             moveArmTowardLocation(stoppedAt);
         }

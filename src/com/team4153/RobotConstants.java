@@ -64,7 +64,7 @@ public class RobotConstants {
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
-    public static double SHOOTING_ANGLE = 2.5;
+    public static double SHOOTING_ANGLE = 1.95;
     public static final double INITIAL_P = 0.3;
     public static final double INITIAL_I = 0.005;
     public static final double INITIAL_D = 0;
