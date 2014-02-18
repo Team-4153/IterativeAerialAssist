@@ -49,8 +49,8 @@ public class DashboardCommunication {
         }
         
         SmartDashboard.putBoolean("Winch Limit", Sensors.getWinchLimitSwitch().get());
-        SmartDashboard.putNumber("Distance Ultrasonic 1", Sensors.getUltrasonicDistance());
-        SmartDashboard.putNumber("Distance Ultrasonic 2", Sensors.getUltrasonicDistance2());
+        SmartDashboard.putNumber("Distance Ultrasonic: ", Sensors.getUltrasonicDistance());
+        SmartDashboard.putNumber("Distance Ultrasonic filtered: ", Sensors.getFilteredUltrasonicDistance());
         SmartDashboard.putNumber("String Pot", Sensors.getStringPotAngle());
 //        SmartDashboard.putBoolean("Flippers Open:", Sensors.areFlippersOpen());
         SmartDashboard.putBoolean("Winch Limit", Sensors.getWinchLimitSwitch().get());

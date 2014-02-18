@@ -11,15 +11,16 @@ package com.team4153;
  * @author 4153student
  */
 public class RobotConstants {
-    public static final double FORWARD_ARM_LIMIT = 1.35;
-    public static final double MIDDLE_ARM_LIMIT = 2.28;
-    public static final double BACK_ARM_LIMIT = 2.9;
+    public static final double STRING_POT_ADJUSTMENT = 10.25/5;
+    public static final double FORWARD_ARM_LIMIT = 1.35*STRING_POT_ADJUSTMENT;
+    public static final double MIDDLE_ARM_LIMIT = 2.28*STRING_POT_ADJUSTMENT;
+    public static final double BACK_ARM_LIMIT = 2.4*STRING_POT_ADJUSTMENT;
     public static final double WINCH_POWER = -0.5;
     public static final int WINCH_HALF_TIME = 1000;
     /**
      * The arm tolerance in the + and - direction.
      */
-    public static final double ARM_TOLERANCE = 0.06;
+    public static final double ARM_TOLERANCE = 0.015;
     /**
      * The angle difference when the motor starts slowing down
      */
@@ -30,12 +31,12 @@ public class RobotConstants {
      */
     public static final double ARM_MOTOR_MAX_POWER = 1;
     
-    public static final double ARM_POSITION_HOLD_POWER = 0.1;
+//    public static final double ARM_POSITION_HOLD_POWER = 0.1;
 
     /**
      *
      */
-    public static final double ARM_MOTION_RANGE = FORWARD_ARM_LIMIT+0*MIDDLE_ARM_LIMIT-BACK_ARM_LIMIT ;
+    public static final double ARM_MOTION_RANGE = FORWARD_ARM_LIMIT-BACK_ARM_LIMIT ;
     
     public static final int JITTER_OPEN_DELAY = 30;
     public static final int JITTER_CLOSE_DELAY = 50;
@@ -45,31 +46,29 @@ public class RobotConstants {
      */
     public static final int DRIVE_POWER = 350;
     
-    public static final double DISTANCE_THRESHHOLD = 50.0;
-    
     public static final double RANGE_FINDER_MUlTIPLIER = 0.0124;
     
     public static final double RANGE_FINDER_MUlTIPLIER2 = 0.098;
 
-    public static final double PICKUP_POSITION=1.4;
+    public static final double PICKUP_POSITION=1.38*STRING_POT_ADJUSTMENT;
     public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
     public static final int ULTRASONIC_DISPLACEMENT = 5;
-    public static final int OVERSHOOT_CORRECTION = 6;
+    public static final int OVERSHOOT_CORRECTION = 4;
     public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
     public static final int EXCEPTION_STOP_TIME = 5000;
     public static final int EXCEPTION_FIRE_TIME = 9000;
-    public final static double BASE_FIRE_DISTANCE = 120;
-    public final static double MAX_AUTONOMOUS_SPEED = 1;
-    public final static double DROPPING_ANGLE = 2;
+    public final static double BASE_FIRE_DISTANCE = 96;
+    public final static double MAX_AUTONOMOUS_SPEED = 0.7;
+    public final static double DROPPING_ANGLE = 2*STRING_POT_ADJUSTMENT;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
-    public static double SHOOTING_ANGLE = 1.95;
+    public static double SHOOTING_ANGLE = 1.95*STRING_POT_ADJUSTMENT;
     public static final double INITIAL_P = 0.3;
     public static final double INITIAL_I = 0.005;
     public static final double INITIAL_D = 0;
-    public static final double[] ANGLES = {1.96, 1.95, 1.945, 1.94, 1.7};
-    public static final double[] DISTANCES = {84, 96, 108, 120, 500};
+    public static final double[] ANGLES = {4.018, 1.96*STRING_POT_ADJUSTMENT, 1.95*STRING_POT_ADJUSTMENT, 1.945*STRING_POT_ADJUSTMENT, 1.94*STRING_POT_ADJUSTMENT, 1.7*STRING_POT_ADJUSTMENT};
+    public static final double[] DISTANCES = {72, 84, 96, 108, 120, 500};
     public static final int LR_SCORE_LIMIT = 50;
     public static final int ASPECT_RATIO_LIMIT = 55;
     public static final double VIEW_ANGLE = 49; //Axis M1013
@@ -100,9 +99,12 @@ public class RobotConstants {
     /**
      * The maximum amount an ultrasonic value can vary from the average without being discarded.
      */
-    public static final double ULTRASONIC_FILTER_DISTANCE_THRESHHOLD = 20;
+    public static final double ULTRASONIC_FILTER_DISTANCE_THRESHHOLD = 50;
     /**
      * The maximum number of ultrasonic values that will be discarded before the filter resets.
      */
     public static final int MAX_ULTRASONIC_FILTER_DISCARD = 5;
+    public static final double MAX_RELEVANT_ULTRASONIC_VALUE = 260;
+    
+    public static final int LOW_GOAL_TIME=2400;
 }

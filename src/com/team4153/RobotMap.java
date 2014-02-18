@@ -34,6 +34,8 @@ public class RobotMap {
     public static final int JSBUTTON_JITTER=9;
     public static final int JSBUTTON_GO_TO_PICKUP = 2;
     
+    public static final int JSBUTTON_DRIVESTRAIGHT=11;
+    
     public static final int JAG_LEFT_FRONT_MOTOR = 10;
     public static final int JAG_LEFT_REAR_MOTOR = 4;
     public static final int JAG_RIGHT_FRONT_MOTOR = 12;
@@ -64,7 +66,9 @@ public class RobotMap {
     public static final int LIMIT_SWITCH_2 = 12;
     public static final int LIMIT_SWITCH_3 = 13;
     public static final int AUTO_SWITCH2 = 3;
-    public static final int AUTO_SWITCH1 = 2;
+    public static final int AUTO_SWITCH1 = 2;    
+    public static final int BACKING_SWITCH = 1;
+
    
     
     public static final int PHOTO_EYE_LEFT_CLOSE = 10;

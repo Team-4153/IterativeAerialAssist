@@ -23,8 +23,8 @@ public class Arm implements Systems {
     private CANJaguar leftMotor;
     private CANJaguar rightMotor;
     private double desiredAngle;
-    private boolean stopped = true;
-    private double stoppedAt;
+//    private boolean stopped = true;
+//    private double stoppedAt;
 
     /**
      *
@@ -45,14 +45,16 @@ public class Arm implements Systems {
      */
     public void moveArmTowardLocation(double angle) {
         desiredAngle = angle;
-        if (Math.abs(Sensors.getStringPotAngle() - desiredAngle) >= RobotConstants.ARM_TOLERANCE) {
-            System.out.println("Moving Arm to angle "
-                    + (Sensors.getStringPotAngle()));
-            moveArm(((desiredAngle - Sensors.getStringPotAngle())));
-            System.out.println("Power: " + ((desiredAngle
-                    - Sensors.getStringPotAngle())));
+        double offset = desiredAngle - Sensors.getStringPotAngle();
+        if (Math.abs(offset) >= RobotConstants.ARM_TOLERANCE) {
+//            System.out.println("Moving Arm to angle "
+//                    + desiredAngle);
+            moveArm(Math.sqrt(Math.abs(offset))*Chassis.getSign(offset));
+            System.out.println("offset: " + offset);
+            System.out.println("Power: " + (Math.sqrt(Math.abs(offset))*Chassis.getSign(offset)));
         } else {
             moveArm(0);
+//            stoppedAt = desiredAngle;
         }
     }
 
@@ -60,7 +62,11 @@ public class Arm implements Systems {
      *
      */
     public void execute(int buttonNumber) {
-        if(buttonNumber==2){
+        if(buttonNumber==RobotMap.JSBUTTON_GO_TO_PICKUP){
+            moveArmTowardLocation(RobotConstants.PICKUP_POSITION);
+            return;
+        }
+        if(buttonNumber==RobotMap.JSBUTTON_AUTO_AIM){
             moveArmTowardLocation(RobotConstants.PICKUP_POSITION);
             return;
         }
@@ -71,11 +77,6 @@ public class Arm implements Systems {
         }
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
         moveArm(joystickAxis);
-        System.out.println("Arm Stopped: " + stopped);
-        System.out.println("Arm Stopped At: " + stoppedAt);
-        if(stopped){
-            moveArmTowardLocation(stoppedAt);
-        }
     }
 
     /**
@@ -94,13 +95,19 @@ public class Arm implements Systems {
             } catch (CANTimeoutException ex) {
                 ex.printStackTrace();
             }
-            stopped = false;
+//            stopped = false;
             return true;
         } else {
-            if(!stopped){
-                stopped = true;
-                stoppedAt = Sensors.getStringPotAngle();
+            try {
+                rightMotor.setX(0);
+                leftMotor.setX(0);
+            } catch (CANTimeoutException ex) {
+                ex.printStackTrace();
             }
+//            if(!stopped){
+//                stopped = true;
+//                stoppedAt = Sensors.getStringPotAngle();
+//            }
             return false;
         }
 
@@ -121,32 +128,4 @@ public class Arm implements Systems {
     public void setDesiredAngle(double angle) {
         desiredAngle = angle;
     }
-
-    /**
-     * This thread should no longer be used - Calling multiple instances of it
-     * may be causing bugs
-     */
-    protected class AutoArmThread extends Thread {
-
-        /**
-         *
-         */
-        public void run() {
-            while (Math.abs(Sensors.getStringPotAngle() - desiredAngle) >= RobotConstants.ARM_TOLERANCE) {
-                System.out.println("Moving Arm to angle "
-                        + (Sensors.getStringPotAngle() - desiredAngle));
-                moveArm(-((desiredAngle - Sensors.getStringPotAngle())));
-                System.out.println("Power: " + ((desiredAngle
-                        - Sensors.getStringPotAngle()) / (RobotConstants.ARM_MOTION_RANGE * 0.5)));
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-            }
-            moveArm(0);
-
-        }
-    }
-
 }

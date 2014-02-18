@@ -58,9 +58,9 @@ public class RobotMain extends IterativeRobot {
         flippers = new Flippers();
         winch = new Winch();
         shooter = new Shooter(flippers, winch);
-        joystick = new JoystickHandler(shooter, flippers, arm,winch);
-        dashboardComm = new DashboardCommunication(chassis);
         angleTable = new DistanceAngleTable(arm);
+        joystick = new JoystickHandler(shooter, flippers, arm,winch,chassis,angleTable);
+        dashboardComm = new DashboardCommunication(chassis);
         vision = new Vision();
         storer = new ImageStorer(vision.getCamera());
         autonomous=new Autonomous(chassis,shooter,arm, flippers);
@@ -78,13 +78,13 @@ public class RobotMain extends IterativeRobot {
         dashboardComm.execute();
         boolean as1=Sensors.getAutoSwitch1().get();
         boolean as2=Sensors.getAutoSwitch2().get();
-        
-        if(as1&&!as2){
-            autonomous.shootHighGoal();
-        }
-        if(!as1&&as2){
+//        if(as1&&!as2){
             autonomous.dropInLowGoal();
-        }
+//        }
+//        if(!as1&&as2){
+//            autonomous.dropInLowGoal();
+//        }
+        
     }
 
     /**
@@ -92,7 +92,7 @@ public class RobotMain extends IterativeRobot {
      * shooting angle.
      */
     public void autonomousInit() {
-        
+        autonomous.init();
         dashboardComm.execute();
     }
 
@@ -106,6 +106,7 @@ public class RobotMain extends IterativeRobot {
      */
     public void teleopPeriodic() {
 //        startCompressor();
+       
         dashboardComm.execute();
         chassis.execute(-1);
         arm.execute(-1);
@@ -122,6 +123,7 @@ public class RobotMain extends IterativeRobot {
     
     public void disabledInit() {
         Sensors.resetUltrasonicFilter();
+        flippers.close();
     }
 
     /**

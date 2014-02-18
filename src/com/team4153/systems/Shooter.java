@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Victor;
  */
 public class Shooter extends Thread implements Systems {
 
-    public static final int DELAY=10;
+    public static final int DELAY=5;
     
     /**
      * shooter solenoid open

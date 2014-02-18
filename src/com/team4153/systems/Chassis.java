@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Chassis subsystem for mecanum drive
  */
 public class Chassis implements Systems {
+
     private int fieldControl = 1;
     private RobotDrive drive;
     /**
@@ -167,13 +168,13 @@ public class Chassis implements Systems {
         try {
             configSpeedControl(rightFront, true, currentP, currentI, currentD);
 //            configSpeedControl(rightFront,false);
-            
+
             configSpeedControl(rightRear, true, currentP, currentI, currentD);
 //            configSpeedControl(rightRear,false);
-           
+
             configSpeedControl(leftFront, true, currentP, currentI, currentD);
 //            configSpeedControl(leftFront,true);
-            
+
             configSpeedControl(leftRear, true, currentP, currentI, currentD);
 //            configSpeedControl(leftRear,false);
 
@@ -184,15 +185,16 @@ public class Chassis implements Systems {
         }
     }
 
-     public void turn(double direction){
-        drive.mecanumDrive_Cartesian(0, 0, direction-Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
-    }
-    
-    public void driveForward(double input){
-        drive.mecanumDrive_Cartesian(0,-input,0,Sensors.getGyro().getAngle());
+    public void turn(double direction) {
+//        drive.mecanumDrive_Cartesian(0, 0, direction - Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
+          drive.mecanumDrive_Polar(0, 0, direction);
     }
 
-    private int getSign(double val) {
+    public void driveForward(double input) {
+        drive.mecanumDrive_Cartesian(0, -input, 0, Sensors.getGyro().getAngle());
+    }
+
+    public static int getSign(double val) {
         if (val < 0.0) {
             return -1;
         } else if (val > 0.0) {
@@ -293,8 +295,14 @@ public class Chassis implements Systems {
      *
      */
     public void execute(int buttonNumber) {
-        mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
-        if(Sensors.getDriverJoystick().getRawButton(RobotMap.JSBUTTON_JAG_RESET)){
+        if (buttonNumber < 0) {
+            mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
+        }
+        if (buttonNumber==RobotMap.JSBUTTON_DRIVESTRAIGHT){
+            this.driveForward(0.5);
+        }
+        
+        if (Sensors.getDriverJoystick().getRawButton(RobotMap.JSBUTTON_JAG_RESET)) {
             initJags();
         }
     }
