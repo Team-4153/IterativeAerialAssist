@@ -5,6 +5,7 @@
  */
 package com.team4153.systems;
 
+import com.team4153.RobotConstants;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -15,8 +16,6 @@ import edu.wpi.first.wpilibj.Victor;
  * @author 4153student
  */
 public class Shooter extends Thread implements Systems {
-
-    public static final int DELAY=5;
     
     /**
      * shooter solenoid open
@@ -89,7 +88,7 @@ public class Shooter extends Thread implements Systems {
             open.set(true);
             close.set(false);
            try {
-               Thread.sleep(DELAY);
+               Thread.sleep(RobotConstants.DELAY);
            } catch (InterruptedException ex) {
                ex.printStackTrace();
            }

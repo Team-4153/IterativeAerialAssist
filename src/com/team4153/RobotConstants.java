@@ -107,4 +107,5 @@ public class RobotConstants {
     public static final double MAX_RELEVANT_ULTRASONIC_VALUE = 260;
     
     public static final int LOW_GOAL_TIME=2400;
+    public static final int DELAY = 5;
 }
