@@ -63,7 +63,7 @@ public class RobotConstants {
     public final static double BASE_FIRE_DISTANCE = 96;
     public final static double MAX_AUTONOMOUS_SPEED = 0.7;
     public final static double DROPPING_ANGLE = 4.15;
-    public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = 0.12;
+    public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = 0.18;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
