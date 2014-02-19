@@ -59,8 +59,10 @@ public class DashboardCommunication {
         SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
         SmartDashboard.putBoolean("Photo Eye", Sensors.getPhotoEyeLeft().get());
         SmartDashboard.putBoolean("Photo Eye 2", Sensors.getPhotoEyeRight().get());
-        SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
+        //SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
         SmartDashboard.putBoolean("Auto Switch 2", Sensors.getAutoSwitch2().get());
+        SmartDashboard.putBoolean("Auto Switch 3", Sensors.getAutoSwitch3().get());
+        SmartDashboard.putBoolean("Backing Switch", Sensors.getBackingSwitch().get());
         
     }
 

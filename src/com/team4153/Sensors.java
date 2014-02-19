@@ -47,6 +47,8 @@ public abstract class Sensors {
     
     private static DigitalInput autoSwitch1;
     private static DigitalInput autoSwitch2;
+    private static DigitalInput autoSwitch3;
+    private static DigitalInput backingSwitch;
 
     private static DigitalInput photoEyeLeftGrab;
     private static DigitalInput photoEyeLeftCatch;
@@ -171,6 +173,13 @@ public abstract class Sensors {
         }
         return filteredUltrasonic.getFilteredDistance();
     }
+    
+    public static double getSemifilteredUltrasonic(){
+        if (filteredUltrasonic == null) {
+            filteredUltrasonic = new FilteredUltrasonic();
+        }
+        return filteredUltrasonic.getSemifilteredUltrasonic();
+    }
 
     /**
      * Returns the arm's rotational potentiometer if it exists. If it does not,
@@ -230,18 +239,32 @@ public abstract class Sensors {
         return winchLimitSwitch;
     }
     
-    public static DigitalInput getAutoSwitch1() {
+  /*  public static DigitalInput getAutoSwitch1() {
         if (autoSwitch1 == null) {
             autoSwitch1 = new DigitalInput(RobotMap.AUTO_SWITCH1);
         }
         return autoSwitch1;
-    }
+    }*/
     
     public static DigitalInput getAutoSwitch2() {
         if (autoSwitch2 == null) {
             autoSwitch2 = new DigitalInput(RobotMap.AUTO_SWITCH2);
         }
         return autoSwitch2;
+    }
+    
+    public static DigitalInput getAutoSwitch3() {
+        if (autoSwitch3 == null) {
+            autoSwitch3 = new DigitalInput(RobotMap.AUTO_SWITCH_3);
+        }
+        return autoSwitch3;
+    }
+    
+    public static DigitalInput getBackingSwitch() {
+        if (backingSwitch == null) {
+            backingSwitch = new DigitalInput(RobotMap.BACKING_SWITCH);
+        }
+        return backingSwitch;
     }
 
     //TODO: Rename

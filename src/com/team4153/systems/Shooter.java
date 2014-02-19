@@ -31,12 +31,12 @@ public class Shooter extends Thread implements Systems {
      * The length of time (in milliseconds) the winch will be pulled back; 0 or
      * less means go until limit.
      */
-//    private int defaultWinchPullbackTime = 1000;
+    private int defaultWinchPullbackTime = 1000;
 
-//    private boolean pullBackByDefault = false;
+    private boolean pullBackByDefault = false;
 
     private Flippers flippers;//To open flippers when shoot
-//    private Winch winch;
+    private Winch winch;
 
     /**
      *
@@ -45,7 +45,7 @@ public class Shooter extends Thread implements Systems {
         open = new Solenoid(RobotMap.WINCH_LOCK);
         close = new Solenoid(RobotMap.WINCH_RELEASE);
         this.flippers = flippers;
-//        this.winch = winch;
+         this.winch = winch;
         open.set(false);
         close.set(true);
     }
@@ -56,9 +56,9 @@ public class Shooter extends Thread implements Systems {
      *
      * @param time in milliseconds.
      */
-//    public void setDefaultWinchPullbackTime(int time) {
-//        defaultWinchPullbackTime = time;
-//    }
+    public void setDefaultWinchPullbackTime(int time) {
+        defaultWinchPullbackTime = time;
+    }
 
     
 
@@ -105,9 +105,9 @@ public class Shooter extends Thread implements Systems {
             close.set(true);
 
             
-//            if (pullBackByDefault) {
-//                winch.pullBackWinch(defaultWinchPullbackTime);
-//            }
+            if (pullBackByDefault) {
+                winch.pullBackWinch(defaultWinchPullbackTime);
+            }
         }
 
     }

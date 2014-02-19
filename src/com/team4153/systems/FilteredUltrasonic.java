@@ -48,6 +48,19 @@ public class FilteredUltrasonic {
         }
         return getAverage();
     }
+    /**
+    * Returns the value of the ultrasonic unless it is above the max relevant, then
+    * returns average.
+    */
+    public double getSemifilteredUltrasonic(){
+        double distance = Sensors.getUltrasonicDistance();
+        if(distance < RobotConstants.MAX_RELEVANT_ULTRASONIC_VALUE){
+            return distance;
+        }else{
+            return getAverage();
+        }
+    }
+    
     public double getAverage(){
         double total = 0;
         for(int i = 0; i < distanceHistory.length; i++){

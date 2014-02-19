@@ -17,6 +17,8 @@ public class RobotMap {
     // public static final int RANGE_FINDER_PORT = 1;
     // public static final int RANGE_FINDER_MODULE = 2;
     
+    // ********** NOTES!! *************
+    // Do not use autoswitch 1 or channel 2
         
     public static final int DRIVER_JOYSTICK_PORT = 2;
     public static final int MANIPULATOR_JOYSTICK_PORT = 1;
@@ -65,8 +67,9 @@ public class RobotMap {
     public static final int WINCH_LIMIT_SWITCH = 11;
     public static final int LIMIT_SWITCH_2 = 12;
     public static final int LIMIT_SWITCH_3 = 13;
+    public static final int AUTO_SWITCH_3 = 4;
     public static final int AUTO_SWITCH2 = 3;
-    public static final int AUTO_SWITCH1 = 2;    
+//    public static final int AUTO_SWITCH1 = 12;
     public static final int BACKING_SWITCH = 1;
 
    

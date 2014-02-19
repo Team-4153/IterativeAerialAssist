@@ -59,11 +59,11 @@ public class RobotMain extends IterativeRobot {
         winch = new Winch();
         shooter = new Shooter(flippers, winch);
         angleTable = new DistanceAngleTable(arm);
-        joystick = new JoystickHandler(shooter, flippers, arm,winch,chassis,angleTable);
+        joystick = new JoystickHandler(shooter, flippers, arm, winch, chassis, angleTable);
         dashboardComm = new DashboardCommunication(chassis);
         vision = new Vision();
         storer = new ImageStorer(vision.getCamera());
-        autonomous=new Autonomous(chassis,shooter,arm, flippers);
+        autonomous = new Autonomous(chassis, shooter, arm, flippers, angleTable);
         //storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
@@ -76,14 +76,15 @@ public class RobotMain extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         dashboardComm.execute();
-        boolean as1=Sensors.getAutoSwitch1().get();
+        //boolean as1=Sensors.getAutoSwitch1().get();
         boolean as2=Sensors.getAutoSwitch2().get();
-//        if(as1&&!as2){
-            autonomous.dropInLowGoal();
-//        }
-//        if(!as1&&as2){
-//            autonomous.dropInLowGoal();
-//        }
+        if(as2){
+            autonomous.shootHighGoal();
+        }
+        else{
+            //TODO: make this boolean right/left based on switch (true = right)
+            autonomous.dropInLowGoal(true);
+        }
         
     }
 

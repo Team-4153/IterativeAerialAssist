@@ -23,6 +23,7 @@ public class Arm implements Systems {
     private CANJaguar leftMotor;
     private CANJaguar rightMotor;
     private double desiredAngle;
+    private double joystickArmLocation = RobotConstants.MIDDLE_ARM_LIMIT;
 //    private boolean stopped = true;
 //    private double stoppedAt;
 
@@ -44,14 +45,14 @@ public class Arm implements Systems {
      * @param angle
      */
     public void moveArmTowardLocation(double angle) {
+        new RuntimeException("Arm Moved").printStackTrace();
         desiredAngle = angle;
         double offset = desiredAngle - Sensors.getStringPotAngle();
-        if (Math.abs(offset) >= RobotConstants.ARM_TOLERANCE) {
-//            System.out.println("Moving Arm to angle "
-//                    + desiredAngle);
-            moveArm(Math.sqrt(Math.abs(offset))*Chassis.getSign(offset));
-            System.out.println("offset: " + offset);
-            System.out.println("Power: " + (Math.sqrt(Math.abs(offset))*Chassis.getSign(offset)));
+        if (Math.abs(offset) >= getTolerance()) {
+            moveArm(Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset));
+            System.out.println("Angle: " + desiredAngle);
+//            System.out.println("offset: " + offset);
+//            System.out.println("Power: " + (Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset)));
         } else {
             moveArm(0);
 //            stoppedAt = desiredAngle;
@@ -62,21 +63,37 @@ public class Arm implements Systems {
      *
      */
     public void execute(int buttonNumber) {
-        if(buttonNumber==RobotMap.JSBUTTON_GO_TO_PICKUP){
-            moveArmTowardLocation(RobotConstants.PICKUP_POSITION);
+        if (buttonNumber == RobotMap.JSBUTTON_GO_TO_PICKUP) {
+            joystickArmLocation = RobotConstants.PICKUP_POSITION;
             return;
         }
-        if(buttonNumber==RobotMap.JSBUTTON_AUTO_AIM){
-            moveArmTowardLocation(RobotConstants.PICKUP_POSITION);
+        if (buttonNumber == RobotMap.JSBUTTON_AUTO_AIM) {
+            autoAimArmLocation();
             return;
         }
         Joystick joystick = Sensors.getManipulatorJoystick();
         double joystickAxis = joystick.getAxis(AxisType.kY) * 3 / 5;
-        if(Math.abs(joystickAxis) < 0.1){
+        if (Math.abs(joystickAxis) < 0.1) {
             joystickAxis = 0;
         }
+        if ((joystickAxis > 0 && joystickArmLocation < RobotConstants.BACK_ARM_LIMIT)
+                || (joystickAxis < 0 && joystickArmLocation > RobotConstants.FORWARD_ARM_LIMIT)) {
+            joystickArmLocation += joystickAxis * RobotConstants.PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER;
+        }
         SmartDashboard.putNumber("Arm Angle: ", Sensors.getStringPotAngle());
-        moveArm(joystickAxis);
+        moveArmTowardLocation(joystickArmLocation);
+    }
+
+    public void autoAimArmLocation() {
+        joystickArmLocation = DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
+    }
+
+    public static double getTolerance() {
+        if (Math.abs(Sensors.getManipulatorJoystick().getAxis(AxisType.kY) * 3 / 5) < 0.1) {
+            return RobotConstants.ARM_TOLERANCE;
+        } else {
+            return 0;
+        }
     }
 
     /**

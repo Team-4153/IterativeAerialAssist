@@ -85,7 +85,7 @@ public class Flippers implements Systems {
         public void run() {
             if (open) {
                 if (buttonNumber == RobotMap.JSBUTTON_FLIPPERS_GRAB) {
-                    while (Sensors.getPhotoEyeRight().get() && Sensors.getPhotoEyeLeft().get() && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_GRAB)) {
+                    while ((Sensors.getPhotoEyeRight().get() || Sensors.getPhotoEyeLeft().get()) && Sensors.getManipulatorJoystick().getRawButton(RobotMap.JSBUTTON_FLIPPERS_GRAB)) {
                         System.out.println("Waiting for photo eye");
                         try {
                             Thread.sleep(20);

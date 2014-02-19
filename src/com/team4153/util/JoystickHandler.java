@@ -40,12 +40,13 @@ public class JoystickHandler {
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_FLIPPERS_CATCH,flippers,true));
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_TRIGGER,shooter,true));
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_JITTER,new Jittering(flippers),false));
-        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM,new DistanceAngleTable(arm),false));
+//        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM,new DistanceAngleTable(arm),false));
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_FORCE_FLIPPERS_TOGGLE,flippers,true));
 //        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_WINCH_HALF,winch,true));
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_WINCH_FULL,winch,true));
+        //No Pickup Position anymore, use lower limit of the arms
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_GO_TO_PICKUP,arm,false));
-        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM,angleTable,false));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM,arm,false));
         buttons.addElement(new ButtonHandler(Sensors.getDriverJoystick(),RobotMap.JSBUTTON_DRIVESTRAIGHT,chassis,false));
     }
     

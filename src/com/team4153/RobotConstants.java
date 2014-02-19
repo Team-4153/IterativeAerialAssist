@@ -12,10 +12,10 @@ package com.team4153;
  */
 public class RobotConstants {
     public static final double STRING_POT_ADJUSTMENT = 10.25/5;
-    public static final double FORWARD_ARM_LIMIT = 1.35*STRING_POT_ADJUSTMENT;
+    public static final double FORWARD_ARM_LIMIT = 2.77;
     public static final double MIDDLE_ARM_LIMIT = 2.28*STRING_POT_ADJUSTMENT;
     public static final double BACK_ARM_LIMIT = 2.4*STRING_POT_ADJUSTMENT;
-    public static final double WINCH_POWER = -0.5;
+    public static final double WINCH_POWER = -1;
     public static final int WINCH_HALF_TIME = 1000;
     /**
      * The arm tolerance in the + and - direction.
@@ -50,21 +50,25 @@ public class RobotConstants {
     
     public static final double RANGE_FINDER_MUlTIPLIER2 = 0.098;
 
-    public static final double PICKUP_POSITION=1.38*STRING_POT_ADJUSTMENT;
+    public static final double PICKUP_POSITION=2.8;
     public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
     public static final int ULTRASONIC_DISPLACEMENT = 5;
     public static final int OVERSHOOT_CORRECTION = 4;
     public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
     public static final int EXCEPTION_STOP_TIME = 5000;
     public static final int EXCEPTION_FIRE_TIME = 9000;
+    public static final int AUTONOMOUS_FIRE_WAIT_TIME=500;
+    public static final int AUTONOMOUS_BACKUP_WAIT_TIME = 500;
+    public static final int AUTONOMOUS_BACKUP_RUN_TIME = 1500;
     public final static double BASE_FIRE_DISTANCE = 96;
     public final static double MAX_AUTONOMOUS_SPEED = 0.7;
-    public final static double DROPPING_ANGLE = 2*STRING_POT_ADJUSTMENT;
+    public final static double DROPPING_ANGLE = 4.15;
+    public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = 0.12;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
     public static double SHOOTING_ANGLE = 1.95*STRING_POT_ADJUSTMENT;
-    public static final double INITIAL_P = 0.3;
+    public static final double INITIAL_P = 0.3*0.90;
     public static final double INITIAL_I = 0.005;
     public static final double INITIAL_D = 0;
     public static final double[] ANGLES = {4.018, 1.96*STRING_POT_ADJUSTMENT, 1.95*STRING_POT_ADJUSTMENT, 1.945*STRING_POT_ADJUSTMENT, 1.94*STRING_POT_ADJUSTMENT, 1.7*STRING_POT_ADJUSTMENT};

@@ -31,11 +31,12 @@ public class DistanceAngleTable extends Thread implements Systems {
         // need to check for error here...
 //        System.out.println("Target Angle: " + angle);
         if(angle != -1.0){
+            System.out.println("Call From DAT");
             arm.moveArmTowardLocation(angle);
         }
     }
 
-    private double calculateAngle(double distance) {
+    public static double calculateAngle(double distance) {
         int distanceIndex = 0;
         try {
             while (getDistanceAt(distanceIndex) < distance) {
@@ -58,12 +59,12 @@ public class DistanceAngleTable extends Thread implements Systems {
         return -1;
     }
 
-    private double getDistanceAt(int index) {
+    private static double getDistanceAt(int index) {
         // potential to throw "indexoutofboundsexception" which is not caught.
         return RobotConstants.DISTANCES[index];
     }
 
-    private double getAngleAt(int index) {
+    private static double getAngleAt(int index) {
         return RobotConstants.ANGLES[index];
     }
 
