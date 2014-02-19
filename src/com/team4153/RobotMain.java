@@ -107,7 +107,6 @@ public class RobotMain extends IterativeRobot {
      */
     public void teleopPeriodic() {
 //        startCompressor();
-       
         dashboardComm.execute();
         chassis.execute(-1);
         arm.execute(-1);

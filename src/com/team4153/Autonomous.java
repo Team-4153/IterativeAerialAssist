@@ -59,7 +59,9 @@ public class Autonomous {
          }*/
 
         //note this line both performs the lookup and moves the arm.
-        angleTable.execute(-1);
+//        angleTable.execute(-1);
+        arm.autoAimArmLocation();
+        arm.execute(-1);
 
         double distance = Sensors.getFilteredUltrasonicDistance();
 
@@ -106,23 +108,13 @@ public class Autonomous {
         }
 
         // this will run when the arm is in position and we are in range
-        if (withinFiringDistance &&getMatchTime()-driveEndTime>RobotConstants.AUTONOMOUS_FIRE_WAIT_TIME&& Math.abs(RobotConstants.SHOOTING_ANGLE - arm.getDesiredAngle()) < Arm.getTolerance()) {
-            /*vision.execute(-1);
-             SmartDashboard.putBoolean("Target: ", vision.isTarget());
-             SmartDashboard.putBoolean("Hot: ", vision.isHot());
-             if (vision.isTarget() && vision.isHot() && !autoShot) {
-             shooter.execute(-1);
-             autoShot = true;
-             }*/
-
+        if (withinFiringDistance &&getMatchTime()-driveEndTime>RobotConstants.AUTONOMOUS_FIRE_WAIT_TIME&& Math.abs(arm.getDesiredAngle()- Sensors.getStringPotAngle()) < Arm.getTolerance()) {
             if (!autoShot && autoTarget && ((autoHot && getMatchTime() < 5000) || (!autoHot && getMatchTime() > 5000))) {
                 autoShoot();
             }
-
         }
 
-        if (autoShot
-                && (getMatchTime()-fireTime> RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME)) {
+        if (autoShot && (getMatchTime()-fireTime> RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME)) {
 
             if ((getMatchTime()-fireTime < RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME
                     + RobotConstants.AUTONOMOUS_BACKUP_RUN_TIME)) {
@@ -190,8 +182,7 @@ public class Autonomous {
             }
         }
         
-        if (autoShot
-                && (getMatchTime()-fireTime> RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME)) {
+        if (autoShot && (getMatchTime()-fireTime> RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME)) {
 
             if ((getMatchTime()-fireTime < RobotConstants.AUTONOMOUS_BACKUP_WAIT_TIME
                     + RobotConstants.AUTONOMOUS_BACKUP_RUN_TIME)) {
@@ -221,7 +212,7 @@ public class Autonomous {
     public void init() {
         resetAuto();
         autoStartTime = System.currentTimeMillis();
-        angleTable.execute(-1);
+//        angleTable.execute(-1);
     }
 
 }

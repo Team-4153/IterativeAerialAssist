@@ -13,8 +13,8 @@ package com.team4153;
 public class RobotConstants {
     public static final double STRING_POT_ADJUSTMENT = 10.25/5;
     public static final double FORWARD_ARM_LIMIT = 2.77;
-    public static final double MIDDLE_ARM_LIMIT = 2.28*STRING_POT_ADJUSTMENT;
-    public static final double BACK_ARM_LIMIT = 2.4*STRING_POT_ADJUSTMENT;
+    public static final double MIDDLE_ARM_LIMIT = 4.56;
+    public static final double BACK_ARM_LIMIT = 4.6;
     public static final double WINCH_POWER = -1;
     public static final int WINCH_HALF_TIME = 1000;
     /**
@@ -60,19 +60,19 @@ public class RobotConstants {
     public static final int AUTONOMOUS_FIRE_WAIT_TIME=500;
     public static final int AUTONOMOUS_BACKUP_WAIT_TIME = 500;
     public static final int AUTONOMOUS_BACKUP_RUN_TIME = 1500;
-    public final static double BASE_FIRE_DISTANCE = 96;
+    public final static double BASE_FIRE_DISTANCE = 115;
     public final static double MAX_AUTONOMOUS_SPEED = 0.7;
     public final static double DROPPING_ANGLE = 4.15;
     public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = 0.18;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
-    public static double SHOOTING_ANGLE = 1.95*STRING_POT_ADJUSTMENT;
+//    public static double SHOOTING_ANGLE = 1.95*STRING_POT_ADJUSTMENT;
     public static final double INITIAL_P = 0.3*0.90;
     public static final double INITIAL_I = 0.005;
     public static final double INITIAL_D = 0;
-    public static final double[] ANGLES = {4.018, 1.96*STRING_POT_ADJUSTMENT, 1.95*STRING_POT_ADJUSTMENT, 1.945*STRING_POT_ADJUSTMENT, 1.94*STRING_POT_ADJUSTMENT, 1.7*STRING_POT_ADJUSTMENT};
-    public static final double[] DISTANCES = {72, 84, 96, 108, 120, 500};
+    public static final double[] ANGLES = {4.09, 4.02, 4.08, 4.1, 4.175};
+    public static final double[] DISTANCES = {90, 100, 115, 130, 145};
     public static final int LR_SCORE_LIMIT = 50;
     public static final int ASPECT_RATIO_LIMIT = 55;
     public static final double VIEW_ANGLE = 49; //Axis M1013

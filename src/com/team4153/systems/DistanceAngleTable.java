@@ -39,13 +39,11 @@ public class DistanceAngleTable extends Thread implements Systems {
     public static double calculateAngle(double distance) {
         int distanceIndex = 0;
         try {
-            while (getDistanceAt(distanceIndex) < distance) {
+            while (getDistanceAt(distanceIndex) < distance && distanceIndex < RobotConstants.DISTANCES.length - 1) {
                 distanceIndex++;
             }
             // you can extrapolate on either end of the ANGLES and distance
             // whether you should is another question.
-//            System.out.println("distance in method: " + distance);
-//            System.out.println("distance index: " + distanceIndex);
             if (distanceIndex > 0 && distanceIndex < RobotConstants.DISTANCES.length) {
 
                 double ratio = (getAngleAt(distanceIndex) - getAngleAt(distanceIndex - 1)) / (getDistanceAt(distanceIndex) - getDistanceAt(distanceIndex - 1));

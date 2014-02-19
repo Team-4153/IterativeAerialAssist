@@ -45,12 +45,12 @@ public class Arm implements Systems {
      * @param angle
      */
     public void moveArmTowardLocation(double angle) {
-        new RuntimeException("Arm Moved").printStackTrace();
-        desiredAngle = angle;
-        double offset = desiredAngle - Sensors.getStringPotAngle();
+//        new RuntimeException("Arm Moved").printStackTrace();
+        joystickArmLocation = angle;
+        double offset = joystickArmLocation - Sensors.getStringPotAngle();
         if (Math.abs(offset) >= getTolerance()) {
             moveArm(Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset));
-            System.out.println("Angle: " + desiredAngle);
+            System.out.println("Angle: " + joystickArmLocation);
 //            System.out.println("offset: " + offset);
 //            System.out.println("Power: " + (Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset)));
         } else {
@@ -85,7 +85,10 @@ public class Arm implements Systems {
     }
 
     public void autoAimArmLocation() {
-        joystickArmLocation = DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
+        double newAngle = DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
+        if((newAngle < RobotConstants.BACK_ARM_LIMIT) || (newAngle > RobotConstants.FORWARD_ARM_LIMIT)){
+            joystickArmLocation = newAngle;
+        }
     }
 
     public static double getTolerance() {
@@ -135,7 +138,7 @@ public class Arm implements Systems {
      * @return
      */
     public double getDesiredAngle() {
-        return desiredAngle;
+        return joystickArmLocation;
     }
 
     /**
@@ -143,6 +146,6 @@ public class Arm implements Systems {
      * @param angle
      */
     public void setDesiredAngle(double angle) {
-        desiredAngle = angle;
+        joystickArmLocation = angle;
     }
 }
