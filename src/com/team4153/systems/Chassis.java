@@ -38,16 +38,16 @@ public class Chassis implements Systems {
         try {
             ControlMode mode = CANJaguar.ControlMode.kPercentVbus;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-            configSpeedControl(rightFront,true,.3,.005,0);
+//            configSpeedControl(rightFront,true,.3,.005,0);
 //            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-            configSpeedControl(rightRear,true,.3,.005,0);
+//            configSpeedControl(rightRear,true,.3,.005,0);
 //            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
-            configSpeedControl(leftFront,true,.3,.005,0);
+//            configSpeedControl(leftFront,true,.3,.005,0);
 //            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-            configSpeedControl(leftRear,true,.3,.005,0);
+//            configSpeedControl(leftRear,true,.3,.005,0);
 //            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
@@ -59,7 +59,7 @@ public class Chassis implements Systems {
         drive = new RobotDrive(leftFront, leftRear, rightFront, rightRear);
         drive.setInvertedMotor(MotorType.kRearRight, true);//
         drive.setInvertedMotor(MotorType.kFrontRight, true);
-        drive.setMaxOutput(300);//TODO: Fix the magic numbers
+        //drive.setMaxOutput(300);//TODO: Fix the magic numbers
         drive.setSafetyEnabled(false);
     }
 
@@ -175,7 +175,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
     }
     
     public void turn(double direction){
-        drive.mecanumDrive_Cartesian(0, 0, direction-Sensors.getGyro().getAngle(), Sensors.getGyro().getAngle());
+        drive.mecanumDrive_Polar(0, 0, -direction);
     }
    
     private int getSign(double val){
@@ -213,10 +213,15 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
      */
     public void driveForward(double input){
 //        drive.setMaxOutput(maxOutput);
-        drive.mecanumDrive_Cartesian(0,-input,0,Sensors.getGyro().getAngle());
+        drive.mecanumDrive_Cartesian(0,input,0,Sensors.getGyro().getAngle());
+        try {
+            SmartDashboard.putNumber("Jag Speed", rightFront.getSpeed());
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
     }
     
-    //to test rotation in autonomous. LT 
+    //to test rotation in autonomous.  
     /*public void driveInCircles(){
         Sensors.getGyro().reset();
         drive.setMaxOutput(50);

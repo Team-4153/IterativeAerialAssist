@@ -32,11 +32,11 @@ public class FilteredUltrasonic {
                     distanceHistory[i-1] = distanceHistory[i];
                 }
                 distanceHistory[distanceHistory.length-1] = newDistance;
-                System.out.println("New ultrasonic value "+ newDistance);
+//                System.out.println("New ultrasonic value "+ newDistance);
                 discardCount = 0;
                 return newDistance;
             }else{
-                System.out.println("Discarded value: " + newDistance);
+//                System.out.println("Discarded value: " + newDistance);
                 discardCount++;
                 if(discardCount>MAX_DISCARD){
                     Sensors.resetUltrasonicFilter();
