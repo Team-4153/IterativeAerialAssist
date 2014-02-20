@@ -24,10 +24,10 @@ public class RobotMain extends IterativeRobot {
 
     JoystickHandler joystick;
     Chassis chassis;
-    
+
     DashboardCommunication dashboardComm;
     private final double FIRE_DISTANCE = 120;
-    private final double MAX_AUTONOMOUS_SPEED = 0.5;
+    private final double MAX_AUTONOMOUS_SPEED = 0.3;
 
     public static final int OVERSHOOT_CORRECTION = 6;
     public static final int ULTRASONIC_DISPLACEMENT = 5;
@@ -44,8 +44,7 @@ public class RobotMain extends IterativeRobot {
     public void robotInit() {
         chassis = new Chassis();
         joystick = new JoystickHandler();
-        
-        
+
         dashboardComm = new DashboardCommunication(chassis);
         Sensors.getGyro();
     }
@@ -53,6 +52,7 @@ public class RobotMain extends IterativeRobot {
     public void autonomousInit() {
         counter = 0;
         Sensors.getGyro().reset();
+        withinFiringDistance = false;
 
     }
 
@@ -62,8 +62,10 @@ public class RobotMain extends IterativeRobot {
     public void autonomousPeriodic() {
 
         SmartDashboard.putNumber("Ultrasonic not multiplies", Sensors.getUltrasonic().getVoltage());
-        SmartDashboard.putNumber("Ultrasonic mulitplied", Sensors.getUltrasonicDistance());
-        double distance = Sensors.getUltrasonicDistance();
+        SmartDashboard.putNumber("Filtered Ultrasonic", Sensors.getFilteredUltrasonicDistance());
+        SmartDashboard.putNumber("NOT FILTERED ULTRASONCI", Sensors.getUltrasonicDistance());
+
+        double distance = Sensors.getFilteredUltrasonicDistance();
         final double fireDistance = FIRE_DISTANCE + ULTRASONIC_DISPLACEMENT + OVERSHOOT_CORRECTION;
         if (!withinFiringDistance) {
             if (distance >= fireDistance) {
@@ -87,14 +89,18 @@ public class RobotMain extends IterativeRobot {
                 //SmartDashboard.putNumber("Counter", counter);
             }
         }
-        
+
         if (withinFiringDistance) {
-            chassis.turn(90);
+            SmartDashboard.putNumber("Gyro", Sensors.getGyro().getAngle());
+            if(Sensors.getGyro().getAngle()<90)
+                chassis.turn(0.5);
+            else
+                chassis.turn(0);
         }
 
     }
-    
-    public void disabledInit(){
+
+    public void disabledInit() {
         Sensors.resetUltrasonicFilter();
     }
 
