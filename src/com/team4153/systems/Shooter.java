@@ -33,7 +33,7 @@ public class Shooter extends Thread implements Systems {
      */
     private int defaultWinchPullbackTime = 1000;
 
-    private boolean pullBackByDefault = false;
+//    private boolean pullBackByDefault = true;
 
     private Flippers flippers;//To open flippers when shoot
     private Winch winch;
@@ -105,9 +105,9 @@ public class Shooter extends Thread implements Systems {
             close.set(true);
 
             
-            if (pullBackByDefault) {
-                winch.pullBackWinch(defaultWinchPullbackTime);
-            }
+//            if (pullBackByDefault) {
+            winch.pullBackWinch(defaultWinchPullbackTime);
+//            }
         }
 
     }
