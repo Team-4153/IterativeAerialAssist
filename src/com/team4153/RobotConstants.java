@@ -11,16 +11,20 @@ package com.team4153;
  * @author 4153student
  */
 public class RobotConstants {
-    public static final double STRING_POT_ADJUSTMENT = 10.25/5;
-    public static final double FORWARD_ARM_LIMIT = 2.77;
-    public static final double MIDDLE_ARM_LIMIT = 4.56;
-    public static final double BACK_ARM_LIMIT = 4.6;
+    public static final double STRING_POT_ADJUSTMENT_2 = 29.85/10.25;
+    public static final double STRING_POT_REZERO = -14.86;
+   // public static final double STRING_POT_ADJUSTMENT = 10.25/5;
+    public static final double FORWARD_ARM_LIMIT = (2.77*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
+    public static final double MIDDLE_ARM_LIMIT = (4.56*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
+    public static final double BACK_ARM_LIMIT = (4.58*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
     public static final double WINCH_POWER = -1;
     public static final int WINCH_HALF_TIME = 1000;
     /**
      * The arm tolerance in the + and - direction.
      */
     public static final double ARM_TOLERANCE = 0.015;
+    public static final double AUTO_AIM_TWEAK = 0.2;
+    public static final double MIN_POSSIBLE_STRINGPOT_VAL = (0.5*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
     /**
      * The angle difference when the motor starts slowing down
      */
@@ -38,8 +42,8 @@ public class RobotConstants {
      */
     public static final double ARM_MOTION_RANGE = FORWARD_ARM_LIMIT-BACK_ARM_LIMIT ;
     
-    public static final int JITTER_OPEN_DELAY = 30;
-    public static final int JITTER_CLOSE_DELAY = 50;
+    public static final int JITTER_OPEN_DELAY = 50;
+    public static final int JITTER_CLOSE_DELAY = 80;
     
     /**
      * The maximum power the drive will use.f
@@ -50,20 +54,21 @@ public class RobotConstants {
     
     public static final double RANGE_FINDER_MUlTIPLIER2 = 0.098;
 
-    public static final double PICKUP_POSITION=2.8;
+    public static final double PICKUP_POSITION=(2.8*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
+    public static final double TRUSS_POSITION = -2.4;
     public static final double AUTONOMOUS_SLOWDOWN_AMOUNT = 0.4;
     public static final int ULTRASONIC_DISPLACEMENT = 5;
     public static final int OVERSHOOT_CORRECTION = 4;
-    public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.35;
+    public static final double AUTONOMOUS_SLOWDOWN_PERCENT = 1.3;
     public static final int EXCEPTION_STOP_TIME = 5000;
-    public static final int EXCEPTION_FIRE_TIME = 9000;
+    public static final int EXCEPTION_FIRE_TIME = 7777;
     public static final int AUTONOMOUS_FIRE_WAIT_TIME=500;
     public static final int AUTONOMOUS_BACKUP_WAIT_TIME = 500;
     public static final int AUTONOMOUS_BACKUP_RUN_TIME = 1500;
-    public final static double BASE_FIRE_DISTANCE = 115;
+    public final static double BASE_FIRE_DISTANCE = 100;
     public final static double MAX_AUTONOMOUS_SPEED = 0.7;
-    public final static double DROPPING_ANGLE = 4.15;
-    public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = 0.18;
+    public final static double DROPPING_ANGLE = (4.15*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
+    public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = (0.3*STRING_POT_ADJUSTMENT_2);
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */
@@ -71,7 +76,7 @@ public class RobotConstants {
     public static final double INITIAL_P = 0.3*0.90;
     public static final double INITIAL_I = 0.005;
     public static final double INITIAL_D = 0;
-    public static final double[] ANGLES = {4.09, 4.02, 4.08, 4.1, 4.175};
+    public static final double[] ANGLES = {-2.9, -3.05, (4.08*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO)-.15, (4.1*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO)-0.15, -3.09};
     public static final double[] DISTANCES = {90, 100, 115, 130, 145};
     public static final int LR_SCORE_LIMIT = 50;
     public static final int ASPECT_RATIO_LIMIT = 55;

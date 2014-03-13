@@ -335,7 +335,19 @@ public class Vision implements Systems {
         return hot;
     }
     
+    public void saveImage(){
+        try {
+            camera.getImage().getRedPlane().write("InitImage.png");
+        } catch (AxisCameraException ex) {
+            ex.printStackTrace();
+        } catch (NIVisionException ex) {
+            ex.printStackTrace();
+        } 
+    }
+    
 //    public double getDistance(){
 //        return distance;
 //    }
+    
+    
 }

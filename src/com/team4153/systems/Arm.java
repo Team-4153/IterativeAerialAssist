@@ -49,7 +49,7 @@ public class Arm implements Systems {
         joystickArmLocation = angle;
         double offset = joystickArmLocation - Sensors.getStringPotAngle();
         if (Math.abs(offset) >= getTolerance()) {
-            moveArm(Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset));
+            moveArm(Math.sqrt(Math.abs(offset*1/3)) * Chassis.getSign(offset));
             System.out.println("Angle: " + joystickArmLocation);
 //            System.out.println("offset: " + offset);
 //            System.out.println("Power: " + (Math.sqrt(Math.abs(offset)) * Chassis.getSign(offset)));
@@ -67,8 +67,20 @@ public class Arm implements Systems {
             joystickArmLocation = RobotConstants.PICKUP_POSITION;
             return;
         }
+        if (buttonNumber == RobotMap.JSBUTTON_GO_TO_TRUSS) {
+            joystickArmLocation = RobotConstants.TRUSS_POSITION;
+            return;
+        }
         if (buttonNumber == RobotMap.JSBUTTON_AUTO_AIM) {
-            autoAimArmLocation();
+            autoAimArmLocation(0.18);
+            return;
+        }
+        if (buttonNumber == RobotMap.JSBUTTON_AUTO_AIM_UP) {
+            autoAimArmLocation(RobotConstants.AUTO_AIM_TWEAK+0.18);
+            return;
+        }
+        if (buttonNumber == RobotMap.JSBUTTON_AUTO_AIM_DOWN) {
+            autoAimArmLocation(-RobotConstants.AUTO_AIM_TWEAK+0.18);
             return;
         }
         Joystick joystick = Sensors.getManipulatorJoystick();
@@ -84,9 +96,9 @@ public class Arm implements Systems {
         moveArmTowardLocation(joystickArmLocation);
     }
 
-    public void autoAimArmLocation() {
-        double newAngle = DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
-        if((newAngle < RobotConstants.BACK_ARM_LIMIT) || (newAngle > RobotConstants.FORWARD_ARM_LIMIT)){
+    public void autoAimArmLocation(double offset) {
+        double newAngle = offset+DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
+        if((newAngle < RobotConstants.BACK_ARM_LIMIT) && (newAngle > RobotConstants.FORWARD_ARM_LIMIT)){
             joystickArmLocation = newAngle;
         }
     }
@@ -98,6 +110,7 @@ public class Arm implements Systems {
             return 0;
         }
     }
+    
 
     /**
      * The command to drive mecanum via joystick and gyro angle
@@ -107,8 +120,9 @@ public class Arm implements Systems {
      * @return Whether the arm was within the limits (moved successfully)
      */
     public boolean moveArm(double power) {
-        if ((power > 0 && Sensors.getStringPotAngle() < RobotConstants.BACK_ARM_LIMIT)
-                || (power < 0 && Sensors.getStringPotAngle() > RobotConstants.FORWARD_ARM_LIMIT)) {
+        if (((power > 0 && Sensors.getStringPotAngle() < RobotConstants.BACK_ARM_LIMIT)
+                || (power < 0 && Sensors.getStringPotAngle() > RobotConstants.FORWARD_ARM_LIMIT)) 
+                && (Math.abs(Sensors.getStringPotAngle())> RobotConstants.MIN_POSSIBLE_STRINGPOT_VAL)) {
             try {
                 rightMotor.setX(power);
                 leftMotor.setX(-power);

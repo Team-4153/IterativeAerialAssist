@@ -22,21 +22,27 @@ public class RobotMap {
         
     public static final int DRIVER_JOYSTICK_PORT = 2;
     public static final int MANIPULATOR_JOYSTICK_PORT = 1;
-    public static final int JSBUTTON_TRIGGER = 1;
+    
     public static final int JSBUTTON_GYRO_RESET = 2;
+    public static final int JSBUTTON_JAG_RESET=10;
+    public static final int JSAXIS_THROTTLE = 4;
+    public static final int JSBUTTON_DISABLE_ENCODERS=11;
+    public static final int JSBUTTON_DRIVE_STRAIGHT=9;
+    
+    
+    public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_FLIPPERS_GRAB=3;
     public static final int JSBUTTON_FLIPPERS_CATCH = 8;
-    public static final int JSBUTTON_JAG_RESET=10;
     public static final int JSBUTTON_AUTO_AIM=4;
+    public static final int JSBUTTON_AUTO_AIM_UP=11;
+    public static final int JSBUTTON_AUTO_AIM_DOWN=10;
     public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=5;
     public static final int JSBUTTON_WINCH_HALF=6;
     public static final int JSBUTTON_WINCH_FULL=7;
-    public static final int JSAXIS_THROTTLE = 4;
-    public static final int JSAXIS_ARM=1;
     public static final int JSBUTTON_JITTER=9;
     public static final int JSBUTTON_GO_TO_PICKUP = 2;
-    
-    public static final int JSBUTTON_DRIVESTRAIGHT=11;
+    public static final int JSBUTTON_GO_TO_TRUSS = 6;
+    public static final int JSAXIS_ARM=1;
     
     public static final int JAG_LEFT_FRONT_MOTOR = 10;
     public static final int JAG_LEFT_REAR_MOTOR = 4;

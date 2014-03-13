@@ -45,7 +45,7 @@ public class RobotMain extends IterativeRobot {
     ImageStorer storer;
     Autonomous autonomous;
 
-    
+    boolean imageTaken=false;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -75,16 +75,16 @@ public class RobotMain extends IterativeRobot {
      * This function is called periodically during autonomous
      */
     public void autonomousPeriodic() {
+        if(!imageTaken){
+            vision.saveImage();
+            imageTaken=true;
+        }
         dashboardComm.execute();
         //boolean as1=Sensors.getAutoSwitch1().get();
         boolean as2=Sensors.getAutoSwitch2().get();
-        if(as2){
+        
             autonomous.shootHighGoal();
-        }
-        else{
-            //TODO: make this boolean right/left based on switch (true = right)
-            autonomous.dropInLowGoal(true);
-        }
+       
         
     }
 

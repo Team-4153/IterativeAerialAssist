@@ -11,6 +11,8 @@ import com.team4153.systems.DistanceAngleTable;
 import com.team4153.systems.Flippers;
 import com.team4153.systems.Shooter;
 import com.team4153.systems.Vision;
+import edu.wpi.first.wpilibj.Kinect;
+import edu.wpi.first.wpilibj.Skeleton;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,7 +28,8 @@ public class Autonomous {
     Shooter shooter;
     Arm arm;
     Flippers flippers;
-
+    Kinect kinect;
+    
     private static long autoStartTime = -1;
     boolean autoHot = false;
     boolean autoTarget = false;
@@ -60,7 +63,7 @@ public class Autonomous {
 
         //note this line both performs the lookup and moves the arm.
 //        angleTable.execute(-1);
-        arm.autoAimArmLocation();
+        arm.autoAimArmLocation(0.18);
         arm.execute(-1);
 
         double distance = Sensors.getFilteredUltrasonicDistance();
@@ -109,7 +112,7 @@ public class Autonomous {
 
         // this will run when the arm is in position and we are in range
         if (withinFiringDistance &&getMatchTime()-driveEndTime>RobotConstants.AUTONOMOUS_FIRE_WAIT_TIME&& Math.abs(arm.getDesiredAngle()- Sensors.getStringPotAngle()) < Arm.getTolerance()) {
-            if (!autoShot && autoTarget && ((autoHot && getMatchTime() < 5000) || (!autoHot && getMatchTime() > 5000))) {
+            if (!autoShot && autoTarget && ((autoHot && getMatchTime() < 5000) || (!autoHot && getMatchTime() > 6000))) {
                 autoShoot();
             }
         }
@@ -213,6 +216,12 @@ public class Autonomous {
         resetAuto();
         autoStartTime = System.currentTimeMillis();
 //        angleTable.execute(-1);
+    }
+    
+    public boolean shouldShoot(){
+        Skeleton skel=kinect.getSkeleton();
+        double head=skel.GetHead().getY();
+        return (skel.GetHandLeft().getY()>head||skel.GetHandRight().getY()>head);
     }
 
 }

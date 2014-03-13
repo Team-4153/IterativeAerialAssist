@@ -28,6 +28,7 @@ public class Chassis implements Systems {
     private double currentP;
     private double currentI;
     private double currentD;
+    private boolean useEncoders=true;
 
     /**
      * The control mode needs to be set in the constructor for the speed mode to
@@ -100,6 +101,8 @@ public class Chassis implements Systems {
         } else {
             jag.setPID(-P, -I, -D);
         }
+        
+        jag.changeControlMode(ControlMode.kSpeed);
         jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
         jag.configEncoderCodesPerRev(CPR);
         jag.setVoltageRampRate(VOLTAGE_RAMP);
@@ -108,6 +111,8 @@ public class Chassis implements Systems {
 //        System.out.println("Control Mode = " + jag.getControlMode());
     }
 
+   
+    
     /**
      * The command to drive mecanum via joystick and gyro angle
      *
@@ -161,6 +166,23 @@ public class Chassis implements Systems {
 //        }
     }
 
+    public void disableEncoder(CANJaguar jag){
+        try {
+            jag.changeControlMode(ControlMode.kPercentVbus);
+        } catch (CANTimeoutException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
+    public void disableEncoders(){
+        disableEncoder(rightFront);
+        disableEncoder(leftFront);
+        disableEncoder(rightRear);
+        disableEncoder(leftRear);
+        useEncoders=false;
+    }
+    
     /**
      * Initializes the jag speed controls
      */
@@ -183,6 +205,7 @@ public class Chassis implements Systems {
             ex.printStackTrace();
             //System.exit(-1);
         }
+        useEncoders=true;
     }
 
     public void turn(double direction) {
@@ -298,8 +321,13 @@ public class Chassis implements Systems {
         if (buttonNumber < 0) {
             mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
         }
-        if (buttonNumber==RobotMap.JSBUTTON_DRIVESTRAIGHT){
-            this.driveForward(0.5);
+        if (buttonNumber==RobotMap.JSBUTTON_DRIVE_STRAIGHT){
+        }
+        if(buttonNumber==RobotMap.JSBUTTON_DISABLE_ENCODERS){
+            if(useEncoders)
+                disableEncoders();
+            else
+                initJags();
         }
         
         if (Sensors.getDriverJoystick().getRawButton(RobotMap.JSBUTTON_JAG_RESET)) {

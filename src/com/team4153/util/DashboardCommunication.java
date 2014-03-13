@@ -30,6 +30,11 @@ public class DashboardCommunication {
         SmartDashboard.putNumber("I:", chassis.getCurrentI());
         SmartDashboard.putNumber("D:", chassis.getCurrentD());
         SmartDashboard.putBoolean("Field Control?", fieldControl);
+        SmartDashboard.putNumber("Joystick X", Sensors.getDriverJoystick().getX());
+        SmartDashboard.putNumber("Joystick Y", Sensors.getDriverJoystick().getY());
+        SmartDashboard.putNumber("Joystick Twist", Sensors.getDriverJoystick().getTwist());
+
+
     }
 
     /**

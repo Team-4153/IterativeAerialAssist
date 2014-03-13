@@ -46,8 +46,13 @@ public class JoystickHandler {
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_WINCH_FULL,winch,true));
         //No Pickup Position anymore, use lower limit of the arms
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_GO_TO_PICKUP,arm,false));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_GO_TO_TRUSS,arm,false));
         buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM,arm,false));
-        buttons.addElement(new ButtonHandler(Sensors.getDriverJoystick(),RobotMap.JSBUTTON_DRIVESTRAIGHT,chassis,false));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM_DOWN,arm,false));
+        buttons.addElement(new ButtonHandler(Sensors.getManipulatorJoystick(),RobotMap.JSBUTTON_AUTO_AIM_UP,arm,false));
+        
+        
+//        buttons.addElement(new ButtonHandler(Sensors.getDriverJoystick(),RobotMap.JSBUTTON_DRIVE_STRAIGHT,chassis,false));
     }
     
     /**
