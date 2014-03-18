@@ -28,6 +28,7 @@ public class RobotMap {
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSBUTTON_DISABLE_ENCODERS=11;
     public static final int JSBUTTON_DRIVE_STRAIGHT=9;
+    public static final int JSBUTTON_STOP_IN_RANGE=3;
     
     
     public static final int JSBUTTON_TRIGGER = 1;

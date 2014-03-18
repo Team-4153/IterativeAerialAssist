@@ -46,7 +46,7 @@ public class RobotConstants {
     public static final int JITTER_CLOSE_DELAY = 80;
     
     /**
-     * The maximum power the drive will use.f
+     * The maximum power the drive will use.
      */
     public static final int DRIVE_POWER = 350;
     

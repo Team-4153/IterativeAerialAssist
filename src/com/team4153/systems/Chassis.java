@@ -122,7 +122,7 @@ public class Chassis implements Systems {
     public void mecanumDrive(Joystick stick, double heading) {
         double twist, x, y, throttle;
 
-        twist = stick.getTwist() * 0.5;
+        twist = stick.getTwist() * 0.5;//Maybe change
         x = stick.getX();
         y = stick.getY();
         throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
@@ -150,7 +150,26 @@ public class Chassis implements Systems {
 //        System.out.println("gyro: " + heading);
 //        System.out.println("X " + x );
 //        System.out.println("Y " + y);
-        drive.mecanumDrive_Cartesian(x, y, twist, heading * fieldControl);
+        if(stick.getRawButton(RobotMap.JSBUTTON_DRIVE_STRAIGHT)){
+            if(stick.getRawButton(RobotMap.JSBUTTON_STOP_IN_RANGE)){
+                if (Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130){
+                    drive.mecanumDrive_Cartesian(0, 0, 0, 0);
+                }else{
+                    drive.mecanumDrive_Cartesian(0, y, twist, 0);
+                }
+            }else{
+                drive.mecanumDrive_Cartesian(0, y, twist, 0);
+            }
+        }else if(stick.getRawButton(RobotMap.JSBUTTON_STOP_IN_RANGE)){
+            if (Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130){
+                    drive.mecanumDrive_Cartesian(x, 0, 0, 0);
+            }else{
+                drive.mecanumDrive_Cartesian(x, y, twist, heading * fieldControl);
+            }
+        }else{
+            drive.mecanumDrive_Cartesian(x, y, twist, heading * fieldControl);     
+        }
+        
 //        try {
 //            System.out.println("encoder: " + rightFront.getSpeed());
 //            System.out.println("jag out set rr: " + rightRear.getX() + " rf: " + rightFront.getX() + 
@@ -320,8 +339,7 @@ public class Chassis implements Systems {
     public void execute(int buttonNumber) {
         if (buttonNumber < 0) {
             mecanumDrive(Sensors.getDriverJoystick(), Sensors.getGyro().getAngle());
-        }
-        if (buttonNumber==RobotMap.JSBUTTON_DRIVE_STRAIGHT){
+            
         }
         if(buttonNumber==RobotMap.JSBUTTON_DISABLE_ENCODERS){
             if(useEncoders)
