@@ -38,16 +38,16 @@ public class Chassis implements Systems {
         try {
             ControlMode mode = CANJaguar.ControlMode.kPercentVbus;
             rightFront = new CANJaguar(RobotMap.JAG_RIGHT_FRONT_MOTOR, mode );
-//            configSpeedControl(rightFront,true,.3,.005,0);
+            configSpeedControl(rightFront,true,.3,.005,0);
 //            configSpeedControl(rightFront,false);
             rightRear = new CANJaguar(RobotMap.JAG_RIGHT_REAR_MOTOR, mode );
-//            configSpeedControl(rightRear,true,.3,.005,0);
+            configSpeedControl(rightRear,true,.3,.005,0);
 //            configSpeedControl(rightRear,false);
             leftFront = new CANJaguar(RobotMap.JAG_LEFT_FRONT_MOTOR, mode );
-//            configSpeedControl(leftFront,true,.3,.005,0);
+            configSpeedControl(leftFront,true,.3,.005,0);
 //            configSpeedControl(leftFront,true);
             leftRear = new CANJaguar(RobotMap.JAG_LEFT_REAR_MOTOR, mode );
-//            configSpeedControl(leftRear,true,.3,.005,0);
+            configSpeedControl(leftRear,true,.3,.005,0);
 //            configSpeedControl(leftRear,false);
 
         } catch (CANTimeoutException ex) {
@@ -98,24 +98,24 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         final int CPR = 360;
         final double ENCODER_FINAL_POS = 0;
         final double VOLTAGE_RAMP = 40;
-//        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
-//        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
+        jag.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+        jag.setSpeedReference(CANJaguar.SpeedReference.kNone);
 //        jag.enableControl();
-//        jag.configMaxOutputVoltage(10);//ToDo: 
+        jag.configMaxOutputVoltage(10);//ToDo: 
         // PIDs may be required.  Values here:
         //  http://www.chiefdelphi.com/forums/showthread.php?t=91384
         // and here:
         // http://www.chiefdelphi.com/forums/showthread.php?t=89721
         // neither seem correct.
-//        jag.setPID(0.4, .005, 0);
-//        if (PIDpositive) {
-//            jag.setPID(P, I, D);
-//        }else{
-//            jag.setPID(-P, -I, -D);
-//        }
-//        jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-//        jag.configEncoderCodesPerRev(CPR);
-////        jag.setVoltageRampRate(VOLTAGE_RAMP);
+        jag.setPID(0.4, .005, 0);
+        if (PIDpositive) {
+            jag.setPID(P, I, D);
+        }else{
+            jag.setPID(-P, -I, -D);
+        }
+        jag.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+        jag.configEncoderCodesPerRev(CPR);
+//        jag.setVoltageRampRate(VOLTAGE_RAMP);
         jag.enableControl();
 
 //        System.out.println("Control Mode = " + jag.getControlMode());
@@ -132,9 +132,9 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
 //        twist = (twist*0.9 + stick.getTwist()*0.25);
 //        x = x*0.9 + stick.getX()*0.1;
 //        y = y*0.9 + stick.getY()*0.1;
-        twist = stick.getTwist() * 0.5;
-        x = stick.getX();
-        y = stick.getY();
+        twist = -stick.getTwist() * 0.5;
+        x = -stick.getX();
+        y = -stick.getY();
         throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
      //   System.out.println("Throttle: " + throttle);
         SmartDashboard.putString("Throttle", "" + throttle);
@@ -163,7 +163,7 @@ private void configSpeedControl(CANJaguar jag,boolean PIDpositive,double P, doub
         System.out.println("X " + x );
         System.out.println("Y " + y);
         
-        drive.mecanumDrive_Cartesian(x, y, twist, heading*fieldControl);
+      drive.mecanumDrive_Cartesian(x, y, twist, -heading*fieldControl);
         try {
             System.out.println("encoder: " + rightFront.getSpeed());
             System.out.println("jag out set: " + rightFront.getX());
