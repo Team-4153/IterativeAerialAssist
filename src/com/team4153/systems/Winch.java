@@ -103,6 +103,7 @@ public class Winch implements Systems{
                 }
             }
             motor.set(0);
+            Sensors.setWinch(true);
         }
     }
     

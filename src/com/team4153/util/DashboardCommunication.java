@@ -26,13 +26,13 @@ public class DashboardCommunication {
      */
     public DashboardCommunication(Chassis chassis) {
         this.chassis = chassis;
-        SmartDashboard.putNumber("P:", chassis.getCurrentP());
+        /*SmartDashboard.putNumber("P:", chassis.getCurrentP());
         SmartDashboard.putNumber("I:", chassis.getCurrentI());
         SmartDashboard.putNumber("D:", chassis.getCurrentD());
         SmartDashboard.putBoolean("Field Control?", fieldControl);
         SmartDashboard.putNumber("Joystick X", Sensors.getDriverJoystick().getX());
         SmartDashboard.putNumber("Joystick Y", Sensors.getDriverJoystick().getY());
-        SmartDashboard.putNumber("Joystick Twist", Sensors.getDriverJoystick().getTwist());
+        SmartDashboard.putNumber("Joystick Twist", Sensors.getDriverJoystick().getTwist());*/
 
 
     }
@@ -41,7 +41,7 @@ public class DashboardCommunication {
      *
      */
     public void execute() {
-        double incomingP = SmartDashboard.getNumber("P:", chassis.getCurrentP());
+        /*double incomingP = SmartDashboard.getNumber("P:", chassis.getCurrentP());
         double incomingI = SmartDashboard.getNumber("I:", chassis.getCurrentI());
         double incomingD = SmartDashboard.getNumber("D:", chassis.getCurrentD());
         fieldControl = SmartDashboard.getBoolean("Field Control?", true);
@@ -67,8 +67,13 @@ public class DashboardCommunication {
         //SmartDashboard.putBoolean("Auto Switch 1", Sensors.getAutoSwitch1().get());
         SmartDashboard.putBoolean("Auto Switch 2", Sensors.getAutoSwitch2().get());
         SmartDashboard.putBoolean("Auto Switch 3", Sensors.getAutoSwitch3().get());
-        SmartDashboard.putBoolean("Backing Switch", Sensors.getBackingSwitch().get());
+        SmartDashboard.putBoolean("Backing Switch", Sensors.getBackingSwitch().get());*/
         
+        SmartDashboard.putNumber("Arm Angle", Sensors.getStringPotAngle());
+        SmartDashboard.putNumber("Distance", Sensors.getSemifilteredUltrasonic());
+        boolean inDistance=Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130;
+        SmartDashboard.putBoolean("In Range?",inDistance);
+        SmartDashboard.putBoolean("Winch Back?", Sensors.isWinchBack());
     }
 
 }

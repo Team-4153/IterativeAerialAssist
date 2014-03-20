@@ -49,6 +49,7 @@ public class Autonomous {
         this.flippers = flippers;
         vision = new Vision();
         this.angleTable = angleTable;
+        kinect=Kinect.getInstance();
     }
 
     public void shootHighGoal() {
@@ -142,9 +143,9 @@ public class Autonomous {
 
         if (!autoTarget && getMatchTime() > 250) {
             vision.execute(-1);
-            if (vision.isTarget()) {
+            if (vision.isTarget()||RobotConstants.USE_KINECT&&armsUp()) {
                 autoTarget = true;
-                autoHot = vision.isHot();
+                autoHot = vision.isHot()||RobotConstants.USE_KINECT&&armsUp();
                 System.out.println("Target found, Hot: " + autoHot);
             }
         }
@@ -218,7 +219,7 @@ public class Autonomous {
 //        angleTable.execute(-1);
     }
     
-    public boolean shouldShoot(){
+    public boolean armsUp(){
         Skeleton skel=kinect.getSkeleton();
         double head=skel.GetHead().getY();
         return (skel.GetHandLeft().getY()>head||skel.GetHandRight().getY()>head);

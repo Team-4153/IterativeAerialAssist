@@ -69,6 +69,7 @@ public class RobotConstants {
     public final static double MAX_AUTONOMOUS_SPEED = 0.7;
     public final static double DROPPING_ANGLE = (4.15*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
     public final static double PROPORTIONAL_ARM_JOYSTICK_MULTIPLIER = (0.3*STRING_POT_ADJUSTMENT_2);
+    public static final boolean USE_KINECT=true;
     /**
      * The ideal angle to place the arm at to fire at the fire distance
      */

@@ -68,6 +68,7 @@ public class Shooter extends Thread implements Systems {
     public void execute(int buttonNumber) {
         ShooterThread shooterThread = new ShooterThread(flippers);
         shooterThread.start();
+        Sensors.setWinch(false);
     }
 
     /**

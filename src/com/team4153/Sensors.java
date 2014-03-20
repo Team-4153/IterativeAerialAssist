@@ -54,6 +54,8 @@ public abstract class Sensors {
     private static DigitalInput photoEyeLeftCatch;
     private static DigitalInput photoEyeRightGrab;
     private static DigitalInput photoEyeRightCatch;
+    
+    private static boolean winchBack=false;
 
     /**
      * Switch to indicate robot needs initial setup (arm within competition
@@ -324,6 +326,14 @@ public abstract class Sensors {
             photoEyeRightCatch = new DigitalInput(RobotMap.PHOTO_EYE_RIGHT_FAR);
         }
         return photoEyeRightCatch;
+    }
+    
+    public static boolean isWinchBack(){
+        return winchBack;
+    }
+    
+    public static void setWinch(boolean back){
+        winchBack=back;
     }
 
 
