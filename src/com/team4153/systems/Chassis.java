@@ -122,7 +122,7 @@ public class Chassis implements Systems {
     public void mecanumDrive(Joystick stick, double heading) {
         double twist, x, y, throttle;
 
-        twist = stick.getTwist() * 0.5;//Maybe change
+        twist = stick.getTwist() * 0.7;//Maybe change, perviously .5
         x = stick.getX();
         y = stick.getY();
         throttle = (stick.getRawAxis(RobotMap.JSAXIS_THROTTLE) - 1.0) / -2.0;
@@ -152,7 +152,7 @@ public class Chassis implements Systems {
 //        System.out.println("Y " + y);
         if(stick.getRawButton(RobotMap.JSBUTTON_DRIVE_STRAIGHT)){
             if(stick.getRawButton(RobotMap.JSBUTTON_STOP_IN_RANGE)){
-                if (Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130){
+                if (Sensors.getSemifilteredUltrasonic()>RobotConstants.DISTANCES[0] && Sensors.getSemifilteredUltrasonic()<RobotConstants.DISTANCES[RobotConstants.DISTANCES.length-1]){
                     drive.mecanumDrive_Cartesian(0, 0, 0, 0);
                 }else{
                     drive.mecanumDrive_Cartesian(0, y, twist, 0);
@@ -161,7 +161,7 @@ public class Chassis implements Systems {
                 drive.mecanumDrive_Cartesian(0, y, twist, 0);
             }
         }else if(stick.getRawButton(RobotMap.JSBUTTON_STOP_IN_RANGE)){
-            if (Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130){
+            if (Sensors.getSemifilteredUltrasonic()>RobotConstants.DISTANCES[0] && Sensors.getSemifilteredUltrasonic()<RobotConstants.DISTANCES[RobotConstants.DISTANCES.length-1]){
                     drive.mecanumDrive_Cartesian(x, 0, 0, 0);
             }else{
                 drive.mecanumDrive_Cartesian(x, y, twist, heading * fieldControl);

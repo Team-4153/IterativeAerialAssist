@@ -5,9 +5,11 @@
  */
 package com.team4153.util;
 
+import com.team4153.RobotConstants;
 import com.team4153.RobotMap;
 import com.team4153.Sensors;
 import com.team4153.systems.Chassis;
+import com.team4153.systems.DistanceAngleTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -17,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DashboardCommunication {
 
     private final Chassis chassis;
+    private final DistanceAngleTable table;
     private boolean fieldControl;
     private boolean previousFieldControl;
 
@@ -24,8 +27,9 @@ public class DashboardCommunication {
      *
      * @param chassis
      */
-    public DashboardCommunication(Chassis chassis) {
+    public DashboardCommunication(Chassis chassis, DistanceAngleTable table) {
         this.chassis = chassis;
+        this.table=table;
         /*SmartDashboard.putNumber("P:", chassis.getCurrentP());
         SmartDashboard.putNumber("I:", chassis.getCurrentI());
         SmartDashboard.putNumber("D:", chassis.getCurrentD());
@@ -69,11 +73,21 @@ public class DashboardCommunication {
         SmartDashboard.putBoolean("Auto Switch 3", Sensors.getAutoSwitch3().get());
         SmartDashboard.putBoolean("Backing Switch", Sensors.getBackingSwitch().get());*/
         
-        SmartDashboard.putNumber("Arm Angle", Sensors.getStringPotAngle());
+        SmartDashboard.putNumber("Arm Angle", getAngle(Sensors.getStringPotAngle()));
         SmartDashboard.putNumber("Distance", Sensors.getSemifilteredUltrasonic());
-        boolean inDistance=Sensors.getSemifilteredUltrasonic()>100 && Sensors.getSemifilteredUltrasonic()<130;
+        boolean inDistance=Sensors.getSemifilteredUltrasonic()>RobotConstants.DISTANCES[0] 
+                && Sensors.getSemifilteredUltrasonic()<RobotConstants.DISTANCES[RobotConstants.DISTANCES.length-1];
         SmartDashboard.putBoolean("In Range?",inDistance);
         SmartDashboard.putBoolean("Winch Back?", Sensors.isWinchBack());
+        SmartDashboard.putBoolean("Arm in Position", armInPosition());
     }
 
+    public boolean armInPosition(){
+        double angle=0.18+DistanceAngleTable.calculateAngle(Sensors.getSemifilteredUltrasonic());
+        return Math.abs(angle-Sensors.getStringPotAngle())<RobotConstants.ARM_TOLERANCE;
+    }
+    
+    public double getAngle(double voltage){
+        return voltage; //TODO:Calculate angle from RotPot value
+    }
 }

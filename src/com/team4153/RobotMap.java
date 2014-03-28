@@ -27,17 +27,17 @@ public class RobotMap {
     public static final int JSBUTTON_JAG_RESET=10;
     public static final int JSAXIS_THROTTLE = 4;
     public static final int JSBUTTON_DISABLE_ENCODERS=11;
-    public static final int JSBUTTON_DRIVE_STRAIGHT=9;
-    public static final int JSBUTTON_STOP_IN_RANGE=3;
+    public static final int JSBUTTON_DRIVE_STRAIGHT=3;
+    public static final int JSBUTTON_STOP_IN_RANGE=4;
     
     
     public static final int JSBUTTON_TRIGGER = 1;
     public static final int JSBUTTON_FLIPPERS_GRAB=3;
-    public static final int JSBUTTON_FLIPPERS_CATCH = 8;
+    public static final int JSBUTTON_FLIPPERS_CATCH = 5;//changed from button 8 per alex's instructions
     public static final int JSBUTTON_AUTO_AIM=4;
     public static final int JSBUTTON_AUTO_AIM_UP=11;
     public static final int JSBUTTON_AUTO_AIM_DOWN=10;
-    public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=5;
+    public static final int JSBUTTON_FORCE_FLIPPERS_TOGGLE=8;//changed from button 5 per alex's instructions
     public static final int JSBUTTON_WINCH_HALF=6;
     public static final int JSBUTTON_WINCH_FULL=7;
     public static final int JSBUTTON_JITTER=9;
@@ -54,6 +54,7 @@ public class RobotMap {
     public static final int JAG_ARM_RIGHT=11;
     
     public static final int GYRO_CHANNEL = 1;
+    public static final int LIGHT_CHANNEL=4;
     public static final int ULTRASONIC_CHANNEL = 5;
     public static final int ULTRASONIC2_CHANNEL = 7;
     public static final int STRING_POT_CHANNEL=3;

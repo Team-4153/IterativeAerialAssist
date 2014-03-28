@@ -118,4 +118,6 @@ public class RobotConstants {
     
     public static final int LOW_GOAL_TIME=2400;
     public static final int DELAY = 5;
+    
+    public static final int FLASHY_LIGHTS_CHANNEL = 4; //For the signal lights! On the robot!
 }

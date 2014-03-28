@@ -13,6 +13,7 @@ import com.team4153.systems.Flippers;
 import com.team4153.util.ImageStorer;
 import com.team4153.util.JoystickHandler;
 import com.team4153.systems.Shooter;
+import com.team4153.systems.SignalLights;
 import com.team4153.systems.Vision;
 import com.team4153.systems.Winch;
 import com.team4153.util.DashboardCommunication;
@@ -44,6 +45,7 @@ public class RobotMain extends IterativeRobot {
     DistanceAngleTable angleTable;
     ImageStorer storer;
     Autonomous autonomous;
+    SignalLights signalLights;
 
     boolean imageTaken=false;
 
@@ -53,6 +55,9 @@ public class RobotMain extends IterativeRobot {
      */
     public void robotInit() {
         
+        dashboardComm = new DashboardCommunication(chassis,new DistanceAngleTable(null));
+        dashboardComm.execute();
+        System.out.println("Dashboard initialized");
         chassis = new Chassis();
         arm = new Arm();
         flippers = new Flippers();
@@ -60,14 +65,13 @@ public class RobotMain extends IterativeRobot {
         shooter = new Shooter(flippers, winch);
         angleTable = new DistanceAngleTable(arm);
         joystick = new JoystickHandler(shooter, flippers, arm, winch, chassis, angleTable);
-        dashboardComm = new DashboardCommunication(chassis);
         vision = new Vision();
         storer = new ImageStorer(vision.getCamera());
         autonomous = new Autonomous(chassis, shooter, arm, flippers, angleTable);
+        signalLights=new SignalLights();
         //storer.start();
         startCompressor();
         Sensors.getGyro().getAngle();
-        dashboardComm.execute();
         flippers.close();
     }
 
@@ -80,6 +84,7 @@ public class RobotMain extends IterativeRobot {
             imageTaken=true;
         }
         dashboardComm.execute();
+        signalLights.execute(-1);
         //boolean as1=Sensors.getAutoSwitch1().get();
         boolean as2=Sensors.getAutoSwitch2().get();
         
@@ -111,7 +116,7 @@ public class RobotMain extends IterativeRobot {
         chassis.execute(-1);
         arm.execute(-1);
         joystick.execute();
-        
+        signalLights.execute(-1);
     }
 
     /**
