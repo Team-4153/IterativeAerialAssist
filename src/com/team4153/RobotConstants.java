@@ -14,9 +14,9 @@ public class RobotConstants {
     public static final double STRING_POT_ADJUSTMENT_2 = 29.85/10.25;
     public static final double STRING_POT_REZERO = -14.86;
    // public static final double STRING_POT_ADJUSTMENT = 10.25/5;
-    public static final double FORWARD_ARM_LIMIT = (2.77*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
-    public static final double MIDDLE_ARM_LIMIT = (4.56*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
-    public static final double BACK_ARM_LIMIT = (4.58*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO);
+    public static final double FORWARD_ARM_LIMIT = /*(2.77*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO)*/-6.7;
+    public static final double MIDDLE_ARM_LIMIT = /*(4.56*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO)*/-1.8;
+    public static final double BACK_ARM_LIMIT = /*(4.58*STRING_POT_ADJUSTMENT_2 + STRING_POT_REZERO)*/-1.68;
     public static final double WINCH_POWER = -1;
     public static final int WINCH_HALF_TIME = 1000;
     /**
